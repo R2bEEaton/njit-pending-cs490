@@ -7,7 +7,9 @@ This is a project called Crush It for NJIT CS490 Fall 2023, a planner app. More 
 Team Name: ...pending...
 
 ## WSL Development Setup
-Assuming you are using Windows Subsystem for Linux, run the following commands to install `nvm`, `node`, and `yarn`. 
+Use your IDE or Git to clone the project to a directory in Windows Subsystem for Linux.
+
+Then, open a terminal and run the following commands to install `nvm`, `node`, and `yarn`. 
 
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
     nvm install --lts
