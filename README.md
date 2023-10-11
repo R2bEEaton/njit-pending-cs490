@@ -9,7 +9,7 @@ Team Name: ...pending...
 ## WSL Development Setup
 Use your IDE or Git to clone the project to a directory in Windows Subsystem for Linux.
 
-Then, open a terminal and run the following commands to install `nvm`, `node`, and `yarn`. 
+Then, open a terminal in the project root and run the following commands to install `nvm`, `node`, and `yarn`. 
 
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
     nvm install --lts
