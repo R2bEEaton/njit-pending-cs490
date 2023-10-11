@@ -31,5 +31,5 @@ Your browser should automatically open to [http://localhost:8910](http://localho
 
 ## Load the .env file with required fields
 ```
-This is a placeholder for later, we will put credentials in here for Google OAuth
+This is a placeholder for later, we will detail the required secrets and where they can be gotten
 ```
