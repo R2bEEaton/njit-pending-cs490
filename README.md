@@ -68,6 +68,12 @@ DATABASE_URL=postgresql://postgres:password@localhost:5432/pendingredwood?connec
 TEST_DATABASE_URL=postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1
 ```
 
+Run the following command to get your database up-to-date with the schema:
+
+```
+yarn rw prisma migrate dev
+```
+
 ## Google OAuth Setup
 Let's set up Google OAuth to work clientside. Add the following to your .env file using the CLIENT ID and CLIENT SECRET from a Google Cloud project.
 
