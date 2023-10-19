@@ -65,6 +65,7 @@ In a file called `.env`, add the following:
 
 ```
 DATABASE_URL=postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1
+TEST_DATABASE_URL=postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1
 ```
 
 ## Google OAuth Setup
@@ -96,5 +97,6 @@ GOOGLE_OAUTH_CLIENT_SECRET=...
 GOOGLE_OAUTH_REDIRECT_URI="http://localhost:8910/.redwood/functions/oauth/callback"
 
 DATABASE_URL=postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1
+TEST_DATABASE_URL=postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1
 SESSION_SECRET=...
 ```
