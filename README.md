@@ -29,11 +29,6 @@ yarn redwood dev
 
 Your browser should automatically open to [http://localhost:8910](http://localhost:8910) where you'll see the Welcome Page, which links out to many great resources.
 
-## Load the .env file with required fields
-```
-This is a placeholder for later, we will detail the required secrets and where they can be gotten
-```
-
 ## Install Local Postgres Server
 
 Install PostgreSQL:
@@ -70,4 +65,36 @@ In a file called `.env`, add the following:
 
 ```
 DATABASE_URL="postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1"
+```
+
+## Google OAuth Setup
+Let's set up Google OAuth to work clientside. Add the following to your .env file using the CLIENT ID and CLIENT SECRET from a Google Cloud project.
+
+https://console.cloud.google.com/apis/credentials?authuser=1&project=crush-it-cs490
+
+![img.png](readme_assets/img.png)
+
+Click the edit button, copy the Client ID and Secret.
+
+```
+GOOGLE_OAUTH_CLIENT_ID=...
+GOOGLE_OAUTH_CLIENT_SECRET=...
+GOOGLE_OAUTH_REDIRECT_URI="http://localhost:8910/.redwood/functions/oauth/callback"
+```
+
+## Generate Secret for dbAuth
+```
+yarn rw g secret
+```
+
+This generates a secret for dbAuth. Copy and paste it into .env under SESSION_SECRET
+
+## Full .env file example
+```
+GOOGLE_OAUTH_CLIENT_ID=...
+GOOGLE_OAUTH_CLIENT_SECRET=...
+GOOGLE_OAUTH_REDIRECT_URI="http://localhost:8910/.redwood/functions/oauth/callback"
+
+DATABASE_URL="postgresql://postgres:password@localhost:5432/pendingredwood?connection_limit=1"
+SESSION_SECRET=...
 ```
