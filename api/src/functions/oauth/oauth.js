@@ -1,4 +1,3 @@
-import {logger} from "src/lib/logger";
 import { db } from 'src/lib/db'
 import CryptoJS from 'crypto-js'
 
@@ -33,7 +32,6 @@ const callback = async (event) => {
   })
 
   const resp = JSON.parse(await response.text())
-  logger.info(resp)
   const { access_token, refresh_token, expires_in, scope, error } = resp
 
   if (error) {
