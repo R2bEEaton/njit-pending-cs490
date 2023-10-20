@@ -34,7 +34,7 @@ const callback = async (event) => {
 
   const resp = JSON.parse(await response.text())
   logger.info(resp)
-  const { access_token, refresh_token, scope, error } = resp
+  const { access_token, refresh_token, expires_in, scope, error } = resp
 
   if (error) {
     return { statuscode: 400, body: error }
@@ -42,7 +42,7 @@ const callback = async (event) => {
 
   try {
     const providerUser = await getProviderUser(access_token)
-    const user = await getUser({ providerUser, accessToken: access_token, scope })
+    const user = await getUser({ providerUser, accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in, scope })
     const cookie = secureCookie(user)
 
     return {
@@ -78,14 +78,21 @@ const secureCookie = (user) => {
   return [`session=${encrypted}`, ...cookieAttrs].join('; ')
 }
 
-const getUser = async ({ providerUser, accessToken, scope }) => {
+const getUser = async ({ providerUser, accessToken, refreshToken, expiresIn, scope }) => {
   const { user, identity } = await findOrCreateUser(providerUser)
 
-  logger.info(identity)
+  let now = new Date();
+  let refreshExpiry = new Date(now.getTime() + expiresIn * 1000);
 
   await db.identity.update({
     where: { id: identity.id },
-    data: { accessToken, scope, lastLoginAt: new Date() },
+    data: {
+      accessToken,
+      refreshToken,
+      refreshExpiry,
+      scope,
+      lastLoginAt: new Date()
+    },
   })
 
   return user
