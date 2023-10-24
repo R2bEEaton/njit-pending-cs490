@@ -6,8 +6,8 @@ on:
     branches: ['main']
 
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  TEST_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+  TEST_DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PASSWORD: password
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -47,6 +47,6 @@ jobs:
       # build the redwood app
       - run: yarn rw build
       # run the api tests
-      # - run: yarn rw test api --no-watch
+      - run: yarn rw test api --no-watch
       # run the web tests
       - run: yarn rw test web --no-watch

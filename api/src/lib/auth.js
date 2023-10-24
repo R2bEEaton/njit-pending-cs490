@@ -24,10 +24,10 @@ export const getCurrentUser = async (session) => {
     throw new Error('Invalid session')
   }
 
-  return await db.user.findUnique({
-    where: { id: session.id },
-    select: { id: true },
-  })
+  return db.user.findUnique({
+    where: {id: session.id},
+    select: {id: true, email: true},
+  });
 }
 
 /**
