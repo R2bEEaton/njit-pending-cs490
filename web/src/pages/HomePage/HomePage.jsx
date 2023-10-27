@@ -18,7 +18,7 @@ const HomePage = () => {
         <Link to={routes.home()}>Home</Link>`
       </p>
 
-      {isAuthenticated ? <p>{currentUser.email}</p> : <p>nothing to see here</p>}
+      {isAuthenticated ? <p>{currentUser ? currentUser.email : ''}</p> : <p>nothing to see here</p>}
     </>
   )
 }
