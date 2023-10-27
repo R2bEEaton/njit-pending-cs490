@@ -24,6 +24,7 @@
   "packageManager": "yarn@3.6.3",
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
     "@fontsource/dm-sans": "^5.0.17",
     "@fontsource/fredoka-one": "^5.0.5"
   }
