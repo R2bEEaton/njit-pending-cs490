@@ -15,12 +15,8 @@ const Routes = () => {
     <Router useAuth={useAuth}>
       {/* Put all authenticated routes in here, the user will be redirected to login if they are not */}
       <Private unauthenticated="login">
-        {/*
-        TODO:
-        Using NotFoundPage here is a placeholder,
-        this should most likely be replaced with the tasks/appointment view page
-        */}
-        <Route path="/" page={NotFoundPage} name="home" />
+        <Route path="/" page={HomePage} name="home" />
+        <Route path="/settings" page={SettingsPage} name="settings" />
       </Private>
       <Route path="/login" page={LoginPage} name="login" />
       <Route notfound page={NotFoundPage}  name="notfoundpage"/>

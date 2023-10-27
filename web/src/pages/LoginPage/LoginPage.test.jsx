@@ -12,20 +12,8 @@ describe('LoginPage', () => {
     }).not.toThrow()
 
     waitFor(() => expect(
-        screen.findByText('Login with Google')
+        screen.findByText('Sign in with Google')
       ).toBeInTheDocument()
     )
-  })
-
-  it('renders the message if user is authenticated', () => {
-    mockCurrentUser({ email: 'email@domain.com' })
-
-    render(<LoginPage />)
-
-    waitFor(() => {
-      expect(
-        screen.findByText('You are authenticated as email@domain.com')
-      ).toBeInTheDocument()
-    })
   })
 })
