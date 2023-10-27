@@ -5,6 +5,12 @@ import { useAuth } from 'src/auth'
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
 
+  if (isAuthenticated) {
+    return (
+      <p>{currentUser.email}</p>
+    )
+  }
+
   return (
     <>
       <MetaTags title="Home" description="Home page" />
@@ -17,8 +23,6 @@ const HomePage = () => {
         My default route is named <code>home</code>, link to me with `
         <Link to={routes.home()}>Home</Link>`
       </p>
-
-      <p>{currentUser.email}</p>
     </>
   )
 }
