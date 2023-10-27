@@ -1,7 +1,10 @@
-import { Link, routes } from '@redwoodjs/router'
+import {Link, Redirect, routes} from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+import { useAuth } from 'src/auth'
 
 const HomePage = () => {
+  const { currentUser, isAuthenticated } = useAuth()
+
   return (
     <>
       <MetaTags title="Home" description="Home page" />
@@ -14,6 +17,8 @@ const HomePage = () => {
         My default route is named <code>home</code>, link to me with `
         <Link to={routes.home()}>Home</Link>`
       </p>
+
+      <p>{currentUser.email}</p>
     </>
   )
 }
