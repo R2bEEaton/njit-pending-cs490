@@ -3,7 +3,7 @@ export const stackLeft = {
   bg: 'rgba(37,38,40,255)',
   borderRadius: 'md',
   alignItems: 'center',
-  spacing: '15vh',
+  spacing: '5vh',
   zIndex: 1,
 };
 
@@ -25,15 +25,14 @@ export const loginBox = {
   ml:"55vw",
   w:"35vw",
   borderRadius:"md",
-  pl:"2vw",
-  pr:"2vw",
+  p:"2vw",
   mr:"2vw",
+  height: "80vh"
 };
 
 export const loginText = {
   fontSize:"3xl",
-  fontWeight: "bold",
-  pt:"5vh",
+  fontWeight: "bold"
 };
 
 export const gButtBox ={
@@ -41,6 +40,7 @@ export const gButtBox ={
   justifyContent:"center",
   pt:"10vh",
   pb:"12vh",
+  height: "100%"
 }
 
 export const gButtContent={

@@ -68,7 +68,7 @@ const GoogleLogin = () => {
       <MetaTags title="Login" description="Login page" />
       <Box {...gButtContent}>
         <Image
-          src="/img/googleGIcon.jpg"
+          src="img/googleGIcon.png"
           alt="Google Icon"
           boxSize="80px"
           mx="auto"
