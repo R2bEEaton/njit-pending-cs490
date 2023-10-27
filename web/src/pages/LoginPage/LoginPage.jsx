@@ -60,6 +60,7 @@ const GoogleLogin = () => {
   const { currentUser, isAuthenticated } = useAuth()
 
   if (isAuthenticated) return (
+    /* Redirect to home page if user is authenticated already */
     <Redirect to={routes.home()} />
   )
 
