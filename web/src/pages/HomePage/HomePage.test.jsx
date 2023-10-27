@@ -24,4 +24,14 @@ describe('HomePage', () => {
       ).toBeInTheDocument()
     })
   })
+
+  it('doesnt render the message if user is authenticated', () => {
+    render(<HomePage />)
+
+    waitFor(() => {
+      expect(
+        screen.findByText('nothing to see here')
+      ).toBeInTheDocument()
+    })
+  })
 })
