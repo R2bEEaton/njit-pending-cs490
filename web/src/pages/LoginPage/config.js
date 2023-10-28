@@ -56,7 +56,6 @@ export const gButtContent={
 export const signInButton = {
   colorScheme:"blue",
   size:"lg",
-  isFullWidth:true,
 }
 /* Shadow realm
 export const signupBox = {
