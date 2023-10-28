@@ -1,6 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import {Box, Button, Center, Flex, FormControl, FormLabel, HStack, Input, Spacer, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Center, Flex, FormControl, FormLabel, HStack, Input, Spacer, Text} from "@chakra-ui/react";
 
 const SettingsPage = () => {
   return (
