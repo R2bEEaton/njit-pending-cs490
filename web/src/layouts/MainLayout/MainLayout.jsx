@@ -25,7 +25,7 @@ const MainLayout = ({ children }) => {
               /* In here would go the profile picture and search bar components */
             }
           </Box>
-          <Box backgroundColor={"#FEFEFE"}>
+          <Box backgroundColor={"#FEFEFE"} w={"100%"} h={"100%"}>
             <Box p={"24px"}>{children}</Box>
           </Box>
         </VStack>
