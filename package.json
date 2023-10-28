@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "@redwoodjs/auth-dbauth-setup": "6.3.2",
+    "@redwoodjs/cli-storybook": "6.3.2",
     "@redwoodjs/core": "6.3.2",
     "framer-motion": "^10.16.4"
   },
