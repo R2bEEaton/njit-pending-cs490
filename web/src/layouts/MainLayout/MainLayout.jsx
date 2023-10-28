@@ -10,6 +10,10 @@ const MainLayout = ({ children }) => {
           <VStack w={"80%"} spacing={"2vh"}>
             <Heading mt={"5vh"}>Crush It</Heading>
             <Image mt={"10vh"} src={"img/pending.png"} />
+            { /*
+            TODO:
+            The following will need to be selectively hidden if the user has already planned their day
+            */ }
             <Text textAlign={"center"} fontSize={"20px"} fontWeight={"700"}>It's time to plan your day!</Text>
             <Button colorScheme={"white"} variant={"outline"} w={"100%"}>Plan Day</Button>
           </VStack>
