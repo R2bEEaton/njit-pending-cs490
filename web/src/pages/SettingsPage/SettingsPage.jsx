@@ -7,46 +7,48 @@ const SettingsPage = () => {
     <>
       <MetaTags title="Profile" description="Profile page" />
 
-      <Flex flexDirection={"column"} gap={"20px"}>
-        <Box>
-          <Text fontSize={"20px"} fontWeight={700} mb={5}>User Info</Text>
-          <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
-            <FormControl>
-              <CustomFormLabel>First Name</CustomFormLabel>
-              <Input border={"1px solid #DADADA"}></Input>
-            </FormControl>
-            <FormControl>
-              <CustomFormLabel>Last Name</CustomFormLabel>
-              <Input border={"1px solid #DADADA"}></Input>
-            </FormControl>
-          </HStack>
-        </Box>
-        <Spacer />
-        <Box>
-          <Text fontSize={"20px"} fontWeight={700} mb={5}>Pomodoro Timer</Text>
-          <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
-            <FormControl>
-              <CustomFormLabel clock={true}>Pomodoro</CustomFormLabel>
-              <Input type='number' border={"1px solid #DADADA"}></Input>
-            </FormControl>
-            <FormControl>
-              <CustomFormLabel clock={true}>Short Break</CustomFormLabel>
-              <Input type='number' border={"1px solid #DADADA"}></Input>
-            </FormControl>
-            <FormControl>
-              <CustomFormLabel clock={true}>Long Break</CustomFormLabel>
-              <Input type='number' border={"1px solid #DADADA"}></Input>
-            </FormControl>
-          </HStack>
-        </Box>
-        <Spacer />
-        <Box>
-         <Center gap={10}>
-           <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline'>Cancel</Button>
-           <Button colorScheme={"blue"} size='lg' minWidth={"25%"}>Save</Button>
-         </Center>
-        </Box>
-      </Flex>
+      <form>
+        <Flex flexDirection={"column"} gap={"20px"}>
+          <Box>
+            <Text fontSize={"20px"} fontWeight={700} mb={5}>User Info</Text>
+            <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
+              <FormControl>
+                <CustomFormLabel>First Name</CustomFormLabel>
+                <Input border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl>
+                <CustomFormLabel>Last Name</CustomFormLabel>
+                <Input border={"1px solid #DADADA"}></Input>
+              </FormControl>
+            </HStack>
+          </Box>
+          <Spacer />
+          <Box>
+            <Text fontSize={"20px"} fontWeight={700} mb={5}>Pomodoro Timer</Text>
+            <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
+              <FormControl>
+                <CustomFormLabel clock={true}>Pomodoro</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl>
+                <CustomFormLabel clock={true}>Short Break</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl>
+                <CustomFormLabel clock={true}>Long Break</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+            </HStack>
+          </Box>
+          <Spacer />
+          <Box>
+           <Center gap={10}>
+             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline' onClick={() => location.replace(routes.home())}>Cancel</Button>
+             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} type='submit'>Save</Button>
+           </Center>
+         </Box>
+        </Flex>
+      </form>
     </>
   )
 }
