@@ -1,6 +1,5 @@
 import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/400.css'
-import {stackLeft, stackRight, loginBox, loginText,gButtBox,gButtContent, signInButton } from './config'
 import {
   ChakraProvider,
   Stack,
@@ -14,8 +13,23 @@ import {
   Center,
   Box,
 } from '@chakra-ui/react'
+
+import { Redirect, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+
 import { useAuth } from 'src/auth'
+
+import {
+  stackLeft,
+  stackRight,
+  loginBox,
+  loginText,
+  gButtBox,
+  gButtContent,
+  signInButton,
+} from './config'
+import theme from './theme.js'
+
 /* (dont seem to use these imports)
 import { Link, routes } from '@redwoodjs/router'
 If we need to get rid of Link import from chakra to user Link from redwood use below code instead:
@@ -40,18 +54,16 @@ const theme = extendTheme({ colors })
 
 
 */
-import theme from './theme.js'
-import {Redirect, routes} from "@redwoodjs/router";
 
-const Backdrop = () =>{
-  return(
+const Backdrop = () => {
+  return (
     <Flex color="white" h="100vh">
       <Stack {...stackLeft}>
         <Heading pt="25vh">Crush It</Heading>
         <Image src="img/pending.png" />
       </Stack>
       <Stack {...stackRight} />
-      <LoginForm/>
+      <LoginForm />
     </Flex>
   )
 }
@@ -59,10 +71,11 @@ const Backdrop = () =>{
 const GoogleLogin = () => {
   const { currentUser, isAuthenticated } = useAuth()
 
-  if (isAuthenticated) return (
-    /* Redirect to home page if user is authenticated already */
-    <Redirect to={routes.home()} />
-  )
+  if (isAuthenticated)
+    return (
+      /* Redirect to home page if user is authenticated already */
+      <Redirect to={routes.home()} />
+    )
 
   return (
     <Flex {...gButtBox}>
@@ -77,18 +90,18 @@ const GoogleLogin = () => {
         <Text textAlign="center" my="4">
           Welcome! Please sign in with Google.
         </Text>
-        <a href={`https://accounts.google.com/o/oauth2/v2/auth?scope=${process.env.GOOGLE_OAUTH_SCOPES}&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=${process.env.GOOGLE_OAUTH_REDIRECT_URI}&client_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}`}>
-          <Button {...signInButton}>
-            Sign in with Google
-          </Button>
+        <a
+          href={`https://accounts.google.com/o/oauth2/v2/auth?scope=${process.env.GOOGLE_OAUTH_SCOPES}&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=${process.env.GOOGLE_OAUTH_REDIRECT_URI}&client_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}`}
+        >
+          <Button {...signInButton}>Sign in with Google</Button>
         </a>
       </Box>
     </Flex>
-  )}
-
+  )
+}
 
 const LoginForm = () => {
-  return(
+  return (
     <Stack {...loginBox}>
       <Text {...loginText}>Log in</Text>
       <GoogleLogin />
@@ -96,15 +109,13 @@ const LoginForm = () => {
   )
 }
 
-
-
 const LoginPage = () => {
   return (
     <>
       <ChakraProvider theme={theme}>
         <MetaTags title="Login" description="Login page" />
         <Backdrop>
-          <LoginForm/>
+          <LoginForm />
         </Backdrop>
       </ChakraProvider>
     </>
