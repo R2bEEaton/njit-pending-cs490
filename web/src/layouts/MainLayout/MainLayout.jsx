@@ -19,14 +19,14 @@ const MainLayout = ({ children }) => {
             <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7}>Plan Day</Button>
           </VStack>
         </VStack>
-        <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} align={"flex-start"}>
+        <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
           <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"md"}>
             {
               /* In here would go the profile picture and search bar components */
             }
           </Box>
-          <Box backgroundColor={"#FEFEFE"} w={"100%"} h={"100%"}>
-            <Box p={"24px"}>{children}</Box>
+          <Box w={"100%"} h="96vh" maxHeight={"calc(100vh - 60px)"} overflowY={"auto"} p={"24px"}>
+            <main>{children}</main>
           </Box>
         </VStack>
       </Flex>
