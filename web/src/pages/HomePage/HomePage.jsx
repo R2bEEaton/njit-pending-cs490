@@ -6,7 +6,7 @@ import { useAuth } from 'src/auth'
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
-  toast.success(`Successful Login, welcome ${currentUser.email}`)
+  toast.success(`Login successful, welcome ${currentUser.email}`)
   return (
     <>
       <MetaTags title="Home" description="Home page" />
