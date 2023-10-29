@@ -20,7 +20,7 @@ const MainLayout = ({ children }) => {
           </VStack>
         </VStack>
         <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
-          <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"md"}>
+          <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"2px 5px 50px 0px rgba(32, 44, 85, 0.08)"}>
             {
               /* In here would go the profile picture and search bar components */
             }
