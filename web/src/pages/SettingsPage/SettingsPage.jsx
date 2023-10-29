@@ -12,11 +12,11 @@ const SettingsPage = () => {
           <Box>
             <Text fontSize={"20px"} fontWeight={700} mb={5}>User Info</Text>
             <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
-              <FormControl>
+              <FormControl isRequired>
                 <CustomFormLabel>First Name</CustomFormLabel>
                 <Input border={"1px solid #DADADA"}></Input>
               </FormControl>
-              <FormControl>
+              <FormControl isRequired>
                 <CustomFormLabel>Last Name</CustomFormLabel>
                 <Input border={"1px solid #DADADA"}></Input>
               </FormControl>
@@ -26,15 +26,15 @@ const SettingsPage = () => {
           <Box>
             <Text fontSize={"20px"} fontWeight={700} mb={5}>Pomodoro Timer</Text>
             <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
-              <FormControl>
+              <FormControl isRequired>
                 <CustomFormLabel clock={true}>Pomodoro</CustomFormLabel>
                 <Input type='number' border={"1px solid #DADADA"}></Input>
               </FormControl>
-              <FormControl>
+              <FormControl isRequired>
                 <CustomFormLabel clock={true}>Short Break</CustomFormLabel>
                 <Input type='number' border={"1px solid #DADADA"}></Input>
               </FormControl>
-              <FormControl>
+              <FormControl isRequired>
                 <CustomFormLabel clock={true}>Long Break</CustomFormLabel>
                 <Input type='number' border={"1px solid #DADADA"}></Input>
               </FormControl>
@@ -43,10 +43,46 @@ const SettingsPage = () => {
           <Spacer />
           <Box>
            <Center gap={10}>
-             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline' onClick={() => location.replace(routes.home())}>Cancel</Button>
+             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline' onClick={() => location.href = routes.home()}>Cancel</Button>
              <Button colorScheme={"blue"} size='lg' minWidth={"25%"} type='submit'>Save</Button>
            </Center>
          </Box>
+          <Spacer />
+          <Box>
+            <Text fontSize={"20px"} fontWeight={700} mb={5}>Pomodoro Timer</Text>
+            <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
+              <FormControl isRequired>
+                <CustomFormLabel clock={true}>Pomodoro</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl isRequired>
+                <CustomFormLabel clock={true}>Short Break</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl isRequired>
+                <CustomFormLabel clock={true}>Long Break</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+            </HStack>
+          </Box>
+          <Spacer />
+          <Box>
+            <Text fontSize={"20px"} fontWeight={700} mb={5}>Pomodoro Timer</Text>
+            <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
+              <FormControl isRequired>
+                <CustomFormLabel clock={true}>Pomodoro</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl isRequired>
+                <CustomFormLabel clock={true}>Short Break</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+              <FormControl isRequired>
+                <CustomFormLabel clock={true}>Long Break</CustomFormLabel>
+                <Input type='number' border={"1px solid #DADADA"}></Input>
+              </FormControl>
+            </HStack>
+          </Box>
         </Flex>
       </form>
     </>
@@ -78,7 +114,7 @@ const ClockIcon = () => {
 const CustomFormLabel = (props) => {
   return (
     <>
-      <FormLabel color={"#545454"} fontSize={"14px"} fontWeight={"400"}><HStack>{props.clock ? <ClockIcon /> : <PersonIcon />}<Text>{props.children}</Text></HStack></FormLabel>
+      <FormLabel requiredIndicator color={"#545454"} fontSize={"14px"} fontWeight={"400"}><HStack>{props.clock ? <ClockIcon /> : <PersonIcon />}<Text>{props.children}</Text></HStack></FormLabel>
     </>
   )
 }
