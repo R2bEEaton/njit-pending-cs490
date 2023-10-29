@@ -1,7 +1,10 @@
+import { domAnimation } from 'framer-motion'
+
 import { render, waitFor } from '@redwoodjs/testing/web'
 
+import LoginPage from 'src/pages/LoginPage/LoginPage'
+
 import HomePage from './HomePage'
-import LoginPage from "src/pages/LoginPage/LoginPage";
 
 //   Improve this test with help from the Redwood Testing Doc:
 //   https://redwoodjs.com/docs/testing#testing-pages-layouts
@@ -19,9 +22,17 @@ describe('HomePage', () => {
     render(<HomePage />)
 
     waitFor(() => {
-      expect(
-        screen.findByText('email@domain.com')
-      ).toBeInTheDocument()
+      expect(screen.findByText('email@domain.com')).toBeInTheDocument()
+    })
+  })
+
+  it('renders the notification if user is authenticated', () => {
+    mockCurrentUser({ email: 'email@domain.com' })
+
+    render(<HomePage />)
+
+    waitFor(() => {
+      expect(screen.findByText('Login successful').toBeInTheDocument())
     })
   })
 
@@ -29,9 +40,7 @@ describe('HomePage', () => {
     render(<HomePage />)
 
     waitFor(() => {
-      expect(
-        screen.findByText('nothing to see here')
-      ).toBeInTheDocument()
+      expect(screen.findByText('nothing to see here')).toBeInTheDocument()
     })
   })
 })
