@@ -113,6 +113,7 @@ const findOrCreateUser = async (providerUser) => {
       data: {
         email: providerUser.email,
         name: providerUser.name,
+        picture: providerUser.picture,
       },
     })
 

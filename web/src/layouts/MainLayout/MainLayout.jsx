@@ -1,10 +1,14 @@
-import {Box, ChakraProvider, Flex, Heading, HStack, Stack, VStack, Image, Text, Button} from "@chakra-ui/react";
+import {Box, ChakraProvider, Flex, Heading, HStack, Stack, VStack, Image, Text, Button,} from "@chakra-ui/react";
+import { useAuth } from 'src/auth';
+import UserInfo from 'src/components/UserInfo';
 import theme from "src/pages/LoginPage/theme";
 import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/700.css'
 
 const MainLayout = ({ children }) => {
+  const { currentUser, isAuthenticated } = useAuth();
   return (
+    
     <ChakraProvider theme={theme}>
       <Flex spacing={0}>
         <VStack w={"15vw"} h={"100vh"} backgroundColor={"#252628"} color={"white"}>
@@ -22,6 +26,10 @@ const MainLayout = ({ children }) => {
         <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
           <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"2px 5px 50px 0px rgba(32, 44, 85, 0.08)"}>
             {
+              
+                <UserInfo currentUser={currentUser} />
+            
+              
               /* In here would go the profile picture and search bar components */
             }
           </Box>
