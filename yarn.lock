@@ -8228,6 +8228,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/user-event@npm:^14.5.1":
+  version: 14.5.1
+  resolution: "@testing-library/user-event@npm:14.5.1"
+  peerDependencies:
+    "@testing-library/dom": ">=7.21.4"
+  checksum: 1e00d6ead23377885b906db6e46e259161a0efb4138f7527481d7435f3c8f65cb7e3eab2900e2ac1886fa6dd03416e773a3a60dea87a9a2086a7127dee315f6f
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -25227,6 +25236,7 @@ __metadata:
     "@redwoodjs/router": 6.3.2
     "@redwoodjs/vite": 6.3.2
     "@redwoodjs/web": 6.3.2
+    "@testing-library/user-event": ^14.5.1
     "@types/react": 18.2.14
     "@types/react-dom": 18.2.6
     prop-types: 15.8.1
