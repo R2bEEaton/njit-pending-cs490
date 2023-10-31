@@ -3,6 +3,8 @@ import {MetaTags, useMutation} from '@redwoodjs/web'
 import {Box, Button, Center, Flex, FormControl, FormLabel, HStack, Input, Spacer, Text} from "@chakra-ui/react";
 import { useForm} from "@redwoodjs/forms";
 import {useAuth} from "src/auth";
+import {toast} from "@redwoodjs/web/toast";
+import { Toaster } from '@redwoodjs/web/toast'
 
 const UPDATE_SETTINGS = gql`
   mutation UpdateSettingsMutation($id: Int!, $input: UpdateUserInput!) {
@@ -27,11 +29,12 @@ const SettingsPage = () => {
     data.pomodoro = parseInt(data.pomodoro)
     data.shortBreak = parseInt(data.shortBreak)
     data.longBreak = parseInt(data.longBreak)
-    create({ variables: { id: 1, input: data }})
+    create({variables: {id: currentUser.id, input: data}}).then(r => toast.success('Settings Saved')).catch(r => toast.error('Error saving settings.'))
   }
 
   return (
     <>
+      <Toaster />
       <MetaTags title="Profile" description="Profile page" />
 
       <form onSubmit={handleSubmit(onSubmit)}>
