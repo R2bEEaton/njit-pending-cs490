@@ -51,13 +51,10 @@ const MainLayout = ({ children }) => {
         </VStack>
         <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
           <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"2px 5px 50px 0px rgba(32, 44, 85, 0.08)"}>
-            {
-
-                <UserInfo currentUser={currentUser} />
-
-
-              /* In here would go the profile picture and search bar components */
-            }
+            <Flex alignItems={'center'} h={'100%'} ml={'15px'} mr={'15px'}>
+              <Text fontFamily={'DM Sans'} fontSize={'30px'}>Profile</Text>
+              <UserInfo currentUser={currentUser} />
+            </Flex>
           </Box>
           <Box w={"100%"} h="96vh" maxHeight={"calc(100vh - 60px)"} overflowY={"auto"} p={"24px"}>
             <main>{children}</main>
