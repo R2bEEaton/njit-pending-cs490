@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js'
+import {logger} from "src/lib/logger";
 
 import { db } from 'src/lib/db'
 
@@ -73,7 +74,6 @@ const secureCookie = (user) => {
 
   const cookieAttrs = [
     `Expires=${expires.toUTCString()}`,
-    'HttpOnly=true',
     'Path=/',
     'SameSite=Strict',
     `Secure=${process.env.NODE_ENV !== 'development'}`,
@@ -130,7 +130,9 @@ const findOrCreateUser = async (providerUser) => {
     const user = await tx.user.create({
       data: {
         email: providerUser.email,
-        name: providerUser.name,
+        firstName: providerUser.given_name,
+        lastName: providerUser.family_name,
+        picture: providerUser.picture,
       },
     })
 
