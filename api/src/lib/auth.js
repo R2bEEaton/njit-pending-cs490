@@ -24,7 +24,7 @@ export const getCurrentUser = async (session) => {
     throw new Error('Invalid session')
   }
 
-  return db.user.findUnique({
+  let user = db.user.findUnique({
     where: {id: session.id},
     select: {
       id: true,
@@ -36,6 +36,12 @@ export const getCurrentUser = async (session) => {
       longBreak: true,
       picture: true},
   });
+
+  if (user === null) {
+    throw new Error('No user exists')
+  }
+
+  return user
 }
 
 /**
