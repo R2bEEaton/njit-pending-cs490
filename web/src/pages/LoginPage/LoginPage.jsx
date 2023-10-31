@@ -41,7 +41,9 @@ const theme = extendTheme({ colors })
 
 */
 import theme from './theme.js'
-import {Redirect, routes} from "@redwoodjs/router";
+import { useEffect } from 'react'
+import {Redirect, routes, useParams} from "@redwoodjs/router";
+import { toast, Toaster } from '@redwoodjs/web/dist/toast'
 
 const Backdrop = () =>{
   return(
@@ -59,6 +61,13 @@ const Backdrop = () =>{
 const GoogleLogin = () => {
   const { currentUser, isAuthenticated } = useAuth()
 
+  const params = useParams()
+  useEffect(() => {
+    if (params.error) {
+      toast.error(params.error)
+    }
+  }, [params])
+
   if (isAuthenticated) return (
     /* Redirect to home page if user is authenticated already */
     <Redirect to={routes.home()} />
@@ -66,6 +75,7 @@ const GoogleLogin = () => {
 
   return (
     <Flex {...gButtBox}>
+      <Toaster />
       <MetaTags title="Login" description="Login page" />
       <Box {...gButtContent}>
         <Image

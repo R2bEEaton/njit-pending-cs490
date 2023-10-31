@@ -10,6 +10,7 @@ export const handler = async (event, _context) => {
       // Whatever this is, it's not correct, so return "Not Found"
       return {
         statusCode: 404,
+        error: 'Error: returned status code 302',
       }
   }
 }
@@ -50,6 +51,7 @@ const callback = async (event) => {
         'Set-Cookie': cookie,
         Location: '/',
       },
+      error: 'Error: returned status code 302'
     }
   } catch (e) {
     return { statuscode: 500, body: e.message }
