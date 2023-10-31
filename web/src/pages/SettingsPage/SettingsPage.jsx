@@ -1,8 +1,16 @@
 import { routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import {MetaTags, useMutation} from '@redwoodjs/web'
 import {Box, Button, Center, Flex, FormControl, FormLabel, HStack, Input, Spacer, Text} from "@chakra-ui/react";
 import { useForm} from "@redwoodjs/forms";
 import {useAuth} from "src/auth";
+
+const UPDATE_SETTINGS = gql`
+  mutation UpdateSettingsMutation($id: Int!, $input: UpdateUserInput!) {
+    updateUser(id: $id, input: $input) {
+      id
+    }
+  }
+`
 
 const SettingsPage = () => {
   const { currentUser } = useAuth()
@@ -12,8 +20,14 @@ const SettingsPage = () => {
     register
   } = useForm()
 
+  const [create, { loading, error }] = useMutation(UPDATE_SETTINGS)
+
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(data)
+    data.pomodoro = parseInt(data.pomodoro)
+    data.shortBreak = parseInt(data.shortBreak)
+    data.longBreak = parseInt(data.longBreak)
+    create({ variables: { id: 1, input: data }})
   }
 
   return (
@@ -27,11 +41,11 @@ const SettingsPage = () => {
             <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
               <FormControl isRequired>
                 <CustomFormLabel>First Name</CustomFormLabel>
-                <Input border={"1px solid #DADADA"} {...register('firstName')} value={currentUser.firstName.toString()}></Input>
+                <Input border={"1px solid #DADADA"} {...register('firstName')} defaultValue={currentUser.firstName.toString()}></Input>
               </FormControl>
               <FormControl isRequired>
                 <CustomFormLabel>Last Name</CustomFormLabel>
-                <Input border={"1px solid #DADADA"} {...register('lastName')} value={currentUser.lastName.toString()}></Input>
+                <Input border={"1px solid #DADADA"} {...register('lastName')} defaultValue={currentUser.lastName.toString()}></Input>
               </FormControl>
             </HStack>
           </Box>
@@ -41,15 +55,15 @@ const SettingsPage = () => {
             <HStack borderRadius={"10px"} boxShadow={"2px 5px 50px 0px rgba(36, 37, 40, 0.10)"} p={"20px"}>
               <FormControl isRequired>
                 <CustomFormLabel clock={true}>Pomodoro</CustomFormLabel>
-                <Input type='number' border={"1px solid #DADADA"} {...register('pomodoro')} value={currentUser.pomodoro}></Input>
+                <Input type='number' border={"1px solid #DADADA"} {...register('pomodoro')} defaultValue={currentUser.pomodoro}></Input>
               </FormControl>
               <FormControl isRequired>
                 <CustomFormLabel clock={true}>Short Break</CustomFormLabel>
-                <Input type='number' border={"1px solid #DADADA"} {...register('shortBreak')} value={currentUser.shortBreak}></Input>
+                <Input type='number' border={"1px solid #DADADA"} {...register('shortBreak')} defaultValue={currentUser.shortBreak}></Input>
               </FormControl>
               <FormControl isRequired>
                 <CustomFormLabel clock={true}>Long Break</CustomFormLabel>
-                <Input type='number' border={"1px solid #DADADA"} {...register('longBreak')} value={currentUser.longBreak}></Input>
+                <Input type='number' border={"1px solid #DADADA"} {...register('longBreak')} defaultValue={currentUser.longBreak}></Input>
               </FormControl>
             </HStack>
           </Box>

@@ -23,9 +23,11 @@ export const schema = gql`
   }
 
   input UpdateUserInput {
-    email: String
-    name: String
-    picture: String
+    firstName: String
+    lastName: String
+    pomodoro: Int
+    shortBreak: Int
+    longBreak: Int
   }
 
   type Mutation {
