@@ -74,7 +74,7 @@ const SettingsPage = () => {
           <Box>
            <Center gap={10}>
              <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline' onClick={() => location.href = routes.home()}>Cancel</Button>
-             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} type='submit'>Save</Button>
+             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} type='submit' isLoading={loading}>Save</Button>
            </Center>
          </Box>
         </Flex>
