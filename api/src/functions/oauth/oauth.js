@@ -61,6 +61,7 @@ const secureCookie = (user) => {
 
   const cookieAttrs = [
     `Expires=${expires.toUTCString()}`,
+    'HttpOnly=false',
     'Path=/',
     'SameSite=Strict',
     `Secure=${process.env.NODE_ENV !== 'development'}`,
