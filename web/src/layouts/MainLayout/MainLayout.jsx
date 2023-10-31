@@ -16,6 +16,7 @@ import UserInfo from 'src/components/UserInfo';
 import theme from "src/pages/LoginPage/theme";
 import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/700.css'
+import {Toaster} from "@redwoodjs/web/dist/toast";
 
 const MainLayout = ({ children }) => {
   const { currentUser, isAuthenticated } = useAuth();
