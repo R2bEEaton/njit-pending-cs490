@@ -20,9 +20,9 @@ import '@fontsource/dm-sans/700.css'
 const MainLayout = ({ children }) => {
   const { currentUser, isAuthenticated } = useAuth();
 
-  function clearCookie(name, domain, path){
-    var domain = domain || document.domain;
-    var path = path || "/";
+  function clearCookie(name){
+    let domain = location.hostname;
+    let path = "/";
     document.cookie = name + "=; expires=" + new Date + "; domain=" + domain + "; path=" + path;
   }
 
