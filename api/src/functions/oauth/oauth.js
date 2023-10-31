@@ -1,5 +1,6 @@
-import { db } from 'src/lib/db'
 import CryptoJS from 'crypto-js'
+
+import { db } from 'src/lib/db'
 
 export const handler = async (event, _context) => {
   switch (event.path) {
@@ -27,7 +28,7 @@ const callback = async (event) => {
       client_secret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
       redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URI,
       code: code,
-      grant_type: 'authorization_code'
+      grant_type: 'authorization_code',
     }),
   })
 
@@ -35,12 +36,22 @@ const callback = async (event) => {
   const { access_token, refresh_token, expires_in, scope, error } = resp
 
   if (error) {
-    return { statuscode: 400, body: error }
+    return {
+      statuscode: 400,
+      body: error,
+      error: 'Error: returned statusCode 400',
+    }
   }
 
   try {
     const providerUser = await getProviderUser(access_token)
-    const user = await getUser({ providerUser, accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in, scope })
+    const user = await getUser({
+      providerUser,
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      expiresIn: expires_in,
+      scope,
+    })
     const cookie = secureCookie(user)
 
     return {
@@ -49,6 +60,7 @@ const callback = async (event) => {
         'Set-Cookie': cookie,
         Location: '/',
       },
+      error: 'Error: returned status code 302',
     }
   } catch (e) {
     return { statuscode: 500, body: e.message }
@@ -76,11 +88,17 @@ const secureCookie = (user) => {
   return [`session=${encrypted}`, ...cookieAttrs].join('; ')
 }
 
-const getUser = async ({ providerUser, accessToken, refreshToken, expiresIn, scope }) => {
+const getUser = async ({
+  providerUser,
+  accessToken,
+  refreshToken,
+  expiresIn,
+  scope,
+}) => {
   const { user, identity } = await findOrCreateUser(providerUser)
 
-  let now = new Date();
-  let refreshExpiry = new Date(now.getTime() + expiresIn * 1000);
+  let now = new Date()
+  let refreshExpiry = new Date(now.getTime() + expiresIn * 1000)
 
   await db.identity.update({
     where: { id: identity.id },
@@ -89,7 +107,7 @@ const getUser = async ({ providerUser, accessToken, refreshToken, expiresIn, sco
       refreshToken,
       refreshExpiry,
       scope,
-      lastLoginAt: new Date()
+      lastLoginAt: new Date(),
     },
   })
 
@@ -98,12 +116,12 @@ const getUser = async ({ providerUser, accessToken, refreshToken, expiresIn, sco
 
 const findOrCreateUser = async (providerUser) => {
   const identity = await db.identity.findFirst({
-    where: { provider: 'google', uid: providerUser.sub.toString() }
+    where: { provider: 'google', uid: providerUser.sub.toString() },
   })
 
   if (identity) {
     // identity exists, return the user
-    const user = await db.user.findUnique({ where: { id: identity.userId }})
+    const user = await db.user.findUnique({ where: { id: identity.userId } })
     return { user, identity }
   }
 
@@ -120,17 +138,20 @@ const findOrCreateUser = async (providerUser) => {
       data: {
         userId: user.id,
         provider: 'google',
-        uid: providerUser.sub.toString()
-      }
+        uid: providerUser.sub.toString(),
+      },
     })
 
-    return {user, identity}
-  });
+    return { user, identity }
+  })
 }
 
 const getProviderUser = async (token) => {
-  const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-    headers: { Authorization: `Bearer ${token}` },
-  })
+  const response = await fetch(
+    'https://www.googleapis.com/oauth2/v3/userinfo',
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  )
   return JSON.parse(await response.text())
 }

@@ -1,5 +1,7 @@
 import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/400.css'
+import { useEffect } from 'react'
+
 import {
   ChakraProvider,
   Stack,
@@ -14,9 +16,9 @@ import {
   Box,
 } from '@chakra-ui/react'
 
-import { Redirect, routes } from '@redwoodjs/router'
+import { Redirect, routes, useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { toast, Toaster } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 
@@ -71,12 +73,13 @@ const Backdrop = () => {
 
 const GoogleLogin = () => {
   const { currentUser, isAuthenticated } = useAuth()
+  const params = useParams()
 
-  if (isAuthenticated)
-    return (
-      /* Redirect to home page if user is authenticated already */
-      <Redirect to={routes.home()} />
-    )
+  useEffect(() => {
+    if (params.error) {
+      toast.error('Authentication failed')
+    }
+  }, [params])
 
   return (
     <Flex {...gButtBox}>
@@ -115,6 +118,7 @@ const LoginPage = () => {
     <>
       <ChakraProvider theme={theme}>
         <MetaTags title="Login" description="Login page" />
+        <Toaster />
         <Backdrop>
           <LoginForm />
         </Backdrop>

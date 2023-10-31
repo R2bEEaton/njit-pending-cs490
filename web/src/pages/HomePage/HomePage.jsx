@@ -8,6 +8,7 @@ import { useAuth } from 'src/auth'
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
+
   // Use a state variable to track whether the toast notification has been shown
   const [showNotification, setShowNotification] = useState(false)
 
