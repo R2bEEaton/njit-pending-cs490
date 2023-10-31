@@ -2,8 +2,8 @@ export const standard = defineScenario({
   identity: {
     one: {
       data: {
-        provider: 'String',
-        uid: 'String',
+        provider: 'Google',
+        uid: 'String123',
         updatedAt: '2023-10-31T13:28:14.717Z',
         user: {
           create: {
@@ -18,7 +18,7 @@ export const standard = defineScenario({
     two: {
       data: {
         provider: 'String',
-        uid: 'String',
+        uid: 'String124',
         updatedAt: '2023-10-31T13:28:14.717Z',
         user: {
           create: {
