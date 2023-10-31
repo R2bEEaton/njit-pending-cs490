@@ -7,7 +7,7 @@ const UserInfo = ({ currentUser }) => {
   }
     return (
       <Flex alignItems="center" justifyContent="flex-end" w="100%" h="100%">
-        
+
         <Box marginRight="10px">
         <Link to={routes.settings()}>
           <img
@@ -20,10 +20,10 @@ const UserInfo = ({ currentUser }) => {
         </Link>
         </Box>
         <Box paddingRight="10px">
-          <div>{currentUser.name}</div>
+          <div>{currentUser.firstName + ' ' + currentUser.lastName}</div>
           {/* Add additional elements as needed (e.g., user position) */}
         </Box>
-      </Flex>    
+      </Flex>
   );
 };
 
