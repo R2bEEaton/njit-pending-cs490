@@ -1,5 +1,6 @@
 import { db } from 'src/lib/db'
 import CryptoJS from 'crypto-js'
+import {logger} from "src/lib/logger";
 
 export const handler = async (event, _context) => {
   switch (event.path) {
@@ -111,7 +112,8 @@ const findOrCreateUser = async (providerUser) => {
     const user = await tx.user.create({
       data: {
         email: providerUser.email,
-        name: providerUser.name,
+        firstName: providerUser.given_name,
+        lastName: providerUser.family_name,
         picture: providerUser.picture,
       },
     })
