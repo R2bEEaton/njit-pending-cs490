@@ -16,6 +16,7 @@ import {
 
 import { Redirect, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 

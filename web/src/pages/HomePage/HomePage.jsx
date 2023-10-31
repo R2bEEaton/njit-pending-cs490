@@ -1,12 +1,30 @@
+import { useState, useEffect } from 'react'
+
 import { Link, Redirect, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { MetaTags, useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
-  toast.success(`Login successful, welcome ${currentUser.email}`)
+  // Use a state variable to track whether the toast notification has been shown
+  const [showNotification, setShowNotification] = useState(false)
+
+  // Check if it's the user's first visit to the homepage during this session
+  useEffect(() => {
+    const hasVisitedHomepage = sessionStorage.getItem('visitedHomepage')
+
+    if (!hasVisitedHomepage) {
+      // Show the toast notification
+      toast.success('Welcome to the homepage!')
+
+      // Update the flag to indicate that the notification has been shown
+      sessionStorage.setItem('visitedHomepage', 'true')
+      setShowNotification(true)
+    }
+  }, [])
+
   return (
     <>
       <MetaTags title="Home" description="Home page" />
