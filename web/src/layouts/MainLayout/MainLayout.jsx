@@ -1,4 +1,16 @@
-import {Box, ChakraProvider, Flex, Heading, HStack, Stack, VStack, Image, Text, Button,} from "@chakra-ui/react";
+import {
+  Box,
+  ChakraProvider,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  VStack,
+  Image,
+  Text,
+  Button,
+  Spacer,
+} from "@chakra-ui/react";
 import { useAuth } from 'src/auth';
 import UserInfo from 'src/components/UserInfo';
 import theme from "src/pages/LoginPage/theme";
@@ -7,12 +19,24 @@ import '@fontsource/dm-sans/700.css'
 
 const MainLayout = ({ children }) => {
   const { currentUser, isAuthenticated } = useAuth();
+
+  function clearCookie(name){
+    let domain = location.hostname;
+    let path = "/";
+    document.cookie = name + "=; expires=" + new Date + "; domain=" + domain + "; path=" + path;
+  }
+
+  const logout = () => {
+    clearCookie("session", document.domain, "/")
+    location.reload()
+  }
+
   return (
-    
+
     <ChakraProvider theme={theme}>
       <Flex spacing={0}>
         <VStack w={"15vw"} h={"100vh"} backgroundColor={"#252628"} color={"white"}>
-          <VStack w={"80%"} spacing={"2vh"}>
+          <Flex flexDirection={'column'} alignItems={'center'} w={"80%"} gap={"2vh"} flexGrow={'1'}>
             <Text mt={"5vh"} fontSize={36} fontFamily={"Fredoka One"}>Crush It</Text>
             <Image mt={"10vh"} src={"img/pending.png"} />
             { /*
@@ -21,17 +45,16 @@ const MainLayout = ({ children }) => {
             */ }
             <Text textAlign={"center"} fontSize={20} fontFamily={"DM Sans"} fontWeight={"700"}>It's time to plan your day!</Text>
             <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7}>Plan Day</Button>
-          </VStack>
+            <Spacer />
+            <Button colorScheme={"white"} variant={"outline"} type='button' onClick={logout} mb={'5vh'}><LogoutIcon />Logout</Button>
+          </Flex>
         </VStack>
         <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
           <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"2px 5px 50px 0px rgba(32, 44, 85, 0.08)"}>
-            {
-              
-                <UserInfo currentUser={currentUser} />
-            
-              
-              /* In here would go the profile picture and search bar components */
-            }
+            <Flex alignItems={'center'} h={'100%'} ml={'15px'} mr={'15px'}>
+              <Text fontFamily={'DM Sans'} fontSize={'30px'}>Profile</Text>
+              <UserInfo currentUser={currentUser} />
+            </Flex>
           </Box>
           <Box w={"100%"} h="96vh" maxHeight={"calc(100vh - 60px)"} overflowY={"auto"} p={"24px"}>
             <main>{children}</main>
@@ -39,6 +62,18 @@ const MainLayout = ({ children }) => {
         </VStack>
       </Flex>
     </ChakraProvider>
+  )
+}
+
+const LogoutIcon = () => {
+  return (
+    <>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M17.4399 14.62L19.9999 12.06L17.4399 9.5" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M9.76001 12.06H19.93" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M11.76 20C7.34001 20 3.76001 17 3.76001 12C3.76001 7 7.34001 4 11.76 4" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </>
   )
 }
 
