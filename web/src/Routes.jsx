@@ -22,7 +22,6 @@ const Routes = () => {
       <Private unauthenticated="login" wrap={MainLayout}>
         <Route path="/" page={HomePage} name="home" />
         <Route path="/settings" page={SettingsPage} name="settings" />
-        <Route path="/tasks" page={TasksPage} name="tasks" />
       </Private>
       <Route path="/login" page={LoginPage} name="login" />
       <Route notfound page={NotFoundPage} name="notfoundpage" />
