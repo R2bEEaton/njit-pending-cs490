@@ -76,8 +76,8 @@ const SettingsPage = () => {
           <Spacer />
           <Box>
            <Center gap={10}>
-             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline' onClick={() => location.href = routes.home()}>Cancel</Button>
-             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} type='submit' isLoading={loading}>Save</Button>
+             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} variant='outline' onClick={() => location.href = routes.home()} boxShadow={'0px 4px 80px 0px rgba(98, 132, 255, 0.20);'}>Cancel</Button>
+             <Button colorScheme={"blue"} size='lg' minWidth={"25%"} type='submit' isLoading={loading} boxShadow={'0px 4px 80px 0px rgba(98, 132, 255, 0.20);'}>Save</Button>
            </Center>
          </Box>
         </Flex>
