@@ -1,4 +1,4 @@
-import { ChevronUpIcon } from '@chakra-ui/icons'
+import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -34,23 +34,31 @@ const DatePicker = () => {
   return (
     <Box bg={'#6284FF26'} borderRadius={'md'} color={'white'}>
       <Menu size={'md'}>
-        <MenuButton as={Button} rightIcon={<ChevronUpIcon />}>
-          {month}
-        </MenuButton>
-        <MenuList>
-          <MenuItem color={'black'}>January</MenuItem>
-          <MenuItem color={'black'}>February</MenuItem>
-          <MenuItem color={'black'}>March</MenuItem>
-          <MenuItem color={'black'}>April</MenuItem>
-          <MenuItem color={'black'}>May</MenuItem>
-          <MenuItem color={'black'}>June</MenuItem>
-          <MenuItem color={'black'}>July</MenuItem>
-          <MenuItem color={'black'}>August</MenuItem>
-          <MenuItem color={'black'}>September</MenuItem>
-          <MenuItem color={'black'}>October</MenuItem>
-          <MenuItem color={'black'}>November</MenuItem>
-          <MenuItem color={'black'}>December</MenuItem>
-        </MenuList>
+        {({ isOpen }) => (
+          <>
+            <MenuButton
+              isActive={isOpen}
+              as={Button}
+              rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            >
+              {month}
+            </MenuButton>
+            <MenuList>
+              <MenuItem color={'black'}>January</MenuItem>
+              <MenuItem color={'black'}>February</MenuItem>
+              <MenuItem color={'black'}>March</MenuItem>
+              <MenuItem color={'black'}>April</MenuItem>
+              <MenuItem color={'black'}>May</MenuItem>
+              <MenuItem color={'black'}>June</MenuItem>
+              <MenuItem color={'black'}>July</MenuItem>
+              <MenuItem color={'black'}>August</MenuItem>
+              <MenuItem color={'black'}>September</MenuItem>
+              <MenuItem color={'black'}>October</MenuItem>
+              <MenuItem color={'black'}>November</MenuItem>
+              <MenuItem color={'black'}>December</MenuItem>
+            </MenuList>
+          </>
+        )}
       </Menu>
     </Box>
   )
