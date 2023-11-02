@@ -44,18 +44,42 @@ const DatePicker = () => {
               {month}
             </MenuButton>
             <MenuList>
-              <MenuItem color={'black'}>January</MenuItem>
-              <MenuItem color={'black'}>February</MenuItem>
-              <MenuItem color={'black'}>March</MenuItem>
-              <MenuItem color={'black'}>April</MenuItem>
-              <MenuItem color={'black'}>May</MenuItem>
-              <MenuItem color={'black'}>June</MenuItem>
-              <MenuItem color={'black'}>July</MenuItem>
-              <MenuItem color={'black'}>August</MenuItem>
-              <MenuItem color={'black'}>September</MenuItem>
-              <MenuItem color={'black'}>October</MenuItem>
-              <MenuItem color={'black'}>November</MenuItem>
-              <MenuItem color={'black'}>December</MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'January')}>
+                January
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'February')}>
+                February
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'March')}>
+                March
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'April')}>
+                April
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'May')}>
+                May
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'June')}>
+                June
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'July')}>
+                July
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'August')}>
+                August
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'September')}>
+                September
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'October')}>
+                October
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'November')}>
+                November
+              </MenuItem>
+              <MenuItem color={'black'} onClick={() => (month = 'December')}>
+                December
+              </MenuItem>
             </MenuList>
           </>
         )}
