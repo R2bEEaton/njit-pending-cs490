@@ -28,12 +28,14 @@ import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
+let month = new Date().toLocaleString('default', { month: 'long' })
+
 const DatePicker = () => {
   return (
     <Box bg={'#6284FF26'} borderRadius={'md'} color={'white'}>
       <Menu size={'md'}>
         <MenuButton as={Button} rightIcon={<ChevronUpIcon />}>
-          {new Date().toLocaleString('default', { month: 'long' })}
+          {month}
         </MenuButton>
         <MenuList>
           <MenuItem color={'black'}>January</MenuItem>
