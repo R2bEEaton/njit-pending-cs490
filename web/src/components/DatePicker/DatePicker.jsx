@@ -49,6 +49,7 @@ const DatePicker = () => {
               <MenuButton
                 isActive={isOpen}
                 as={Button}
+                outlineColor={'#6284FF'}
                 rightIcon={
                   isOpen ? (
                     <ChevronUpIcon color={'#6284FF'} />
