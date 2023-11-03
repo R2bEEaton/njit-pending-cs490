@@ -52,7 +52,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
                 <Box {...dragHandle}>
                   <DragIcon />
                 </Box>
-                <button onClick={handleToggle}  aria-label={'expand'}>
+                <button onClick={handleToggle} aria-label={'expand'}>
                   <ChevronIcon active={show} />
                 </button>
             </HStack>

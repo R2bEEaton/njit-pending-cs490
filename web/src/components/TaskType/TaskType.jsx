@@ -9,11 +9,15 @@ const TaskType = ({type, typeidx, data, callback}) => {
     callback(typeidx, data, saveworthy)
   }
 
+    const onDragOver = () => {
+      console.log('YOoo')
+    }
+
   return (
     <>
       <Box backgroundColor={'#F5F7F9'} w={'100%'} mb={'10px'} p={'16px'} borderRadius={'8px'}>
           <Text fontSize={'20px'}>{type}</Text>
-          <Droppable droppableId={typeidx.toString()}>
+          <Droppable droppableId={typeidx.toString()} onDragEnter={onDragOver}>
             {(provided) => (
               <Flex flexDirection={'column'} {...provided.droppableProps} ref={provided.innerRef}>
                 {data.map((task, idx) => {
@@ -29,7 +33,8 @@ const TaskType = ({type, typeidx, data, callback}) => {
                     </>
                   )
                 })}
-                {provided.placeholder}
+                  {provided.placeholder}
+                  {(!data.length) ? (<Text fontStyle={'italic'} fontWeight={'normal'} fontSize={'12px'}>Fill me with your {type} tasks.</Text>) : ''}
               </Flex>
             )}
           </Droppable>
