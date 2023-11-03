@@ -10,57 +10,68 @@ import {
     Text,
     Textarea, useEditableControls
 } from "@chakra-ui/react";
+import { useAuth } from 'src/auth'
 
 const TaskCard = ({task}) => {
     const [show, setShow] = React.useState(false);
+    const [notesEdit, setNotesEdit] = React.useState(false);
+    const [pomosEdit, setPomosEdit] = React.useState(false);
+    const { currentUser, isAuthenticated } = useAuth()
 
+    const [pomos, setPomos] = React.useState(task.pomodoros);
     const handleToggle = () => setShow(!show);
-    function EditableControls() {
-        const {
-            isEditing,
-            getSubmitButtonProps,
-            getCancelButtonProps,
-            getEditButtonProps,
-        } = useEditableControls()
-
-        return isEditing ? (
-            <ButtonGroup justifyContent='center' size='sm'>
-                <IconButton icon={<p>Open</p>} {...getSubmitButtonProps()} />
-                <IconButton icon={<p>Close</p>} {...getCancelButtonProps()} />
-            </ButtonGroup>
-        ) : (
-            <Flex justifyContent='center'>
-                <IconButton size='sm' icon={<EditIcon />} {...getEditButtonProps()} />
-            </Flex>
-        )
+    const handleNotesToggle = () => setNotesEdit(!notesEdit);
+    const handlePomosToggle = () => setPomosEdit(!pomosEdit);
+    function updatePomos(by) {
+      if (pomos + by < 0)  {
+        return
+      }
+      setPomos(pomos + by)
+      task.pomodoros = pomos
     }
 
-
     return (
-      <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
-          <HStack>
-              <Text>{task.status}</Text>
-              <Text color={'#6284FF'}>{task.title}</Text>
-              <Spacer />
-              <DragIcon />
-              <IconButton bg='' icon={<ChevronIcon />} onClick={handleToggle}  aria-label={'expand'}/>
-          </HStack>
-          <Collapse mt={4} in={show}>
-            <hr style={{backgroundColor: '#E2EAF1', margin: '5px'}}></hr>
-            <Editable defaultValue={task.notes}>
-                <HStack alignItems={'top'}>
-                    <Box w={'100%'}>
-                        <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
-                        <EditablePreview fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'} />
-                        <Input as={EditableInput} fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'}></Input>
-                    </Box>
-                    <Box>
-                        <EditIcon />
-                    </Box>
-                </HStack>
-            </Editable>
-          </Collapse>
-      </Box>
+      <>
+        <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
+            <HStack>
+                <Text>{task.status}</Text>
+                <Text color={'#6284FF'}>{task.title}</Text>
+                <Spacer />
+                <DragIcon />
+                <button onClick={handleToggle}  aria-label={'expand'}>
+                  <ChevronIcon active={show} />
+                </button>
+            </HStack>
+            <Collapse mt={4} in={show}>
+              <hr style={{backgroundColor: '#E2EAF1', margin: '5px'}}></hr>
+              <HStack>
+                <Text fontSize={'12px'} color={'#1F1F1F'}>Number of Pomodoro Timers ({currentUser.pomodoro} mins each)</Text>
+                <Spacer />
+                <button hidden={!pomosEdit} onClick={() => {updatePomos(1)}}>
+                  <PlusIcon />
+                </button>
+                <Text fontSize={'16px'} color={'#FE754D'}>{pomos}</Text>
+                <button hidden={!pomosEdit} onClick={() => {updatePomos(-1)}}>
+                  <MinusIcon />
+                </button>
+                <button onClick={handlePomosToggle} aria-label={'edit pomodoros'}>
+                  <EditIcon active={pomosEdit} />
+                </button>
+              </HStack>
+              <Editable defaultValue={task.notes}>
+                  <HStack alignItems={'top'}>
+                      <Box w={'100%'}>
+                          <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
+                          <Text fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'} contentEditable={notesEdit} fontStyle={notesEdit ? 'italic' : ''}>{task.notes}</Text>
+                      </Box>
+                      <button onClick={handleNotesToggle} aria-label={'notes edit'}>
+                        <EditIcon active={notesEdit}/>
+                      </button>
+                  </HStack>
+              </Editable>
+            </Collapse>
+        </Box>
+      </>
     )
 }
 
@@ -72,23 +83,59 @@ const DragIcon = () => {
     )
 }
 
-const ChevronIcon = () => {
-    return (
+const ChevronIcon = ({active}) => {
+    if (active) {
+      return (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M9.99984 18.3333C14.6022 18.3333 18.3332 14.6024 18.3332 9.99999C18.3332 5.39762 14.6022 1.66666 9.99984 1.66666C5.39746 1.66666 1.6665 5.39762 1.6665 9.99999C1.6665 14.6024 5.39746 18.3333 9.99984 18.3333Z" stroke="#292D32" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M7.05835 8.94998L10 11.8833L12.9417 8.94998" stroke="#292D32" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M9.99984 18.3333C14.6022 18.3333 18.3332 14.6024 18.3332 9.99999C18.3332 5.39762 14.6022 1.66666 9.99984 1.66666C5.39746 1.66666 1.6665 5.39762 1.6665 9.99999C1.6665 14.6024 5.39746 18.3333 9.99984 18.3333Z" stroke="#292D32" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7.05835 8.94998L10 11.8833L12.9417 8.94998" stroke="#292D32" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-    )
+      )
+    } else {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18" fill="none">
+          <path d="M8.99988 16.5C13.142 16.5 16.4999 13.1422 16.4999 9.00003C16.4999 4.85789 13.142 1.50003 8.99988 1.50003C4.85774 1.50003 1.49988 4.85789 1.49988 9.00003C1.49988 13.1422 4.85774 16.5 8.99988 16.5Z" stroke="#292D32" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M8.05493 11.6475L10.6949 8.99998L8.05493 6.35248" stroke="#292D32" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      )
+    }
 }
 
-const EditIcon = () => {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8.84006 2.39997L3.36673 8.1933C3.16006 8.4133 2.96006 8.84664 2.92006 9.14664L2.6734 11.3066C2.58673 12.0866 3.14673 12.62 3.92006 12.4866L6.06673 12.12C6.36673 12.0666 6.78673 11.8466 6.9934 11.62L12.4667 5.82664C13.4134 4.82664 13.8401 3.68664 12.3667 2.2933C10.9001 0.913305 9.78673 1.39997 8.84006 2.39997Z" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M7.92676 3.36667C8.21342 5.20667 9.70676 6.61334 11.5601 6.8" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M2 14.6667H14" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+const EditIcon = ({active}) => {
+    if (active) {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 10 8" fill="none">
+          <path d="M3.55523 7.77551C3.43946 7.89796 3.27545 8 3.13073 8C2.98601 8 2.822 7.89286 2.7014 7.77041L0 4.91327L0.858659 4.0051L3.13555 6.41326L9.15581 0L10 0.923469L3.55523 7.77551Z" fill="#6284FF"/>
         </svg>
-    )
+      )
+    } else {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8.84006 2.39997L3.36673 8.1933C3.16006 8.4133 2.96006 8.84664 2.92006 9.14664L2.6734 11.3066C2.58673 12.0866 3.14673 12.62 3.92006 12.4866L6.06673 12.12C6.36673 12.0666 6.78673 11.8466 6.9934 11.62L12.4667 5.82664C13.4134 4.82664 13.8401 3.68664 12.3667 2.2933C10.9001 0.913305 9.78673 1.39997 8.84006 2.39997Z" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7.92676 3.36667C8.21342 5.20667 9.70676 6.61334 11.5601 6.8" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M2 14.6667H14" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      )
+    }
+}
+
+const PlusIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M6.6665 10H13.3332" stroke="#9FA3A8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10 13.3334V6.66669" stroke="#9FA3A8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M7.49984 18.3334H12.4998C16.6665 18.3334 18.3332 16.6667 18.3332 12.5V7.50002C18.3332 3.33335 16.6665 1.66669 12.4998 1.66669H7.49984C3.33317 1.66669 1.6665 3.33335 1.6665 7.50002V12.5C1.6665 16.6667 3.33317 18.3334 7.49984 18.3334Z" stroke="#9FA3A8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+const MinusIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M6.6665 10H13.3332" stroke="#9FA3A8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M7.49984 18.3334H12.4998C16.6665 18.3334 18.3332 16.6667 18.3332 12.5V7.50002C18.3332 3.33335 16.6665 1.66669 12.4998 1.66669H7.49984C3.33317 1.66669 1.6665 3.33335 1.6665 7.50002V12.5C1.6665 16.6667 3.33317 18.3334 7.49984 18.3334Z" stroke="#9FA3A8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
 }
 
 export default TaskCard

@@ -12,27 +12,87 @@ const tasksData = [
             {
                 "title": "Complete Math Homework",
                 "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "pomodoros": 2
             },
             {
                 "title": "Complete Math Homework",
                 "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "pomodoros": 2
             },
             {
                 "title": "Complete Math Homework",
                 "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "pomodoros": 2
             },
             {
                 "title": "Complete Math Homework",
                 "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "pomodoros": 2
             }
         ]
     },
-    {"type": "Important", "data": []},
-    {"type": "Other", "data": []}
+    {
+      "type": "Important",
+      "data": [
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        },
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        },
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        },
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        }
+      ]
+    },
+    {
+      "type": "Other",
+      "data": [
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        },
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        },
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        },
+        {
+          "title": "Complete Math Homework",
+          "status": "status",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "pomodoros": 2
+        }
+      ]
+    }
 ]
 
 const HomePage = () => {
