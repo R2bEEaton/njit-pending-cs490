@@ -11,22 +11,22 @@ const tasksData = [
         "data": [
             {
                 "title": "Complete Math Homework",
-                "status": "test",
+                "status": "status",
                 "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             },
             {
                 "title": "Complete Math Homework",
-                "status": "test",
+                "status": "status",
                 "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             },
             {
                 "title": "Complete Math Homework",
-                "status": "test",
+                "status": "status",
                 "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             },
             {
                 "title": "Complete Math Homework",
-                "status": "test",
+                "status": "status",
                 "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             }
         ]

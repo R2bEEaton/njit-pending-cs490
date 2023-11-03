@@ -1,22 +1,64 @@
-import {Box, Button, Collapse, HStack, IconButton, Spacer, Text} from "@chakra-ui/react";
+import {
+    Box,
+    Button, ButtonGroup,
+    Collapse,
+    Editable, EditableInput, EditablePreview,
+    EditableTextarea, Flex,
+    HStack,
+    IconButton, Input,
+    Spacer,
+    Text,
+    Textarea, useEditableControls
+} from "@chakra-ui/react";
 
 const TaskCard = ({task}) => {
     const [show, setShow] = React.useState(false);
 
     const handleToggle = () => setShow(!show);
+    function EditableControls() {
+        const {
+            isEditing,
+            getSubmitButtonProps,
+            getCancelButtonProps,
+            getEditButtonProps,
+        } = useEditableControls()
+
+        return isEditing ? (
+            <ButtonGroup justifyContent='center' size='sm'>
+                <IconButton icon={<p>Open</p>} {...getSubmitButtonProps()} />
+                <IconButton icon={<p>Close</p>} {...getCancelButtonProps()} />
+            </ButtonGroup>
+        ) : (
+            <Flex justifyContent='center'>
+                <IconButton size='sm' icon={<EditIcon />} {...getEditButtonProps()} />
+            </Flex>
+        )
+    }
+
 
     return (
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
           <HStack>
-              <Text>Test</Text>
+              <Text>{task.status}</Text>
               <Text color={'#6284FF'}>{task.title}</Text>
               <Spacer />
               <DragIcon />
               <IconButton bg='' icon={<ChevronIcon />} onClick={handleToggle}  aria-label={'expand'}/>
           </HStack>
           <Collapse mt={4} in={show}>
-              <hr style={{backgroundColor: '#E2EAF1', margin: '5px'}}></hr>
-              {task.notes}
+            <hr style={{backgroundColor: '#E2EAF1', margin: '5px'}}></hr>
+            <Editable defaultValue={task.notes}>
+                <HStack alignItems={'top'}>
+                    <Box w={'100%'}>
+                        <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
+                        <EditablePreview fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'} />
+                        <Input as={EditableInput} fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'}></Input>
+                    </Box>
+                    <Box>
+                        <EditIcon />
+                    </Box>
+                </HStack>
+            </Editable>
           </Collapse>
       </Box>
     )
@@ -35,6 +77,16 @@ const ChevronIcon = () => {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M9.99984 18.3333C14.6022 18.3333 18.3332 14.6024 18.3332 9.99999C18.3332 5.39762 14.6022 1.66666 9.99984 1.66666C5.39746 1.66666 1.6665 5.39762 1.6665 9.99999C1.6665 14.6024 5.39746 18.3333 9.99984 18.3333Z" stroke="#292D32" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M7.05835 8.94998L10 11.8833L12.9417 8.94998" stroke="#292D32" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+const EditIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8.84006 2.39997L3.36673 8.1933C3.16006 8.4133 2.96006 8.84664 2.92006 9.14664L2.6734 11.3066C2.58673 12.0866 3.14673 12.62 3.92006 12.4866L6.06673 12.12C6.36673 12.0666 6.78673 11.8466 6.9934 11.62L12.4667 5.82664C13.4134 4.82664 13.8401 3.68664 12.3667 2.2933C10.9001 0.913305 9.78673 1.39997 8.84006 2.39997Z" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M7.92676 3.36667C8.21342 5.20667 9.70676 6.61334 11.5601 6.8" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M2 14.6667H14" stroke="#6284FF" strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     )
 }
