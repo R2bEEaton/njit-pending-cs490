@@ -11,9 +11,10 @@ import {
     Textarea, useEditableControls
 } from "@chakra-ui/react";
 import { useAuth } from 'src/auth'
+import {useEffect} from "react";
 
-const TaskCard = ({task}) => {
-    const [show, setShow] = React.useState(false);
+const TaskCard = ({dragHandle, task, idx, callback}) => {
+    const [show, setShow] = React.useState(task.open);
     const [notesEdit, setNotesEdit] = React.useState(false);
     const [pomosEdit, setPomosEdit] = React.useState(false);
     const { currentUser, isAuthenticated } = useAuth()
@@ -21,23 +22,40 @@ const TaskCard = ({task}) => {
     const [pomos, setPomos] = React.useState(task.pomodoros);
     const handleToggle = () => setShow(!show);
     const handleNotesToggle = () => setNotesEdit(!notesEdit);
-    const handlePomosToggle = () => setPomosEdit(!pomosEdit);
+    const handlePomosToggle = () => {
+      setPomosEdit(!pomosEdit);
+      // If the user confirms a pomodoros edit, send it back to the parent and update the database
+      if (pomosEdit) {
+        task.pomodoros = pomos
+        callback(idx, task, true)
+      }
+    }
+
+    // Update pomodoro state
     function updatePomos(by) {
       if (pomos + by < 0)  {
         return
       }
       setPomos(pomos + by)
-      task.pomodoros = pomos
     }
+
+    // This function should be used to send data pack through the parents
+    // Whenever a variable in deps changes, it will run callback which will update it in the parent
+    useEffect(() => {
+      task.open = show
+      callback(idx, task, false)
+    }, [show])
 
     return (
       <>
-        <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
+        <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} >
             <HStack>
                 <Text>{task.status}</Text>
                 <Text color={'#6284FF'}>{task.title}</Text>
                 <Spacer />
-                <DragIcon />
+                <Box {...dragHandle}>
+                  <DragIcon />
+                </Box>
                 <button onClick={handleToggle}  aria-label={'expand'}>
                   <ChevronIcon active={show} />
                 </button>

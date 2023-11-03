@@ -3,97 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import {Box, Flex, Heading, Text, VStack} from "@chakra-ui/react";
 import TaskBox from "src/components/TaskBox/TaskBox";
-
-// Below is a placeholder for the final version of the tasks datatype
-const tasksData = [
-    {
-        "type": "Top Priority",
-        "data": [
-            {
-                "title": "Complete Math Homework",
-                "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "pomodoros": 2
-            },
-            {
-                "title": "Complete Math Homework",
-                "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "pomodoros": 2
-            },
-            {
-                "title": "Complete Math Homework",
-                "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "pomodoros": 2
-            },
-            {
-                "title": "Complete Math Homework",
-                "status": "status",
-                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "pomodoros": 2
-            }
-        ]
-    },
-    {
-      "type": "Important",
-      "data": [
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        },
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        },
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        },
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        }
-      ]
-    },
-    {
-      "type": "Other",
-      "data": [
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        },
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        },
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        },
-        {
-          "title": "Complete Math Homework",
-          "status": "status",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "pomodoros": 2
-        }
-      ]
-    }
-]
+import {useState} from "react";
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
@@ -117,7 +27,7 @@ const HomePage = () => {
           <Box w={"50%"}>
               <Text fontSize={'30px'} fontWeight={'700'}>Tasks</Text>
               <Box w={'100%'} h={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}>
-                  <TaskBox tasks={tasksData} />
+                  <TaskBox />
               </Box>
           </Box>
           <Box>
