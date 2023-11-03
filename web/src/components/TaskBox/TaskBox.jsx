@@ -140,13 +140,13 @@ const TaskBox = () => {
 
       return (
         <>
-          {tasksData.map(({type, data}, typeidx) => {
-              return (
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <TaskType type={type} typeidx={typeidx} data={data} callback={onUpdate} />
-                </DragDropContext>
-              )
-          })}
+          <DragDropContext onDragEnd={onDragEnd}>
+            {tasksData.map(({type, data}, typeidx) => {
+                return (
+                    <TaskType type={type} typeidx={typeidx} data={data} callback={onUpdate} />
+                )
+            })}
+          </DragDropContext>
         </>
     )
 }

@@ -13,7 +13,7 @@ const TaskType = ({type, typeidx, data, callback}) => {
     <>
       <Box backgroundColor={'#F5F7F9'} w={'100%'} mb={'10px'} p={'16px'} borderRadius={'8px'}>
           <Text fontSize={'20px'}>{type}</Text>
-          <Droppable droppableId={typeidx.toString()} type={"TASKCARD"}>
+          <Droppable droppableId={typeidx.toString()}>
             {(provided) => (
               <Flex flexDirection={'column'} {...provided.droppableProps} ref={provided.innerRef}>
                 {data.map((task, idx) => {
