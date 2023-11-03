@@ -1,14 +1,10 @@
 import {
     Box,
-    Button, ButtonGroup,
     Collapse,
-    Editable, EditableInput, EditablePreview,
-    EditableTextarea, Flex,
+    Editable,
     HStack,
-    IconButton, Input,
     Spacer,
     Text,
-    Textarea, useEditableControls
 } from "@chakra-ui/react";
 import { useAuth } from 'src/auth'
 import {useEffect} from "react";
@@ -17,33 +13,33 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
     const [show, setShow] = React.useState(task.open);
     const [notesEdit, setNotesEdit] = React.useState(false);
     const [pomosEdit, setPomosEdit] = React.useState(false);
-    const { currentUser, isAuthenticated } = useAuth()
+    const { currentUser } = useAuth()
 
     const [pomos, setPomos] = React.useState(task.pomodoros);
     const handleToggle = () => setShow(!show);
     const handleNotesToggle = () => setNotesEdit(!notesEdit);
     const handlePomosToggle = () => {
-      setPomosEdit(!pomosEdit);
-      // If the user confirms a pomodoros edit, send it back to the parent and update the database
-      if (pomosEdit) {
-        task.pomodoros = pomos
-        callback(idx, task, true)
-      }
+        setPomosEdit(!pomosEdit);
+        // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
+        if (pomosEdit) {
+            task.pomodoros = pomos
+            callback(idx, task, true)
+        }
     }
 
-    // Update pomodoro state
     function updatePomos(by) {
-      if (pomos + by < 0)  {
+        // Update pomodoro state
+        if (pomos + by < 0)  {
         return
-      }
-      setPomos(pomos + by)
+        }
+        setPomos(pomos + by)
     }
 
-    // This function should be used to send data pack through the parents
-    // Whenever a variable in deps changes, it will run callback which will update it in the parent
     useEffect(() => {
-      task.open = show
-      callback(idx, task, false)
+        // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
+        // Maybe a card being open is save-worthy?
+        task.open = show
+        callback(idx, task, false)
     }, [show])
 
     return (

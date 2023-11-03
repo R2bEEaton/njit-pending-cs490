@@ -4,8 +4,8 @@ import {Droppable, Draggable} from "react-beautiful-dnd"
 
 const TaskType = ({type, typeidx, data, callback}) => {
   const onUpdate = (idx, task, saveworthy) => {
+    // Receive callback from TaskCard and send along to TaskBox
     data[idx] = task
-    //console.log('typeidx', idx, typeidx, task, data)
     callback(typeidx, data, saveworthy)
   }
 

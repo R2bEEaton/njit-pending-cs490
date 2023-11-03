@@ -1,7 +1,6 @@
 import TaskType from "src/components/TaskType/TaskType";
 import {DragDropContext} from "react-beautiful-dnd";
-import {useEffect, useState} from "react";
-import taskCard from "src/components/TaskCard/TaskCard";
+import {useState} from "react";
 
 // Below is a placeholder for the final version of the tasks datatype
 const finalTasksData = [
@@ -112,9 +111,9 @@ const finalTasksData = [
 
 const TaskBox = () => {
       const [tasksData, updateTasksData] = useState(finalTasksData)
-      const [saveWorthy, updateSaveWorthy] = useState(false)
 
       const onUpdate = (typeidx, data, saveworthy) => {
+        // Receive callback from TaskType
         let tasksDataTemp = [...tasksData]
         tasksDataTemp[typeidx] = {'type': tasksData[typeidx].type, 'data': data}
         updateTasksData(tasksDataTemp)
@@ -122,6 +121,7 @@ const TaskBox = () => {
       }
 
       const onDragEnd = (result) => {
+        // Handle drop of card and swap them
         if (!result.destination) return
         let tasksDataTemp = [...tasksData]
         let taskItself = tasksDataTemp[result.source.droppableId].data[result.source.index]
@@ -132,8 +132,10 @@ const TaskBox = () => {
       }
 
       function updateDatabase(data) {
-        console.log('A saveworthy modification just occurred!')
-          // TODO: Update database
+        console.log('A save-worthy modification just occurred!')
+        console.log(data)
+        // Could probably strip out the "open" property. Not really required for saving.
+        // TODO: Update database
       }
 
       return (
