@@ -9,33 +9,17 @@ const finalTasksData = [
     "data": [
       {
         "id": 1,
-        "title": "Complete Math Homework 9",
+        "title": "Complete Math Homework",
         "status": "status",
         "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "pomodoros": 2,
-        "open": false
+        "open": true
       },
       {
         "id": 2,
-        "title": "Complete Math Homework 10",
+        "title": "Assign Leader for Task 1",
         "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 3,
-        "title": "Complete Math Homework 11",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 4,
-        "title": "Complete Math Homework 12",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "notes": "",
         "pomodoros": 2,
         "open": false
       }
@@ -43,69 +27,11 @@ const finalTasksData = [
   },
   {
     "type": "Important",
-    "data": [
-      {
-        "id": 5,
-        "title": "Complete Math Homework 9",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 6,
-        "title": "Complete Math Homework 11",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 7,
-        "title": "Complete Math Homework 12",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      }
-    ]
+    "data": []
   },
   {
     "type": "Other",
-    "data": [
-      {
-        "id": 8,
-        "title": "Complete Math Homework 9",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 9,
-        "title": "Complete Math Homework 10",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 10,
-        "title": "Complete Math Homework 11",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      },
-      {
-        "id": 11,
-        "title": "Complete Math Homework 12",
-        "status": "status",
-        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "pomodoros": 2,
-        "open": false
-      }
-    ]
+    "data": []
   }
 ]
 
