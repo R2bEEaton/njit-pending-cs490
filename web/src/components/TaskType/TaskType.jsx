@@ -19,23 +19,25 @@ const TaskType = ({type, data, callback}) => {
           <Text fontSize={'20px'}>{type}</Text>
           <Droppable droppableId={type} onDragEnter={onDragOver}>
             {(provided) => (
-              <Flex flexDirection={'column'} {...provided.droppableProps} ref={provided.innerRef}>
-                {data.map((task, idx) => {
-                  return (
-                    <>
-                      <Draggable key={task.position} draggableId={task.position.toString()} index={idx}>
-                        {(provided) => (
-                          <Box {...provided.draggableProps} ref={provided.innerRef} mt={'6px'} mb={'6px'}>
-                            <TaskCard dragHandle={provided.dragHandleProps} task={task} idx={idx} callback={onUpdate} />
-                          </Box>
-                        )}
-                      </Draggable>
-                    </>
-                  )
-                })}
-                  {provided.placeholder}
-                  {(!data.length) ? (<Text fontStyle={'italic'} fontWeight={'normal'} fontSize={'12px'}>Fill me with your {type} tasks.</Text>) : ''}
-              </Flex>
+              <>
+                <Flex flexDirection={'column'} {...provided.droppableProps} ref={provided.innerRef}>
+                  {data.map((task, idx) => {
+                    return (
+                      <>
+                        <Draggable key={type + ' ' + task.id} draggableId={task.id.toString()} index={idx}>
+                          {(provided) => (
+                            <Box {...provided.draggableProps} ref={provided.innerRef} mt={'6px'} mb={'6px'}>
+                              <TaskCard dragHandle={provided.dragHandleProps} task={task} idx={idx} callback={onUpdate} />
+                            </Box>
+                          )}
+                        </Draggable>
+                      </>
+                    )
+                  })}
+                    {provided.placeholder}
+                    {(!data.length) ? (<Text fontStyle={'italic'} fontWeight={'normal'} fontSize={'12px'}>Your {type} tasks.</Text>) : ''}
+                </Flex>
+              </>
             )}
           </Droppable>
       </Box>
