@@ -13,13 +13,14 @@ generator client {
 model User {
   id         Int        @id @default(autoincrement())
   email      String     @unique
-  firstName       String
-  lastName  String
-  pomodoro Int @default(25)
-  shortBreak Int @default(5)
-  longBreak Int @default(10)
+  firstName  String
+  lastName   String
+  pomodoro   Int        @default(25)
+  shortBreak Int        @default(5)
+  longBreak  Int        @default(10)
   picture    String
   identities Identity[]
+  tasks      Tasks[]
 }
 
 model Identity {
@@ -39,3 +40,48 @@ model Identity {
   @@unique([provider, uid])
   @@index(userId)
 }
+
+model Tasks {
+  id       Int      @id
+  date     DateTime @db.Date
+  taskList Json     @default("{\"Top Priority\": [],\"Important\": [],\"Other\": []}")
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int
+}
+
+// The Tasks table expects the date in the format "YYYY-MM-DD"
+//
+// The taskList Json should be structured like the following
+//
+// {
+//   "Top Priority": [
+//     {
+//       "position": Int,
+//       "title": String,
+//       "notes": String,
+//       "status": Enum[NotStarted,InProgress,Completed,RolledOver],
+//       "pomodoros": Int,
+//       "expanded": Boolean
+//     }
+//   ],
+//   "Important": [
+//     {
+//       "position": Int,
+//       "title": String,
+//       "notes": String,
+//       "status": Enum[NotStarted,InProgress,Completed,RolledOver],
+//       "pomodoros": Int,
+//       "expanded": Boolean
+//     }
+//   ],
+//   "Other": [
+//     {
+//       "position": Int,
+//       "title": String,
+//       "notes": String,
+//       "status": Enum[NotStarted,InProgress,Completed,RolledOver],
+//       "pomodoros": Int,
+//       "expanded": Boolean
+//     }
+//   ]
+// }
