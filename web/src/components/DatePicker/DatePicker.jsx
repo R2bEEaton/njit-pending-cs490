@@ -31,8 +31,9 @@ import { toast } from '@redwoodjs/web/toast'
 import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
-
-let currentMonth = new Date().toLocaleString('default', { month: 'long' })
+let currentTime = new Date()
+let currentMonth = currentTime.toLocaleString('default', { month: 'long' })
+let isLeapYear = new Date(currentTime.getFullYear, 1, 29).getDate() === 29
 
 const months = [
   'January',
