@@ -32,7 +32,22 @@ import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
-let month = new Date().toLocaleString('default', { month: 'long' })
+let currentMonth = new Date().toLocaleString('default', { month: 'long' })
+
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
 
 const CircleChevronDownIcon = (props) => (
   <Icon
@@ -86,45 +101,18 @@ const DatePicker = () => {
                   )
                 }
               >
-                {month}
+                {currentMonth}
               </MenuButton>
               <MenuList>
-                <MenuItem color={'black'} onClick={() => (month = 'January')}>
-                  January
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'February')}>
-                  February
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'March')}>
-                  March
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'April')}>
-                  April
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'May')}>
-                  May
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'June')}>
-                  June
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'July')}>
-                  July
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'August')}>
-                  August
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'September')}>
-                  September
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'October')}>
-                  October
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'November')}>
-                  November
-                </MenuItem>
-                <MenuItem color={'black'} onClick={() => (month = 'December')}>
-                  December
-                </MenuItem>
+                {months.map((month) => (
+                  <MenuItem
+                    key={months.id}
+                    color={'black'}
+                    onClick={() => (currentMonth = month)}
+                  >
+                    {month}
+                  </MenuItem>
+                ))}
               </MenuList>
             </>
           )}
