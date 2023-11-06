@@ -42,7 +42,7 @@ model Identity {
 }
 
 model Tasks {
-  id       Int      @id
+  id       Int      @id @default(autoincrement())
   date     DateTime @db.Date
   taskList Json     @default("{\"Top Priority\": [],\"Important\": [],\"Other\": []}")
   user     User     @relation(fields: [userId], references: [id])
@@ -56,32 +56,32 @@ model Tasks {
 // {
 //   "Top Priority": [
 //     {
-//       "position": Int,
-//       "title": String,
-//       "notes": String,
-//       "status": Enum[NotStarted,InProgress,Completed,RolledOver],
-//       "pomodoros": Int,
-//       "expanded": Boolean
+//       "position": "Int",
+//       "title": "String",
+//       "notes": "String",
+//       "status": ["NotStarted","InProgress","Completed","RolledOver"],
+//       "pomodoros": "Int",
+//       "expanded": "Boolean"
 //     }
 //   ],
 //   "Important": [
 //     {
-//       "position": Int,
-//       "title": String,
-//       "notes": String,
-//       "status": Enum[NotStarted,InProgress,Completed,RolledOver],
-//       "pomodoros": Int,
-//       "expanded": Boolean
+//       "position": "Int",
+//       "title": "String",
+//       "notes": "String",
+//       "status": ["NotStarted","InProgress","Completed","RolledOver"],
+//       "pomodoros": "Int",
+//       "expanded": "Boolean"
 //     }
 //   ],
 //   "Other": [
 //     {
-//       "position": Int,
-//       "title": String,
-//       "notes": String,
-//       "status": Enum[NotStarted,InProgress,Completed,RolledOver],
-//       "pomodoros": Int,
-//       "expanded": Boolean
+//       "position": "Int",
+//       "title": "String",
+//       "notes": "String",
+//       "status": ["NotStarted","InProgress","Completed","RolledOver"],
+//       "pomodoros": "Int",
+//       "expanded": "Boolean"
 //     }
 //   ]
 // }
