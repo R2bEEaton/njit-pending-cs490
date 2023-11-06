@@ -10,7 +10,7 @@ import { useAuth } from 'src/auth'
 import {useEffect} from "react";
 
 const TaskCard = ({dragHandle, task, idx, callback}) => {
-    const [show, setShow] = React.useState(task.open);
+    const [show, setShow] = React.useState(task.expanded);
     const [notesEdit, setNotesEdit] = React.useState(false);
     const [pomosEdit, setPomosEdit] = React.useState(false);
     const { currentUser } = useAuth()
@@ -38,7 +38,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
     useEffect(() => {
         // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
         // Maybe a card being open is save-worthy?
-        task.open = show
+        task.expanded = show
         callback(idx, task, false)
     }, [show])
 
