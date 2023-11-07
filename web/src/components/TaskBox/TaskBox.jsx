@@ -11,7 +11,7 @@ const finalTasksData = {
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "status": "NotStarted",
       "pomodoros": 2,
-      "expanded": true
+      "expanded": false
     },
     {
       "id": 0,
@@ -19,7 +19,7 @@ const finalTasksData = {
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "status": "NotStarted",
       "pomodoros": 3,
-      "expanded": true
+      "expanded": false
     }
   ],
   "Important": [
@@ -29,7 +29,7 @@ const finalTasksData = {
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "status": "NotStarted",
       "pomodoros": 4,
-      "expanded": true
+      "expanded": false
     },
   ],
   "Other": []
