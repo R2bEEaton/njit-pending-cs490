@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -32,8 +34,8 @@ import { toast } from '@redwoodjs/web/toast'
 import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+
 let currentTime = new Date()
-let currentMonth = currentTime.toLocaleString('default', { month: 'long' })
 let isLeapYear = new Date(currentTime.getFullYear, 1, 29).getDate() === 29
 
 const months = [
@@ -72,6 +74,27 @@ const ArrowCircleLeftIcon = (props) => (
   </Icon>
 )
 
+const ArrowCircleRightIcon = (props) => (
+  <Icon width="23" height="22" viewBox="0 0 23 22" fill="none" {...props}>
+    <path
+      d="M11.5001 1.83335C6.43747 1.83335 2.33342 5.93741 2.33342 11C2.33342 16.0626 6.43747 20.1667 11.5001 20.1667C16.5627 20.1667 20.6667 16.0626 20.6667 11C20.6667 5.93741 16.5627 1.83335 11.5001 1.83335Z"
+      fill="#6284FF"
+      stroke="#6284FF"
+      strokeWidth="1.5"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M10.3449 7.7642L13.5715 11L10.3449 14.2359"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Icon>
+)
+
 const CircleChevronDownIcon = (props) => (
   <Icon
     with={'20'}
@@ -99,6 +122,9 @@ const CircleChevronDownIcon = (props) => (
 )
 
 const DatePicker = () => {
+  const [month, setMonth] = useState(
+    currentTime.toLocaleString('default', { month: 'long' })
+  )
   return (
     <Wrap
       spacing={'10px'}
@@ -113,7 +139,7 @@ const DatePicker = () => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() => (currentMonth = 'January')}
+          onClick={() => setMonth(months[months.indexOf(month) - 1])}
         ></IconButton>
       </WrapItem>
       <WrapItem>
@@ -133,14 +159,14 @@ const DatePicker = () => {
                   )
                 }
               >
-                {currentMonth}
+                {month}
               </MenuButton>
               <MenuList>
                 {months.map((month) => (
                   <MenuItem
                     key={months.id}
                     color={'black'}
-                    onClick={() => (currentMonth = month)}
+                    onClick={() => setMonth(month)}
                   >
                     {month}
                   </MenuItem>
@@ -150,6 +176,12 @@ const DatePicker = () => {
           )}
         </Menu>
       </WrapItem>
+      <IconButton
+        icon={<ArrowCircleRightIcon />}
+        fill={'none'}
+        outlineColor={'#6284FF'}
+        onClick={() => setMonth(months[months.indexOf(month) + 1])}
+      ></IconButton>
     </Wrap>
   )
 }
