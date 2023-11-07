@@ -39,7 +39,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
         // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
         // Maybe a card being open is save-worthy?
         task.expanded = show
-        callback(idx, task, false)
+        callback(idx, task, true)
     }, [show])
 
     return (
