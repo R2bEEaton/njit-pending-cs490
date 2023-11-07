@@ -22,6 +22,7 @@ import {
   WrapItem,
   Icon,
   createIcon,
+  IconButton,
 } from '@chakra-ui/react'
 
 import { useForm } from '@redwoodjs/forms'
@@ -100,7 +101,7 @@ const CircleChevronDownIcon = (props) => (
 const DatePicker = () => {
   return (
     <Wrap
-      spacing={'30px'}
+      spacing={'10px'}
       h={'60px'}
       bg={'#6284FF26'}
       borderRadius={'md'}
@@ -108,7 +109,14 @@ const DatePicker = () => {
       align={'center'}
     >
       <WrapItem>
-        <ArrowCircleLeftIcon />
+        <IconButton
+          icon={<ArrowCircleLeftIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() => (currentMonth = 'January')}
+        ></IconButton>
+      </WrapItem>
+      <WrapItem>
         <Menu size={'md'}>
           {({ isOpen }) => (
             <>
@@ -116,6 +124,7 @@ const DatePicker = () => {
                 isActive={isOpen}
                 as={Button}
                 outlineColor={'#6284FF'}
+                fill={'none'}
                 rightIcon={
                   isOpen ? (
                     <ChevronUpIcon color={'#6284FF'} />
