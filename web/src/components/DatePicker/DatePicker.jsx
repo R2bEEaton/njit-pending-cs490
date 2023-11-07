@@ -139,7 +139,13 @@ const DatePicker = () => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() => setMonth(months[months.indexOf(month) - 1])}
+          onClick={() =>
+            setMonth(
+              months[
+                (months.indexOf(month) - 1 + months.length) % months.length
+              ]
+            )
+          }
         ></IconButton>
       </WrapItem>
       <WrapItem>
@@ -180,7 +186,9 @@ const DatePicker = () => {
         icon={<ArrowCircleRightIcon />}
         fill={'none'}
         outlineColor={'#6284FF'}
-        onClick={() => setMonth(months[months.indexOf(month) + 1])}
+        onClick={() =>
+          setMonth(months[(months.indexOf(month) + 1) % months.length])
+        }
       ></IconButton>
     </Wrap>
   )
