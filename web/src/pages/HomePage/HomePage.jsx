@@ -1,9 +1,8 @@
-import {Link, Redirect, routes} from '@redwoodjs/router'
+import {Link, routes} from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
-import {Box, Flex, Heading, Text, VStack} from "@chakra-ui/react";
+import {Box, Flex, Text} from "@chakra-ui/react";
 import TaskBox from "src/components/TaskBox/TaskBox";
-import {useState} from "react";
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
@@ -26,7 +25,7 @@ const HomePage = () => {
       <Flex fontFamily={'DM Sans'} gap={'5%'}>
           <Box w={"50%"}>
               <Text fontSize={'30px'} fontWeight={'700'}>Tasks</Text>
-              <Box w={'100%'} h={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}>
+              <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}>
                   <TaskBox />
               </Box>
           </Box>
