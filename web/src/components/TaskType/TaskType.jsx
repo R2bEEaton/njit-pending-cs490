@@ -24,7 +24,7 @@ const TaskType = ({type, data, callback}) => {
                   {data.map((task, idx) => {
                     return (
                       <>
-                        <Draggable key={type + ' ' + task.id} draggableId={task.id.toString()} index={idx}>
+                        <Draggable key={task.id} draggableId={task.id.toString()} index={idx}>
                           {(provided) => (
                             <Box {...provided.draggableProps} ref={provided.innerRef} mt={'6px'} mb={'6px'}>
                               <TaskCard dragHandle={provided.dragHandleProps} task={task} idx={idx} callback={onUpdate} />

@@ -61,11 +61,11 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
               <HStack>
                 <Text fontSize={'12px'} color={'#1F1F1F'}>Number of Pomodoro Timers ({currentUser.pomodoro} mins each)</Text>
                 <Spacer />
-                <button hidden={!pomosEdit} onClick={() => {updatePomos(1)}}>
+                <button aria-label="increment pomodoros" hidden={!pomosEdit} onClick={() => {updatePomos(1)}}>
                   <PlusIcon />
                 </button>
-                <Text fontSize={'16px'} color={'#FE754D'}>{pomos}</Text>
-                <button hidden={!pomosEdit} onClick={() => {updatePomos(-1)}}>
+                <Text fontSize={'16px'} color={'#FE754D'} aria-label={'pomodoros'}>{pomos}</Text>
+                <button aria-label="decrement pomodoros" hidden={!pomosEdit} onClick={() => {updatePomos(-1)}}>
                   <MinusIcon />
                 </button>
                 <button onClick={handlePomosToggle} aria-label={'edit pomodoros'}>
@@ -74,7 +74,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
               </HStack>
               <Editable defaultValue={task.notes}>
                   <HStack alignItems={'top'}>
-                      <Box w={'100%'}>
+                      <Box>
                           <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
                           <Text fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'} contentEditable={notesEdit} fontStyle={notesEdit ? 'italic' : ''}>{task.notes}</Text>
                       </Box>
