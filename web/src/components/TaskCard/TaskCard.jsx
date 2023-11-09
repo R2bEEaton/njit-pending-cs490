@@ -59,7 +59,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
             <Collapse mt={4} in={show}>
               <hr style={{backgroundColor: '#E2EAF1', margin: '5px'}}></hr>
               <HStack>
-                <Text fontSize={'12px'} color={'#1F1F1F'}>Number of Pomodoro Timers ({currentUser.pomodoro} mins each)</Text>
+                <Text fontSize={'12px'} color={'#1F1F1F'}>Number of Pomodoro Timers ({currentUser?.pomodoro} mins each)</Text>
                 <Spacer />
                 <button aria-label="increment pomodoros" hidden={!pomosEdit} onClick={() => {updatePomos(1)}}>
                   <PlusIcon />
