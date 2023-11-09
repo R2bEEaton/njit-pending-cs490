@@ -1,6 +1,5 @@
 import { db } from 'src/lib/db'
 import CryptoJS from 'crypto-js'
-import {logger} from "src/lib/logger";
 
 export const handler = async (event, _context) => {
   switch (event.path) {
@@ -84,11 +83,21 @@ const getUser = async ({ providerUser, accessToken, refreshToken, expiresIn, sco
   let now = new Date();
   let refreshExpiry = new Date(now.getTime() + expiresIn * 1000);
 
+  const accessTokenEnc = CryptoJS.AES.encrypt(
+    accessToken,
+    process.env.SESSION_SECRET
+  ).toString()
+
+  const refreshTokenEnc = CryptoJS.AES.encrypt(
+    refreshToken,
+    process.env.SESSION_SECRET
+  ).toString()
+
   await db.identity.update({
     where: { id: identity.id },
     data: {
-      accessToken,
-      refreshToken,
+      accessToken: accessTokenEnc,
+      refreshToken: refreshTokenEnc,
       refreshExpiry,
       scope,
       lastLoginAt: new Date()
