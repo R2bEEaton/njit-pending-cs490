@@ -65,7 +65,7 @@ const DatePicker = () => {
     year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
   ).daysInMonth()
-  let days = [...Array(numDays).keys()].map((x) => ++x)
+  let days = Array.from({ length: numDays }, (_, i) => i + 1)
   return (
     <Wrap
       spacing={'30px'}
@@ -140,11 +140,7 @@ const DatePicker = () => {
             fill={'none'}
             outlineColor={'#6284FF'}
             onClick={() =>
-              setMonth(
-                months[
-                  (months.indexOf(month) - 1 + months.length) % months.length
-                ]
-              )
+              setDay(days[(days.indexOf(day) - 1 + days.length) % days.length])
             }
           ></IconButton>
           <Menu size={'md'}>
@@ -185,9 +181,7 @@ const DatePicker = () => {
             icon={<ArrowCircleRightIcon />}
             fill={'none'}
             outlineColor={'#6284FF'}
-            onClick={() =>
-              setMonth(months[(months.indexOf(month) + 1) % months.length])
-            }
+            onClick={() => setDay(days[(days.indexOf(day) + 1) % days.length])}
           ></IconButton>
         </HStack>
       </WrapItem>
