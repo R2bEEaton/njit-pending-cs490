@@ -53,12 +53,16 @@ const months = [
   'December',
 ]
 
-const days = []
+const days = [Array.from({ length: 31 }, (_, i) => i + 1)]
+console.log('days:' + days)
+let daysAdjusted = []
+daysAdjusted = days
 
 const DatePicker = () => {
   const [month, setMonth] = useState(
     currentTime.toLocaleString('default', { month: 'long' })
   )
+  const [day, setDay] = useState(currentTime.getDay())
   return (
     <Wrap
       spacing={'30px'}
@@ -156,16 +160,26 @@ const DatePicker = () => {
                     )
                   }
                 >
-                  {month}
+                  {day}
                 </MenuButton>
+
                 <MenuList>
-                  {months.map((month) => (
+                  {console.log('days adjusted: ' + daysAdjusted)}
+                  {month === 'February'
+                    ? (daysAdjusted.pop(),
+                      daysAdjusted.pop(),
+                      !isLeapYear ? daysAdjusted.pop() : '')
+                    : months.indexOf(month) % 2 != 0
+                    ? daysAdjusted.pop()
+                    : ''}
+                  {console.log('days adjusted: ' + daysAdjusted)}
+                  {daysAdjusted.map((day) => (
                     <MenuItem
-                      key={months.id}
+                      key={daysAdjusted.id}
                       color={'black'}
-                      onClick={() => setMonth(month)}
+                      onClick={() => setDay(day)}
                     >
-                      {month}
+                      {day}
                     </MenuItem>
                   ))}
                 </MenuList>
