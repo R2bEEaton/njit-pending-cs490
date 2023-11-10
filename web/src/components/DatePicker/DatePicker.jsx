@@ -53,6 +53,8 @@ const months = [
   'December',
 ]
 
+const days = []
+
 const ArrowCircleLeftIcon = (props) => (
   <Icon width="23" height="22" viewBox="0 0 23 22" fill="none" {...props}>
     <path
@@ -127,13 +129,71 @@ const DatePicker = () => {
   )
   return (
     <Wrap
-      spacing={'10px'}
+      spacing={'30px'}
       h={'60px'}
       bg={'#6284FF26'}
       borderRadius={'md'}
       justify={'center'}
       align={'center'}
     >
+      <WrapItem>
+        <HStack spacing={'3'}>
+          <IconButton
+            icon={<ArrowCircleLeftIcon />}
+            fill={'none'}
+            outlineColor={'#6284FF'}
+            onClick={() =>
+              setMonth(
+                months[
+                  (months.indexOf(month) - 1 + months.length) % months.length
+                ]
+              )
+            }
+          ></IconButton>
+          <Menu size={'md'}>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={Button}
+                  outlineColor={'#6284FF'}
+                  fill={'none'}
+                  rightIcon={
+                    isOpen ? (
+                      <ChevronUpIcon color={'#6284FF'} />
+                    ) : (
+                      <CircleChevronDownIcon />
+                    )
+                  }
+                >
+                  {month}
+                </MenuButton>
+                <MenuList>
+                  {months.map((month) => (
+                    <MenuItem
+                      key={months.id}
+                      color={'black'}
+                      onClick={() => setMonth(month)}
+                    >
+                      {month}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </>
+            )}
+          </Menu>
+
+          <IconButton
+            icon={<ArrowCircleRightIcon />}
+            fill={'none'}
+            outlineColor={'#6284FF'}
+            onClick={() =>
+              setMonth(months[(months.indexOf(month) + 1) % months.length])
+            }
+          ></IconButton>
+        </HStack>
+      </WrapItem>
+
       <WrapItem>
         <HStack spacing={'3'}>
           <IconButton
