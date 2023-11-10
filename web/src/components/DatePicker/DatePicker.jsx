@@ -26,6 +26,8 @@ import {
   createIcon,
   IconButton,
 } from '@chakra-ui/react'
+import moment from 'moment'
+import { mockComponent } from 'react-dom/test-utils'
 
 import { useForm } from '@redwoodjs/forms'
 import { routes } from '@redwoodjs/router'
@@ -53,16 +55,16 @@ const months = [
   'December',
 ]
 
-const days = [Array.from({ length: 31 }, (_, i) => i + 1)]
-console.log('days:' + days)
-let daysAdjusted = []
-daysAdjusted = days
-
 const DatePicker = () => {
   const [month, setMonth] = useState(
     currentTime.toLocaleString('default', { month: 'long' })
   )
   const [day, setDay] = useState(currentTime.getDay())
+  let numDays = moment(
+    '2023-' + (months.indexOf(month) + 1),
+    'YYYY-MM'
+  ).daysInMonth()
+  let days = [Array.from({ length: numDays }, (_, i) => i + 1)]
   return (
     <Wrap
       spacing={'30px'}
@@ -164,18 +166,9 @@ const DatePicker = () => {
                 </MenuButton>
 
                 <MenuList>
-                  {console.log('days adjusted: ' + daysAdjusted)}
-                  {month === 'February'
-                    ? (daysAdjusted.pop(),
-                      daysAdjusted.pop(),
-                      !isLeapYear ? daysAdjusted.pop() : '')
-                    : months.indexOf(month) % 2 != 0
-                    ? daysAdjusted.pop()
-                    : ''}
-                  {console.log('days adjusted: ' + daysAdjusted)}
-                  {daysAdjusted.map((day) => (
+                  {days.map((day) => (
                     <MenuItem
-                      key={daysAdjusted.id}
+                      key={days.id}
                       color={'black'}
                       onClick={() => setDay(day)}
                     >
