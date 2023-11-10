@@ -59,12 +59,13 @@ const DatePicker = () => {
   const [month, setMonth] = useState(
     currentTime.toLocaleString('default', { month: 'long' })
   )
-  const [day, setDay] = useState(currentTime.getDay())
+
+  const [day, setDay] = useState(currentTime.getDate())
   let numDays = moment(
     year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
   ).daysInMonth()
-  let days = [Array.from({ length: numDays }, (_, i) => i + 1)]
+  let days = [...Array(numDays).keys()].map((x) => ++x)
   return (
     <Wrap
       spacing={'30px'}
@@ -109,7 +110,7 @@ const DatePicker = () => {
                 <MenuList>
                   {months.map((month) => (
                     <MenuItem
-                      key={months.id}
+                      key={month}
                       color={'black'}
                       onClick={() => setMonth(month)}
                     >
@@ -168,7 +169,7 @@ const DatePicker = () => {
                 <MenuList>
                   {days.map((day) => (
                     <MenuItem
-                      key={days.id}
+                      key={day}
                       color={'black'}
                       onClick={() => setDay(day)}
                     >
