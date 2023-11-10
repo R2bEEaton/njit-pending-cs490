@@ -58,8 +58,8 @@ const TaskBox = () => {
 
         // Easter egg shhh
         let dndEasterEggTemp = [...dndEasterEgg]
-        let swappedIds = [tasksDataTemp[result.source.droppableId][result.source.index].id,
-          tasksDataTemp[result.destination.droppableId][result.destination.index].id].sort()
+        let swappedIds = [tasksDataTemp[result.source.droppableId][result.source.index]?.id,
+          tasksDataTemp[result.destination.droppableId][result.destination.index]?.id].sort()
         if (dndEasterEggTemp[dndEasterEggTemp.length - 1] !== JSON.stringify(swappedIds)) dndEasterEggTemp = [];
         dndEasterEggTemp.push(JSON.stringify(swappedIds))
         updateDndEasterEgg(dndEasterEggTemp)
