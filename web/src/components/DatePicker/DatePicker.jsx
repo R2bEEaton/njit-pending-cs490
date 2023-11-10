@@ -38,7 +38,6 @@ import { Toaster } from '@redwoodjs/web/toast'
 import { useAuth } from 'src/auth'
 
 let currentTime = new Date()
-let year = currentTime.getFullYear()
 
 const months = [
   'January',
@@ -61,6 +60,7 @@ const DatePicker = () => {
   )
 
   const [day, setDay] = useState(currentTime.getDate())
+  const [year, setYear] = currentTime.getFullYear()
   let numDays = moment(
     year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
