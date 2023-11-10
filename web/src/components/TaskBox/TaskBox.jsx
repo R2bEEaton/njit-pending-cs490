@@ -1,6 +1,7 @@
 import TaskType from "src/components/TaskType/TaskType";
 import {DragDropContext} from "react-beautiful-dnd";
 import {useEffect, useState} from "react";
+import {toast, Toaster} from "@redwoodjs/web/dist/toast";
 
 // Below is a placeholder for the final version of the tasks datatype
 const finalTasksData = {
@@ -37,6 +38,8 @@ const finalTasksData = {
 
 const TaskBox = () => {
       const [tasksData, updateTasksData] = useState(finalTasksData)
+      // Easter egg stuff - dw about it
+      const [dndEasterEgg, updateDndEasterEgg] = useState([]);
 
       const onUpdate = (typeidx, data, saveworthy) => {
         // Receive callback from TaskType
@@ -52,6 +55,16 @@ const TaskBox = () => {
         console.log(result)
         let tasksDataTemp = {...tasksData}
         let taskItself = tasksDataTemp[result.source.droppableId][result.source.index]
+
+        // Easter egg shhh
+        let dndEasterEggTemp = [...dndEasterEgg]
+        let swappedIds = [tasksDataTemp[result.source.droppableId][result.source.index].id,
+          tasksDataTemp[result.destination.droppableId][result.destination.index].id].sort()
+        if (dndEasterEggTemp[dndEasterEggTemp.length - 1] !== JSON.stringify(swappedIds)) dndEasterEggTemp = [];
+        dndEasterEggTemp.push(JSON.stringify(swappedIds))
+        updateDndEasterEgg(dndEasterEggTemp)
+        if (dndEasterEggTemp.length % 3 === 0) toast.loading(`Ind${''.padStart(dndEasterEggTemp.length / 3, 'e')}cisive..?`, {duration: 5000})
+        // End of easter egg shhh
 
         // Remove task from source list and add to destination list
         tasksDataTemp[result.source.droppableId].splice(result.source.index, 1)
@@ -87,6 +100,7 @@ const TaskBox = () => {
 
       return (
         <>
+          <Toaster />
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.keys(tasksData).map((type, index) => {
               return (
