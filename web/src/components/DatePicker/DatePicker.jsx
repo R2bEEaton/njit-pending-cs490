@@ -38,7 +38,7 @@ import { Toaster } from '@redwoodjs/web/toast'
 import { useAuth } from 'src/auth'
 
 let currentTime = new Date()
-let isLeapYear = new Date(currentTime.getFullYear, 1, 29).getDate() === 29
+let year = currentTime.getFullYear()
 
 const months = [
   'January',
@@ -61,7 +61,7 @@ const DatePicker = () => {
   )
   const [day, setDay] = useState(currentTime.getDay())
   let numDays = moment(
-    '2023-' + (months.indexOf(month) + 1),
+    year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
   ).daysInMonth()
   let days = [Array.from({ length: numDays }, (_, i) => i + 1)]
