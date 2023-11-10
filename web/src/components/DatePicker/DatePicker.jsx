@@ -135,61 +135,62 @@ const DatePicker = () => {
       align={'center'}
     >
       <WrapItem>
-        <IconButton
-          icon={<ArrowCircleLeftIcon />}
-          fill={'none'}
-          outlineColor={'#6284FF'}
-          onClick={() =>
-            setMonth(
-              months[
-                (months.indexOf(month) - 1 + months.length) % months.length
-              ]
-            )
-          }
-        ></IconButton>
+        <HStack spacing={'3'}>
+          <IconButton
+            icon={<ArrowCircleLeftIcon />}
+            fill={'none'}
+            outlineColor={'#6284FF'}
+            onClick={() =>
+              setMonth(
+                months[
+                  (months.indexOf(month) - 1 + months.length) % months.length
+                ]
+              )
+            }
+          ></IconButton>
+          <Menu size={'md'}>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={Button}
+                  outlineColor={'#6284FF'}
+                  fill={'none'}
+                  rightIcon={
+                    isOpen ? (
+                      <ChevronUpIcon color={'#6284FF'} />
+                    ) : (
+                      <CircleChevronDownIcon />
+                    )
+                  }
+                >
+                  {month}
+                </MenuButton>
+                <MenuList>
+                  {months.map((month) => (
+                    <MenuItem
+                      key={months.id}
+                      color={'black'}
+                      onClick={() => setMonth(month)}
+                    >
+                      {month}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </>
+            )}
+          </Menu>
+
+          <IconButton
+            icon={<ArrowCircleRightIcon />}
+            fill={'none'}
+            outlineColor={'#6284FF'}
+            onClick={() =>
+              setMonth(months[(months.indexOf(month) + 1) % months.length])
+            }
+          ></IconButton>
+        </HStack>
       </WrapItem>
-      <WrapItem>
-        <Menu size={'md'}>
-          {({ isOpen }) => (
-            <>
-              <MenuButton
-                isActive={isOpen}
-                as={Button}
-                outlineColor={'#6284FF'}
-                fill={'none'}
-                rightIcon={
-                  isOpen ? (
-                    <ChevronUpIcon color={'#6284FF'} />
-                  ) : (
-                    <CircleChevronDownIcon />
-                  )
-                }
-              >
-                {month}
-              </MenuButton>
-              <MenuList>
-                {months.map((month) => (
-                  <MenuItem
-                    key={months.id}
-                    color={'black'}
-                    onClick={() => setMonth(month)}
-                  >
-                    {month}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </>
-          )}
-        </Menu>
-      </WrapItem>
-      <IconButton
-        icon={<ArrowCircleRightIcon />}
-        fill={'none'}
-        outlineColor={'#6284FF'}
-        onClick={() =>
-          setMonth(months[(months.indexOf(month) + 1) % months.length])
-        }
-      ></IconButton>
     </Wrap>
   )
 }
