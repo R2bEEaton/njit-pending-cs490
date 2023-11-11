@@ -31,6 +31,16 @@ const MainLayout = ({ children }) => {
     location.reload()
   }
 
+
+  // Get the route name from the location object
+  const routeName = location.pathname.substring(1); // Remove the leading '/'
+
+  // Conditionally set the title based on the route name
+  let title = 'Home';
+  if (routeName === 'settings') {
+    title = 'Profile';
+  }
+
   return (
 
     <ChakraProvider theme={theme}>
@@ -52,7 +62,9 @@ const MainLayout = ({ children }) => {
         <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
           <Box w={"100%"} h="4vh" minHeight={"60px"} boxShadow={"2px 5px 50px 0px rgba(32, 44, 85, 0.08)"}>
             <Flex alignItems={'center'} h={'100%'} ml={'15px'} mr={'15px'}>
-              <Text fontFamily={'DM Sans'} fontSize={'30px'}>Profile</Text>
+              <Text fontFamily={'DM Sans'} fontSize={'30px'}>
+                {title}
+              </Text>
               <UserInfo currentUser={currentUser} />
             </Flex>
           </Box>
