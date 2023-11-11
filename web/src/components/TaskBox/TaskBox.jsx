@@ -94,6 +94,7 @@ const TaskBox = () => {
       function updateDatabase(data) {
         console.log('A save-worthy modification just occurred!')
         console.log(JSON.stringify(data))
+        // Could probably strip out the "open" property. Not really required for saving.
         // TODO: Update database
       }
 

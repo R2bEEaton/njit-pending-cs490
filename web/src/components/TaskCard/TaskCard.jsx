@@ -78,7 +78,6 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
                           <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
                           <Text fontSize={'14px'} color={'#1F1F1F'} w={'100%'} resize={'none'} contentEditable={notesEdit} fontStyle={notesEdit ? 'italic' : ''}>{task.notes}</Text>
                       </Box>
-                      <Spacer />
                       <button onClick={handleNotesToggle} aria-label={'notes edit'}>
                         <EditIcon active={notesEdit}/>
                       </button>
