@@ -54,6 +54,8 @@ const months = [
   'December',
 ]
 
+let SelectedDate = {}
+
 const DatePicker = () => {
   const [month, setMonth] = useState(
     currentTime.toLocaleString('default', { month: 'long' })
@@ -61,11 +63,18 @@ const DatePicker = () => {
 
   const [day, setDay] = useState(currentTime.getDate())
   const [year, setYear] = useState(currentTime.getFullYear())
+
+  SelectedDate.month = month
+  SelectedDate.day = day
+  SelectedDate.year = year
+  console.log(SelectedDate.month)
   let numDays = moment(
     year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
   ).daysInMonth()
   let days = Array.from({ length: numDays }, (_, i) => i + 1)
+  const years = Array.from({ length: 5 }, (_, i) => i + year)
+  console.log('years: ' + years)
   return (
     <Wrap
       spacing={'30px'}
@@ -173,7 +182,62 @@ const DatePicker = () => {
             icon={<ArrowCircleRightIcon />}
             fill={'none'}
             outlineColor={'#6284FF'}
-            onClick={() => setDay(days[(days.indexOf(day) + 1) % days.length])}
+            onClick={() =>
+              setYear(years[(years.indexOf(year) + 1) % years.length])
+            }
+          ></IconButton>
+        </HStack>
+      </WrapItem>
+
+      <WrapItem>
+        <HStack spacing={'3'}>
+          <IconButton
+            icon={<ArrowCircleLeftIcon />}
+            fill={'none'}
+            outlineColor={'#6284FF'}
+            onClick={() =>
+              setYear(
+                years[(years.indexOf(year) - 1 + years.length) % years.length]
+              )
+            }
+          ></IconButton>
+          <Menu size={'md'}>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={Button}
+                  outlineColor={'#6284FF'}
+                  fill={'none'}
+                  rightIcon={
+                    isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                  }
+                >
+                  {year}
+                </MenuButton>
+
+                <MenuList>
+                  {years.map((year) => (
+                    <MenuItem
+                      key={year}
+                      color={'black'}
+                      onClick={() => setYear(year)}
+                    >
+                      {year}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </>
+            )}
+          </Menu>
+
+          <IconButton
+            icon={<ArrowCircleRightIcon />}
+            fill={'none'}
+            outlineColor={'#6284FF'}
+            onClick={() =>
+              setYear(years[(years.indexOf(year) + 1) % years.length])
+            }
           ></IconButton>
         </HStack>
       </WrapItem>
@@ -182,6 +246,11 @@ const DatePicker = () => {
 }
 
 export default DatePicker
+export function getDate() {
+  let date =
+    SelectedDate.month + '/' + SelectedDate.day + '/' + SelectedDate.year
+  return date
+}
 
 const ArrowCircleLeftIcon = (props) => (
   <Icon width="23" height="22" viewBox="0 0 23 22" fill="none" {...props}>
