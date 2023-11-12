@@ -76,172 +76,166 @@ const DatePicker = () => {
   const years = Array.from({ length: 5 }, (_, i) => i + year)
   console.log('years: ' + years)
   return (
-    <Wrap
-      spacing={'30px'}
+    <Flex
       h={'60px'}
       bg={'#6284FF26'}
       borderRadius={'md'}
       justify={'center'}
+      gap={'30'}
       align={'center'}
     >
-      <WrapItem>
-        <HStack spacing={'3'}>
-          <IconButton
-            icon={<ArrowCircleLeftIcon />}
-            fill={'none'}
-            outlineColor={'#6284FF'}
-            onClick={() =>
-              setMonth(
-                months[
-                  (months.indexOf(month) - 1 + months.length) % months.length
-                ]
-              )
-            }
-          ></IconButton>
-          <Menu size={'md'}>
-            {({ isOpen }) => (
-              <>
-                <MenuButton
-                  isActive={isOpen}
-                  as={Button}
-                  outlineColor={'#6284FF'}
-                  fill={'none'}
-                  rightIcon={
-                    isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
-                  }
-                >
-                  {month}
-                </MenuButton>
-                <MenuList>
-                  {months.map((month) => (
-                    <MenuItem
-                      key={month}
-                      color={'black'}
-                      onClick={() => setMonth(month)}
-                    >
-                      {month}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </>
-            )}
-          </Menu>
+      <HStack spacing={'3'}>
+        <IconButton
+          icon={<ArrowCircleLeftIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() =>
+            setMonth(
+              months[
+                (months.indexOf(month) - 1 + months.length) % months.length
+              ]
+            )
+          }
+        ></IconButton>
+        <Menu size={'md'}>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                isActive={isOpen}
+                as={Button}
+                outlineColor={'#6284FF'}
+                fill={'none'}
+                rightIcon={
+                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                }
+              >
+                {month}
+              </MenuButton>
+              <MenuList>
+                {months.map((month) => (
+                  <MenuItem
+                    key={month}
+                    color={'black'}
+                    onClick={() => setMonth(month)}
+                  >
+                    {month}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </>
+          )}
+        </Menu>
 
-          <IconButton
-            icon={<ArrowCircleRightIcon />}
-            fill={'none'}
-            outlineColor={'#6284FF'}
-            onClick={() =>
-              setMonth(months[(months.indexOf(month) + 1) % months.length])
-            }
-          ></IconButton>
-        </HStack>
-      </WrapItem>
+        <IconButton
+          icon={<ArrowCircleRightIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() =>
+            setMonth(months[(months.indexOf(month) + 1) % months.length])
+          }
+        ></IconButton>
+      </HStack>
 
-      <WrapItem>
-        <HStack spacing={'3'}>
-          <IconButton
-            icon={<ArrowCircleLeftIcon />}
-            fill={'none'}
-            outlineColor={'#6284FF'}
-            onClick={() =>
-              setDay(days[(days.indexOf(day) - 1 + days.length) % days.length])
-            }
-          ></IconButton>
-          <Menu size={'md'}>
-            {({ isOpen }) => (
-              <>
-                <MenuButton
-                  isActive={isOpen}
-                  as={Button}
-                  outlineColor={'#6284FF'}
-                  fill={'none'}
-                  rightIcon={
-                    isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
-                  }
-                >
-                  {day}
-                </MenuButton>
+      <HStack spacing={'3'}>
+        <IconButton
+          icon={<ArrowCircleLeftIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() =>
+            setDay(days[(days.indexOf(day) - 1 + days.length) % days.length])
+          }
+        ></IconButton>
+        <Menu size={'md'}>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                isActive={isOpen}
+                as={Button}
+                outlineColor={'#6284FF'}
+                fill={'none'}
+                rightIcon={
+                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                }
+              >
+                {day}
+              </MenuButton>
 
-                <MenuList>
-                  {days.map((day) => (
-                    <MenuItem
-                      key={day}
-                      color={'black'}
-                      onClick={() => setDay(day)}
-                    >
-                      {day}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </>
-            )}
-          </Menu>
+              <MenuList>
+                {days.map((day) => (
+                  <MenuItem
+                    key={day}
+                    color={'black'}
+                    onClick={() => setDay(day)}
+                  >
+                    {day}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </>
+          )}
+        </Menu>
 
-          <IconButton
-            icon={<ArrowCircleRightIcon />}
-            fill={'none'}
-            outlineColor={'#6284FF'}
-            onClick={() =>
-              setYear(years[(years.indexOf(year) + 1) % years.length])
-            }
-          ></IconButton>
-        </HStack>
-      </WrapItem>
+        <IconButton
+          icon={<ArrowCircleRightIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() =>
+            setYear(years[(years.indexOf(year) + 1) % years.length])
+          }
+        ></IconButton>
+      </HStack>
 
-      <WrapItem>
-        <HStack spacing={'3'}>
-          <IconButton
-            icon={<ArrowCircleLeftIcon />}
-            fill={'none'}
-            outlineColor={'#6284FF'}
-            onClick={() =>
-              setYear(
-                years[(years.indexOf(year) - 1 + years.length) % years.length]
-              )
-            }
-          ></IconButton>
-          <Menu size={'md'}>
-            {({ isOpen }) => (
-              <>
-                <MenuButton
-                  isActive={isOpen}
-                  as={Button}
-                  outlineColor={'#6284FF'}
-                  fill={'none'}
-                  rightIcon={
-                    isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
-                  }
-                >
-                  {year}
-                </MenuButton>
+      <HStack spacing={'3'}>
+        <IconButton
+          icon={<ArrowCircleLeftIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() =>
+            setYear(
+              years[(years.indexOf(year) - 1 + years.length) % years.length]
+            )
+          }
+        ></IconButton>
+        <Menu size={'md'}>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                isActive={isOpen}
+                as={Button}
+                outlineColor={'#6284FF'}
+                fill={'none'}
+                rightIcon={
+                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                }
+              >
+                {year}
+              </MenuButton>
 
-                <MenuList>
-                  {years.map((year) => (
-                    <MenuItem
-                      key={year}
-                      color={'black'}
-                      onClick={() => setYear(year)}
-                    >
-                      {year}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </>
-            )}
-          </Menu>
+              <MenuList>
+                {years.map((year) => (
+                  <MenuItem
+                    key={year}
+                    color={'black'}
+                    onClick={() => setYear(year)}
+                  >
+                    {year}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </>
+          )}
+        </Menu>
 
-          <IconButton
-            icon={<ArrowCircleRightIcon />}
-            fill={'none'}
-            outlineColor={'#6284FF'}
-            onClick={() =>
-              setYear(years[(years.indexOf(year) + 1) % years.length])
-            }
-          ></IconButton>
-        </HStack>
-      </WrapItem>
-    </Wrap>
+        <IconButton
+          icon={<ArrowCircleRightIcon />}
+          fill={'none'}
+          outlineColor={'#6284FF'}
+          onClick={() =>
+            setYear(years[(years.indexOf(year) + 1) % years.length])
+          }
+        ></IconButton>
+      </HStack>
+    </Flex>
   )
 }
 
