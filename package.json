@@ -30,6 +30,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/dm-sans": "^5.0.17",
-    "@fontsource/fredoka-one": "^5.0.5"
+    "@fontsource/fredoka-one": "^5.0.5",
+    "immer": "^10.0.3",
+    "react-beautiful-dnd": "^13.1.1"
   }
 }
