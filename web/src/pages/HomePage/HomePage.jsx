@@ -1,7 +1,19 @@
 import { useState, useEffect } from 'react'
 
 import { AddIcon } from '@chakra-ui/icons'
-import { Box, Flex, Text, IconButton } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Text,
+  IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
 
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
@@ -27,6 +39,22 @@ const ToastWelcome = () => {
       setShowNotification(true)
     }
   }, [])
+}
+
+const AddTask = () => {
+  return (
+    <IconButton
+      isRound={true}
+      w="39px"
+      h="39px"
+      variant="solid"
+      colorScheme="blue"
+      aria-label="add task"
+      icon={<AddIcon color="white" h="16px" w="16px" />}
+      ml=".5vw"
+      mb=".5vw"
+    />
+  )
 }
 
 const HomePage = () => {
@@ -55,18 +83,7 @@ const HomePage = () => {
         <Box w={'50%'}>
           <Text fontSize={'30px'} fontWeight={'700'}>
             Tasks
-            <IconButton
-              isRound={true}
-              w="39px"
-              h="39px"
-              variant="solid"
-              colorScheme="blue"
-              aria-label="add task"
-              fontSize="20px"
-              icon={<AddIcon />}
-              ml="1vw"
-              mb="1vw"
-            />
+            <AddTask />
           </Text>
 
           <Box
