@@ -1,5 +1,7 @@
 import TaskType from "src/components/TaskType/TaskType";
 import {DragDropContext} from "react-beautiful-dnd";
+import {useMutation} from '@redwoodjs/web'
+import { useAuth } from "src/auth";
 import {useEffect, useState} from "react";
 import {toast, Toaster} from "@redwoodjs/web/dist/toast";
 
@@ -35,9 +37,21 @@ const finalTasksData = {
   ],
   "Other": []
 }
+const UPDATE_TASKS = gql`
+  mutation UpdateTasksMutation($id: Int!, $input: UpdateTaskInput!) {
+    updateTask(id: $id, input: $input) {
+      id
+    }
+  }
+`
 
 const TaskBox = () => {
+      const { currentUser, reauthenticate } = useAuth()
       const [tasksData, updateTasksData] = useState(finalTasksData)
+      const [create, { loading, error }] = useMutation(
+        UPDATE_TASKS,
+        { onCompleted: reauthenticate }
+      )
       // Easter egg stuff - dw about it
       const [dndEasterEgg, updateDndEasterEgg] = useState([]);
 
@@ -90,10 +104,18 @@ const TaskBox = () => {
         }
         console.log("New task's id should be: " + i);
       }, [tasksData])
+      
 
       function updateDatabase(data) {
+        const theData = {
+          date: new Date().toISOString(), // Current date
+          taskList: data, // Your JSON task list
+          userId: currentUser.id, // Replace with the actual user ID
+        };
         console.log('A save-worthy modification just occurred!')
         console.log(JSON.stringify(data))
+        console.log(theData)
+        create({variables: {id: 1, input: theData}})
         // TODO: Update database
       }
 

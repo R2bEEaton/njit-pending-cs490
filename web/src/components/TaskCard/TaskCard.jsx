@@ -2,12 +2,9 @@ import {
   Box,
   Collapse,
   Editable,
-  EditableInput, 
-  EditablePreview,
   Textarea,
   HStack,
   Spacer,
-  Button,
   Text,
 } from "@chakra-ui/react";
 import { useAuth } from 'src/auth'
@@ -53,20 +50,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
       task.expanded = show
       callback(idx, task, true)
   }, [show])
-/*
-            <label>
-              Notes
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                readOnly={!notesEdit}
-                style={{ fontStyle: notesEdit ? 'italic' : 'normal' }}
-              />
-            </label>
-            <button onClick={handleNotesToggle} aria-label={'notes edit'}>
-              {notesEdit ? 'Save' : 'Edit'}
-            </button>
-            */
+
   return (
     <>
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} >
