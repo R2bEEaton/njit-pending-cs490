@@ -19,7 +19,7 @@ const ToastWelcome = () => {
 
     if (!hasVisitedHomepage) {
       // Show the toast notification
-      toast.success('Welcome to the homepage!')
+      toast.success("Welcome, let's Crush It!")
 
       // Update the flag to indicate that the notification has been shown
       sessionStorage.setItem('visitedHomepage', 'true')
@@ -27,36 +27,6 @@ const ToastWelcome = () => {
     }
   }, [])
 }
-/*
-const StatusIcons = () => {
-  //Loop through array of images
-  const images = [
-    'img/not_started.png',
-    'img/in_progress.png',
-    'img/completed.png',
-    'img/rollover.png',
-    'img/cancelled.png',
-  ]
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const changeImage = () => {
-    setCurrentIndex((currentIndex + 1) % images.length)
-  }
-  return (
-    <>
-      <Box w="20px" h="20px" rounded="md" color="white" borderColor="#ccd0d5">
-        <Image
-          className="task_progress"
-          src={images[currentIndex]}
-          alt="Status_icons"
-          onClick={changeImage}
-          w="20px"
-          h="20px"
-        />
-      </Box>
-    </>
-  )
-}*/
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
