@@ -13,7 +13,6 @@ import {
 import { useAuth } from 'src/auth'
 
 const StatusIcons = () => {
-  //Loop through array of images
   const images = [
     'img/not_started.svg',
     'img/in_progress.svg',

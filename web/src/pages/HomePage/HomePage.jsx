@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import { Box, Flex, Text, IconButton } from '@chakra-ui/react'
 
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
@@ -54,7 +55,20 @@ const HomePage = () => {
         <Box w={'50%'}>
           <Text fontSize={'30px'} fontWeight={'700'}>
             Tasks
+            <IconButton
+              isRound={true}
+              w="39px"
+              h="39px"
+              variant="solid"
+              colorScheme="blue"
+              aria-label="add task"
+              fontSize="20px"
+              icon={<AddIcon />}
+              ml="1vw"
+              mb="1vw"
+            />
           </Text>
+
           <Box
             w={'100%'}
             p={'20px'}
