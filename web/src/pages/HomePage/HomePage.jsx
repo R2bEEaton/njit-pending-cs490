@@ -5,6 +5,7 @@ import {
   Box,
   Flex,
   Text,
+  Button,
   IconButton,
   Modal,
   ModalOverlay,
@@ -13,6 +14,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react'
 
 import { Link, routes } from '@redwoodjs/router'
@@ -42,18 +44,39 @@ const ToastWelcome = () => {
 }
 
 const AddTask = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   return (
-    <IconButton
-      isRound={true}
-      w="39px"
-      h="39px"
-      variant="solid"
-      colorScheme="blue"
-      aria-label="add task"
-      icon={<AddIcon color="white" h="16px" w="16px" />}
-      ml=".5vw"
-      mb=".5vw"
-    />
+    <>
+      <IconButton
+        isRound={true}
+        w="39px"
+        h="39px"
+        variant="solid"
+        colorScheme="blue"
+        aria-label="add task"
+        icon={<AddIcon color="white" h="16px" w="16px" />}
+        ml=".5vw"
+        mb=".5vw"
+        onClick={onOpen}
+      />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>blah </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 
