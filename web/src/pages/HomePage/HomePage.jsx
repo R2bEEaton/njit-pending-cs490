@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { Box, Flex, Text, Image } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
@@ -27,7 +27,7 @@ const ToastWelcome = () => {
     }
   }, [])
 }
-
+/*
 const StatusIcons = () => {
   //Loop through array of images
   const images = [
@@ -56,7 +56,7 @@ const StatusIcons = () => {
       </Box>
     </>
   )
-}
+}*/
 
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()

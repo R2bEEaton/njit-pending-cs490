@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Box,
@@ -15,11 +15,11 @@ import { useAuth } from 'src/auth'
 const StatusIcons = () => {
   //Loop through array of images
   const images = [
-    'img/not_started.png',
-    'img/in_progress.png',
-    'img/completed.png',
-    'img/rollover.png',
-    'img/cancelled.png',
+    'img/not_started.svg',
+    'img/in_progress.svg',
+    'img/completed.svg',
+    'img/rollover.svg',
+    'img/cancelled.svg',
   ]
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -28,7 +28,7 @@ const StatusIcons = () => {
   }
   return (
     <>
-      <Box w="20px" h="20px" rounded="md" color="white" borderColor="#ccd0d5">
+      <Box w="22px" h="22px" rounded="md" color="white" borderColor="#ccd0d5">
         <Image
           className="task_progress"
           src={images[currentIndex]}
@@ -79,7 +79,7 @@ const TaskCard = ({ dragHandle, task, idx, callback }) => {
     <>
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
         <HStack>
-          <Text>{task.status}</Text>
+          <StatusIcons />
           <Text color={'#6284FF'}>{task.title}</Text>
           <Spacer />
           <Box {...dragHandle}>
