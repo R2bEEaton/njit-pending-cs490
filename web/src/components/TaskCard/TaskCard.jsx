@@ -2,8 +2,12 @@ import {
   Box,
   Collapse,
   Editable,
+  EditableInput, 
+  EditablePreview,
+  Textarea,
   HStack,
   Spacer,
+  Button,
   Text,
 } from "@chakra-ui/react";
 import { useAuth } from 'src/auth'
@@ -18,7 +22,13 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
   const [pomos, setPomos] = React.useState(task.pomodoros);
   const [notes, setNotes] = React.useState(task.notes);
   const handleToggle = () => setShow(!show);
-  const handleNotesToggle = () => setNotesEdit(!notesEdit);
+  const handleNotesToggle = () => {
+      setNotesEdit(!notesEdit);
+      if (notesEdit) {
+        task.notes = notes
+        callback(idx, task, true)
+    }
+  }
   const handlePomosToggle = () => {
       setPomosEdit(!pomosEdit);
       // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
@@ -35,11 +45,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
       }
       setPomos(pomos + by)
   }
-  const handleSaveNotes = () => {
-    // You can now use the editedNotes variable for further processing
-    console.log('Saved notes:', notes);
-    setNotesEdit(false); // Disable editing mode after saving
-  };
+
 
   useEffect(() => {
       // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
@@ -47,7 +53,20 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
       task.expanded = show
       callback(idx, task, true)
   }, [show])
-
+/*
+            <label>
+              Notes
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                readOnly={!notesEdit}
+                style={{ fontStyle: notesEdit ? 'italic' : 'normal' }}
+              />
+            </label>
+            <button onClick={handleNotesToggle} aria-label={'notes edit'}>
+              {notesEdit ? 'Save' : 'Edit'}
+            </button>
+            */
   return (
     <>
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} >
@@ -78,19 +97,31 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
                 <EditIcon active={pomosEdit} />
               </button>
             </HStack>
-            <label>
-              Notes
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                readOnly={!notesEdit}
-                style={{ fontStyle: notesEdit ? 'italic' : 'normal' }}
-              />
-            </label>
-            <button onClick={handleNotesToggle} aria-label={'notes edit'}>
-              {notesEdit ? 'Cancel' : 'Edit'}
-            </button>
-            <button onClick={handleSaveNotes}>Save</button>
+            <HStack alignItems={'top'}>
+              <Box>
+                <Text fontSize={'12px'} color={'#545454'}>
+                  Notes
+                </Text>
+                {notesEdit ? (
+                  <Textarea
+                    fontSize={'14px'}
+                    color={'#1F1F1F'}
+                    w={'100%'}
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    resize={'none'}
+                  />
+                ) : (
+                  <Text fontSize={'14px'} color={'#1F1F1F'} w={'100%'} fontStyle={notesEdit ? 'italic' : ''}>
+                    {notes}
+                  </Text>
+                )}
+              </Box>
+              <Spacer />
+              <button onClick={handleNotesToggle} aria-label={'notes edit'}>
+                <EditIcon active={notesEdit}/>
+              </button>
+            </HStack>
           </Collapse>
       </Box>
     </>
