@@ -52,7 +52,7 @@ const ToastWelcome = () => {
   }, [])
 }
 
-const finalTasksData = {
+let finalTasksData = {
   'Top Priority': [
     {
       id: 1,
@@ -105,7 +105,6 @@ function FindID() {
 
 const AddTask = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [tasksData, updateTasksData] = useState(finalTasksData)
   const [formData, setFormData] = useState({
     id: FindID(),
     title: '',
@@ -118,10 +117,9 @@ const AddTask = () => {
   }
 
   const handleSubmit = () => {
-    console.log('Before push', tasksData)
     console.log('Form data submitted:', formData)
-    updateTasksData(tasksData['Important'].push({ formData }))
-    console.log('after push', tasksData)
+    //add new task to database
+    finalTasksData['Important'].push({ formData })
 
     onClose()
   }
@@ -226,7 +224,9 @@ const HomePage = () => {
             p={'20px'}
             borderRadius={'10px'}
             boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
-          ></Box>
+          >
+            <TaskBox finalTasksData={finalTasksData} />
+          </Box>
         </Box>
         <Box>
           <Text fontSize={'30px'} fontWeight={'700'}>
