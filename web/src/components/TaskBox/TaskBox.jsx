@@ -6,12 +6,6 @@ import {useEffect, useState} from "react";
 import {toast, Toaster} from "@redwoodjs/web/dist/toast";
 import { useLazyQuery } from '@apollo/client';
 
-
-
-
-
-
-
 // Below is a placeholder for the final version of the tasks datatype
 
 const finalTasksData = {

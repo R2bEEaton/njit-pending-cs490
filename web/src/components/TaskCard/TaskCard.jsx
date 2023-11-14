@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import {
   Box,
   Collapse,
@@ -6,55 +7,119 @@ import {
   HStack,
   Spacer,
   Text,
-} from "@chakra-ui/react";
+  Image,
+} from '@chakra-ui/react'
+
 import { useAuth } from 'src/auth'
-import {useEffect} from "react";
 
-const TaskCard = ({dragHandle, task, idx, callback}) => {
-  const [show, setShow] = React.useState(task.expanded);
-  const [notesEdit, setNotesEdit] = React.useState(false);
-  const [pomosEdit, setPomosEdit] = React.useState(false);
-  const { currentUser } = useAuth()
+const getStatusFromIndex = (n) => {
+  switch (n) {
+    case 0:
+      return 'NotStarted'
+    case 1:
+      return 'InProgress'
+    case 2:
+      return 'Completed'
+    case 3:
+      return 'Rollover'
+    case 4:
+      return 'Cancelled'
+  }
+}
 
-  const [pomos, setPomos] = React.useState(task.pomodoros);
-  const [notes, setNotes] = React.useState(task.notes);
-  const handleToggle = () => setShow(!show);
-  const handleNotesToggle = () => {
-      setNotesEdit(!notesEdit);
-      if (notesEdit) {
-        task.notes = notes
-        callback(idx, task, true)
+const StatusIcons = ({ status, callback, task, idx }) => {
+  const images = [
+    'img/not_started.svg',
+    'img/in_progress.svg',
+    'img/completed.svg',
+    'img/rollover.svg',
+    'img/cancelled.svg',
+  ]
+
+  const getIndexFromStatus = (status) => {
+    switch (status) {
+      case 'NotStarted':
+        return 0
+      case 'InProgress':
+        return 1
+      case 'Completed':
+        return 2
+      case 'Rollover':
+        return 3
+      case 'Cancelled':
+        return 4
+      default:
+        return 0 // Default to the first image if status is not recognized
     }
   }
+  const [currentIndex, setCurrentIndex] = useState(getIndexFromStatus(status))
+
+  const changeImage = () => {
+    setCurrentIndex((currentIndex + 1) % images.length)
+    task.status = getStatusFromIndex((currentIndex + 1) % images.length)
+    //console.log(getStatusFromIndex((currentIndex + 1) % images.length))
+    callback(idx, task, true)
+  }
+
+  return (
+    <>
+      <Box w="22px" h="22px" rounded="md" color="white" borderColor="#ccd0d5">
+        <Image
+          className="task_progress"
+          src={images[currentIndex]}
+          alt="Status_icons"
+          onClick={changeImage}
+          w="20px"
+          h="20px"
+        />
+      </Box>
+    </>
+  )
+}
+
+const TaskCard = ({ dragHandle, task, idx, callback }) => {
+  const [show, setShow] = React.useState(task.expanded)
+  const [notesEdit, setNotesEdit] = React.useState(false)
+  const [pomosEdit, setPomosEdit] = React.useState(false)
+  const { currentUser } = useAuth()
+
+  const [pomos, setPomos] = React.useState(task.pomodoros)
+  const handleToggle = () => setShow(!show)
+  const handleNotesToggle = () => setNotesEdit(!notesEdit)
   const handlePomosToggle = () => {
-      setPomosEdit(!pomosEdit);
-      // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
-      if (pomosEdit) {
-          task.pomodoros = pomos
-          callback(idx, task, true)
-      }
+    setPomosEdit(!pomosEdit)
+    // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
+    if (pomosEdit) {
+      task.pomodoros = pomos
+      callback(idx, task, true)
+    }
   }
 
   function updatePomos(by) {
-      // Update pomodoro state
-      if (pomos + by < 0)  {
+    // Update pomodoro state
+    if (pomos + by < 0) {
       return
-      }
-      setPomos(pomos + by)
+    }
+    setPomos(pomos + by)
   }
 
-
   useEffect(() => {
-      // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
-      // Maybe a card being open is save-worthy?
-      task.expanded = show
-      callback(idx, task, true)
+    // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
+    // Maybe a card being open is save-worthy?
+    task.expanded = show
+    callback(idx, task, true)
   }, [show])
 
   return (
     <>
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} >
           <HStack>
+                <StatusIcons
+            status={task.status}
+            callback={callback}
+            task={task}
+            idx={idx}
+          />
               <Text>{task.status}</Text>
               <Text color={'#6284FF'}>{task.title}</Text>
               <Spacer />

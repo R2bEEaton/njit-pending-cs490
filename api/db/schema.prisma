@@ -13,11 +13,11 @@ generator client {
 model User {
   id         Int        @id @default(autoincrement())
   email      String     @unique
-  firstName  String
-  lastName   String
-  pomodoro   Int        @default(25)
-  shortBreak Int        @default(5)
-  longBreak  Int        @default(10)
+  firstName       String
+  lastName  String
+  pomodoro Int @default(25)
+  shortBreak Int @default(5)
+  longBreak Int @default(10)
   picture    String
   identities Identity[]
   tasks      Task[]
@@ -56,30 +56,30 @@ model Task {
 // {
 //   "Top Priority": [
 //     {
-//       "position": "Int",
+//       "id": "Int",
 //       "title": "String",
 //       "notes": "String",
-//       "status": ["NotStarted","InProgress","Completed","RolledOver"],
+//       "status": ["NotStarted","InProgress","Completed","RolledOver","Cancel"],
 //       "pomodoros": "Int",
 //       "expanded": "Boolean"
 //     }
 //   ],
 //   "Important": [
 //     {
-//       "position": "Int",
+//       "id": "Int",
 //       "title": "String",
 //       "notes": "String",
-//       "status": ["NotStarted","InProgress","Completed","RolledOver"],
+//       "status": ["NotStarted","InProgress","Completed","RolledOver","Cancel"],
 //       "pomodoros": "Int",
 //       "expanded": "Boolean"
 //     }
 //   ],
 //   "Other": [
 //     {
-//       "position": "Int",
+//       "id": "Int",
 //       "title": "String",
 //       "notes": "String",
-//       "status": ["NotStarted","InProgress","Completed","RolledOver"],
+//       "status": ["NotStarted","InProgress","Completed","RolledOver","Cancel"],
 //       "pomodoros": "Int",
 //       "expanded": "Boolean"
 //     }
