@@ -153,7 +153,7 @@ const TaskBox = ({ date}) => {
         };
         console.log('A save-worthy modification just occurred!')
 
-        //console.log(JSON.stringify(data))
+        console.log(JSON.stringify(data))
         //console.log(theData)
 
         update({variables: {id: 1, input: theData}})

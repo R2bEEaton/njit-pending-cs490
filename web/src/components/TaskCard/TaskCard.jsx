@@ -127,7 +127,6 @@ const TaskCard = ({ dragHandle, task, idx, callback }) => {
             task={task}
             idx={idx}
           />
-              <Text>{task.status}</Text>
               <Text color={'#6284FF'}>{task.title}</Text>
               <Spacer />
               <Box {...dragHandle}>
