@@ -174,7 +174,7 @@ const DatePicker = () => {
                   )
                 }
               >
-                {day}
+                {days.includes(day) ? day : days.at(-1)}
               </MenuButton>
 
               <MenuList
