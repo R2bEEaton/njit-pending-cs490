@@ -111,6 +111,7 @@ const AddTask = () => {
     notes: '',
     pomodoros: 1,
     status: 'NotStarted',
+    expanded: false,
   })
   const handleChange = (field, value) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }))
@@ -119,7 +120,15 @@ const AddTask = () => {
   const handleSubmit = () => {
     console.log('Form data submitted:', formData)
     //add new task to database
-
+    //clear form data
+    setFormData({
+      id: FindID(),
+      title: '',
+      notes: '',
+      pomodoros: 1,
+      status: 'NotStarted',
+      expanded: false,
+    })
     onClose()
   }
   return (

@@ -57,7 +57,7 @@ const StatusIcons = ({ status, callback, task, idx }) => {
   const changeImage = () => {
     setCurrentIndex((currentIndex + 1) % images.length)
     task.status = getStatusFromIndex((currentIndex + 1) % images.length)
-    console.log(getStatusFromIndex((currentIndex + 1) % images.length))
+    //console.log(getStatusFromIndex((currentIndex + 1) % images.length))
     callback(idx, task, true)
   }
 
