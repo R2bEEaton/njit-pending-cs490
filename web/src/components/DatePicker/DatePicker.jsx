@@ -344,29 +344,3 @@ const CircleChevronDownIcon = (props) => (
     />
   </Icon>
 )
-
-const CircleChevronUpIcon = (props) => (
-  <Icon
-    width={'20'}
-    height={'20'}
-    viewBox={'0 0 20 20'}
-    fill={'none'}
-    {...props}
-  >
-    <path
-      d="M18.3333 9.99996C18.3333 14.6023 14.6023 18.3333 9.99996 18.3333C5.39759 18.3333 1.66663 14.6023 1.66663 9.99996C1.66663 5.39759 5.39759 1.66663 9.99996 1.66663C14.6023 1.66663 18.3333 5.39759 18.3333 9.99996Z"
-      stroke="#6284FF"
-      strokeWidth="1.5"
-      strokeMiterlimit="10"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12.9417 11.05L10 8.1167L7.05835 11.05"
-      stroke="#6284FF"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </Icon>
-)
