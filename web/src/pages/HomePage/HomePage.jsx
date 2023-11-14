@@ -100,7 +100,6 @@ function FindID() {
   for (; i < idsArray.length; i++) {
     if (i !== idsArray[i]) break
   }
-  console.log("New task's id should be: " + i)
   return i
 }
 

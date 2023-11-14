@@ -46,7 +46,6 @@ const DatePicker = ({ setDateProp }) => {
   ).daysInMonth()
   let days = Array.from({ length: numDays }, (_, i) => i + 1)
   const years = Array.from({ length: 5 }, (_, i) => i + currentYear)
-  console.log('years: ' + years)
   return (
     <Flex
       h={'60px'}
