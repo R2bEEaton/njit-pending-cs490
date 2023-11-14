@@ -111,7 +111,12 @@ const DatePicker = () => {
               >
                 {month}
               </MenuButton>
-              <MenuList>
+              <MenuList
+                maxHeight={'239px'}
+                overflowY={'auto'}
+                scrollbar-color={'#6284FF'}
+                outlineColor={'#6284FF'}
+              >
                 {months.map((month) => (
                   <MenuItem
                     key={month}
@@ -160,7 +165,12 @@ const DatePicker = () => {
                 {day}
               </MenuButton>
 
-              <MenuList>
+              <MenuList
+                maxHeight={'239px'}
+                overflowY={'auto'}
+                scrollbar-color={'#6284FF'}
+                outlineColor={'#6284FF'}
+              >
                 {days.map((day) => (
                   <MenuItem
                     key={day}
@@ -211,7 +221,12 @@ const DatePicker = () => {
                 {year}
               </MenuButton>
 
-              <MenuList>
+              <MenuList
+                maxHeight={'239px'}
+                overflowY={'auto'}
+                scrollbar-color={'#6284FF'}
+                outlineColor={'#6284FF'}
+              >
                 {years.map((year) => (
                   <MenuItem
                     key={year}
