@@ -70,6 +70,7 @@ const StatusIcons = ({ status, callback, task, idx }) => {
           onClick={changeImage}
           w="20px"
           h="20px"
+          cursor={'pointer'}
         />
       </Box>
     </>
