@@ -56,14 +56,16 @@ const months = [
 const currentYear = currentTime.getFullYear()
 let SelectedDate = {}
 
-const DatePicker = () => {
+const DatePicker = ({ setDateProp }) => {
   const [month, setMonth] = useState(
     currentTime.toLocaleString('default', { month: 'long' })
   )
 
   const [day, setDay] = useState(currentTime.getDate())
   const [year, setYear] = useState(currentYear)
-
+  setDateProp(
+    ('0' + (months.indexOf(month) + 1)).slice(-2) + '/' + day + '/' + year
+  )
   SelectedDate.month = month
   SelectedDate.day = day
   SelectedDate.year = year
