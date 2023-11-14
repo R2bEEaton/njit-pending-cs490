@@ -6,12 +6,6 @@ import {useEffect, useState} from "react";
 import {toast, Toaster} from "@redwoodjs/web/dist/toast";
 import { useLazyQuery } from '@apollo/client';
 
-
-
-
-
-
-
 // Below is a placeholder for the final version of the tasks datatype
 
 const finalTasksData = {
@@ -52,7 +46,6 @@ const finalTasksData2 = {
   "Other": []
 }
 
-
 const UPDATE_TASKS = gql`
   mutation UpdateTasksMutation($id: Int!, $input: UpdateTaskInput!) {
     updateTask(id: $id, input: $input) {
@@ -80,8 +73,7 @@ const CREATE_TASKS = gql`
 
 
 
-const TaskBox = ({ date}) => {
-  
+const TaskBox = ({ date}) => {  
       const { currentUser, reauthenticate } = useAuth()
       const [tasksData, updateTasksData] = useState(finalTasksData)
       const [fetchTasks, {data, loading, error }] = useLazyQuery(GET_TASKS);
@@ -101,8 +93,6 @@ const TaskBox = ({ date}) => {
         // Receive callback from TaskType
         let tasksDataTemp = {...tasksData}
         tasksDataTemp[typeidx] = data
-        
-
         updateTasksData(tasksDataTemp)
         if (saveworthy) updateDatabase(tasksDataTemp)
       }
@@ -153,7 +143,7 @@ const TaskBox = ({ date}) => {
           //updateTasksData(dataTemp)
           //console.log('Fetched Tasks:', data.tasksByUserIdAndDate);
         
-      }, [date]);      
+      }, [date]);
 
       function updateDatabase(data) {
         const theData = {
@@ -174,7 +164,7 @@ const TaskBox = ({ date}) => {
 
       return (
         <>
-          
+          <h1>{date}</h1>
           <Toaster />
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.keys(tasksData).map((type, index) => {

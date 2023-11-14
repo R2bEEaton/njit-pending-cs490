@@ -1,17 +1,83 @@
+import { useEffect, useState } from 'react'
 import {
   Box,
   Collapse,
-  Editable,
   Textarea,
   HStack,
   Spacer,
   Text,
-} from "@chakra-ui/react";
-import { useAuth } from 'src/auth'
-import {useEffect} from "react";
+  Image,
+} from '@chakra-ui/react'
 
-const TaskCard = ({dragHandle, task, idx, callback}) => {
-  const [show, setShow] = React.useState(task.expanded);
+import { useAuth } from 'src/auth'
+
+const getStatusFromIndex = (n) => {
+  switch (n) {
+    case 0:
+      return 'NotStarted'
+    case 1:
+      return 'InProgress'
+    case 2:
+      return 'Completed'
+    case 3:
+      return 'Rollover'
+    case 4:
+      return 'Cancelled'
+  }
+}
+
+const StatusIcons = ({ status, callback, task, idx }) => {
+  const images = [
+    'img/not_started.svg',
+    'img/in_progress.svg',
+    'img/completed.svg',
+    'img/rollover.svg',
+    'img/cancelled.svg',
+  ]
+
+  const getIndexFromStatus = (status) => {
+    switch (status) {
+      case 'NotStarted':
+        return 0
+      case 'InProgress':
+        return 1
+      case 'Completed':
+        return 2
+      case 'Rollover':
+        return 3
+      case 'Cancelled':
+        return 4
+      default:
+        return 0 // Default to the first image if status is not recognized
+    }
+  }
+  const [currentIndex, setCurrentIndex] = useState(getIndexFromStatus(status))
+
+  const changeImage = () => {
+    setCurrentIndex((currentIndex + 1) % images.length)
+    task.status = getStatusFromIndex((currentIndex + 1) % images.length)
+    //console.log(getStatusFromIndex((currentIndex + 1) % images.length))
+    callback(idx, task, true)
+  }
+
+  return (
+    <>
+      <Box w="22px" h="22px" rounded="md" color="white" borderColor="#ccd0d5">
+        <Image
+          className="task_progress"
+          src={images[currentIndex]}
+          alt="Status_icons"
+          onClick={changeImage}
+          w="20px"
+          h="20px"
+        />
+      </Box>
+    </>
+  )
+}
+
+const TaskCard = ({ dragHandle, task, idx, callback }) => {
+  const [show, setShow] = React.useState(task.expanded)
   const [notesEdit, setNotesEdit] = React.useState(false);
   const [pomosEdit, setPomosEdit] = React.useState(false);
   const { currentUser } = useAuth()
@@ -55,6 +121,12 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
     <>
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} >
           <HStack>
+                <StatusIcons
+            status={task.status}
+            callback={callback}
+            task={task}
+            idx={idx}
+          />
               <Text>{task.status}</Text>
               <Text color={'#6284FF'}>{task.title}</Text>
               <Spacer />
