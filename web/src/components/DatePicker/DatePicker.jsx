@@ -106,7 +106,7 @@ const DatePicker = () => {
                 outlineColor={'#6284FF'}
                 fill={'none'}
                 rightIcon={
-                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronUpIcon />
                 }
               >
                 {month}
@@ -189,9 +189,7 @@ const DatePicker = () => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setYear(years[(years.indexOf(year) + 1) % years.length])
-          }
+          onClick={() => setDay(days[(days.indexOf(day) + 1) % days.length])}
         ></IconButton>
       </HStack>
 
