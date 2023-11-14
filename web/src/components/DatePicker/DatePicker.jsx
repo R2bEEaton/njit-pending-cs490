@@ -1,41 +1,17 @@
 import { useState } from 'react'
 
-import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import {
-  Box,
   Button,
-  Center,
   Flex,
-  FormControl,
-  FormLabel,
   HStack,
-  Input,
-  Spacer,
-  Text,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  Wrap,
-  WrapItem,
   Icon,
-  createIcon,
   IconButton,
 } from '@chakra-ui/react'
 import moment from 'moment'
-import { mockComponent } from 'react-dom/test-utils'
-
-import { useForm } from '@redwoodjs/forms'
-import { routes } from '@redwoodjs/router'
-import { MetaTags, useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
-import { Toaster } from '@redwoodjs/web/toast'
-
-import { useAuth } from 'src/auth'
 
 let currentTime = new Date()
 
