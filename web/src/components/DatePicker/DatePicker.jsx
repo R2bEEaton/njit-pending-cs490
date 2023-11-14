@@ -30,7 +30,6 @@ const months = [
   'December',
 ]
 const currentYear = currentTime.getFullYear()
-let SelectedDate = {}
 
 const DatePicker = ({ setDateProp }) => {
   const [month, setMonth] = useState(
@@ -42,10 +41,7 @@ const DatePicker = ({ setDateProp }) => {
   setDateProp(
     ('0' + (months.indexOf(month) + 1)).slice(-2) + '/' + day + '/' + year
   )
-  SelectedDate.month = month
-  SelectedDate.day = day
-  SelectedDate.year = year
-  console.log(SelectedDate.month)
+
   let numDays = moment(
     year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
@@ -249,11 +245,6 @@ const DatePicker = ({ setDateProp }) => {
 }
 
 export default DatePicker
-export function getDate() {
-  let date =
-    SelectedDate.month + '/' + SelectedDate.day + '/' + SelectedDate.year
-  return date
-}
 
 const ArrowCircleLeftIcon = (props) => (
   <Icon width="23" height="22" viewBox="0 0 23 22" fill="none" {...props}>
