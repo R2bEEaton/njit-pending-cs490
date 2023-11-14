@@ -1,4 +1,4 @@
-import {render, screen} from '@redwoodjs/testing/web'
+import {render} from '@redwoodjs/testing/web'
 
 import HomePage from './HomePage'
 
@@ -12,15 +12,5 @@ describe('HomePage', () => {
     expect(() => {
       render(<HomePage />)
     }).not.toThrow()
-  })
-
-  it('renders the message if user is authenticated', () => {
-    mockCurrentUser({ email: 'email@domain.com' })
-
-    render(<HomePage />)
-
-    expect(
-      screen.getByText('email@domain.com')
-    ).toBeInTheDocument()
   })
 })

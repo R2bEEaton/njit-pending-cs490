@@ -7,9 +7,9 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/auth-dbauth-setup": "6.3.2",
-    "@redwoodjs/cli-storybook": "6.3.2",
-    "@redwoodjs/core": "6.3.2",
+    "@redwoodjs/auth-dbauth-setup": "6.3.3",
+    "@redwoodjs/cli-storybook": "6.3.3",
+    "@redwoodjs/core": "6.3.3",
     "framer-motion": "^10.16.4"
   },
   "eslintConfig": {
@@ -25,13 +25,14 @@
   },
   "packageManager": "yarn@3.6.3",
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.1",
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/dm-sans": "^5.0.17",
     "@fontsource/fredoka-one": "^5.0.5",
-    "immer": "^10.0.3",
+    "moment": "^2.29.4",
     "react-beautiful-dnd": "^13.1.1"
   }
 }
