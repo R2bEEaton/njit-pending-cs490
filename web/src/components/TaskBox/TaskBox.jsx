@@ -1,9 +1,13 @@
 import TaskType from "src/components/TaskType/TaskType";
 import {DragDropContext} from "react-beautiful-dnd";
+import { useMutation, fetch } from '@redwoodjs/web'
+import { useAuth } from "src/auth";
 import {useEffect, useState} from "react";
 import {toast, Toaster} from "@redwoodjs/web/dist/toast";
+import { useLazyQuery } from '@apollo/client';
 
 // Below is a placeholder for the final version of the tasks datatype
+
 const finalTasksData = {
   "Top Priority": [
     {
@@ -36,8 +40,52 @@ const finalTasksData = {
   "Other": []
 }
 
-const TaskBox = () => {
+const finalTasksData2 = {
+  "Top Priority": [],
+  "Important": [],
+  "Other": []
+}
+
+const UPDATE_TASKS = gql`
+  mutation UpdateTasksMutation($id: Int!, $input: UpdateTaskInput!) {
+    updateTask(id: $id, input: $input) {
+      id
+    }
+  }
+`
+const GET_TASKS = gql`
+  query GetTasks($userId: Int!, $date: DateTime!) {
+    tasksByUserIdAndDate(userId: $userId, date: $date) {
+      id
+      date
+      taskList
+      userId
+    }
+  }
+`;
+const CREATE_TASKS = gql`
+  mutation CreateTasksMutation($input: CreateTaskInput!) {
+    createTask(input: $input) {
+      id
+    }
+  }
+`
+
+
+
+const TaskBox = ({ date}) => {  
+      const { currentUser, reauthenticate } = useAuth()
       const [tasksData, updateTasksData] = useState(finalTasksData)
+      const [fetchTasks, {data, loading, error }] = useLazyQuery(GET_TASKS);
+      const [update] = useMutation(
+        UPDATE_TASKS,
+        { onCompleted: reauthenticate }
+      )
+      const [create] = useMutation(
+        CREATE_TASKS,
+        { onCompleted: reauthenticate }
+      )
+      
       // Easter egg stuff - dw about it
       const [dndEasterEgg, updateDndEasterEgg] = useState([]);
 
@@ -48,6 +96,7 @@ const TaskBox = () => {
         updateTasksData(tasksDataTemp)
         if (saveworthy) updateDatabase(tasksDataTemp)
       }
+
 
       const onDragEnd = (result) => {
         // Handle drop of card and swap them
@@ -73,32 +122,49 @@ const TaskBox = () => {
         updateTasksData(tasksDataTemp)
         updateDatabase(tasksDataTemp)
       }
-
-      // When the tasks change, compute the ID value of a new card if it were to be added
+      
       useEffect(() => {
-        // The ID of a new task
-        let idsArray = []
-        Object.keys(tasksData).map((data) => {
-          tasksData[data].map(({id}) => {
-            idsArray.push(id)
-          })
-        })
-        idsArray.sort()
-        let i = 0
-        for (; i < idsArray.length; i++) {
-          if (i !== idsArray[i]) break;
-        }
-        console.log("New task's id should be: " + i);
-      }, [tasksData])
+        fetchTasks({
+          variables: { userId: currentUser.id, date: new Date().toISOString() },
+        }).then((result) => {
+          const data = result.data;
+          console.log("this -> ", data)
+          const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
+          console.log('Task Lists:', taskLists);
+          let dataTemp = {...taskLists[0]}
+          console.log(dataTemp)
+          updateTasksData({...dataTemp})
+        });
+        
+        //const taskLists = result.data.tasksByUserIdAndDate.map((task) => task.taskList);
+        //console.log('Task Lists:', taskLists);
+        //let dataTemp = {...taskLists[0]}
+        //console.log(dataTemp)
+          //updateTasksData(dataTemp)
+          //console.log('Fetched Tasks:', data.tasksByUserIdAndDate);
+        
+      }, [date]);
 
       function updateDatabase(data) {
+        const theData = {
+          date: new Date().toISOString(), // Current date
+          taskList: data, // Your JSON task list
+          userId: currentUser?.id, // Replace with the actual user ID
+        };
         console.log('A save-worthy modification just occurred!')
-        console.log(JSON.stringify(data))
+
+        //console.log(JSON.stringify(data))
+        //console.log(theData)
+
+        update({variables: {id: 1, input: theData}})
+        //create({variables: {input: theData}})
+  
         // TODO: Update database
       }
 
       return (
         <>
+          <h1>{date}</h1>
           <Toaster />
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.keys(tasksData).map((type, index) => {
