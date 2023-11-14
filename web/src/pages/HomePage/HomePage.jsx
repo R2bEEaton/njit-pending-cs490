@@ -119,7 +119,6 @@ const AddTask = () => {
   const handleSubmit = () => {
     console.log('Form data submitted:', formData)
     //add new task to database
-    finalTasksData['Important'].push({ formData })
 
     onClose()
   }
