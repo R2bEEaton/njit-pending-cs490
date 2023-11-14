@@ -207,10 +207,13 @@ const HomePage = () => {
     <>
       <MetaTags title="Home" description="Home page" />
       <DatePicker setDateProp={setDate} />
-      <Flex fontFamily={'DM Sans'} gap={'5%'}>
-          <Box w={"50%"}>
-              <Text fontSize={'30px'} fontWeight={'700'}>Tasks</Text>
-              <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}>
+      <Flex fontFamily={'DM Sans'} gap={'5%'} mt={'20px'}>
+          <Box w={"50%"} mt={'20px'}>
+              <Text fontSize={'30px'} fontWeight={'700'}>
+                Tasks
+                <AddTask />
+              </Text>
+              <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'} mt={'20px'}>
                   <TaskBox date={date} />
               </Box>
           </Box>

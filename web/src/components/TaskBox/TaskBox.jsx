@@ -126,17 +126,13 @@ const TaskBox = ({ date}) => {
       useEffect(() => {
         console.log(date + "T00:00:00.000Z")
         fetchTasks({
-          variables: { userId: currentUser.id, date: new Date().toISOString()},
+          variables: { userId: currentUser.id, date: new Date(date)},
         }).then((result) => {
-          console.log(result)
           try {
             const data = result.data;
-            console.log("this -> ", data)
             const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
-            console.log('Task Lists:', taskLists);
             let dataTemp = {...taskLists[0]}
             console.log(dataTemp)
-            updateTasksData({...dataTemp})
           } catch (error) {}
         });
 
