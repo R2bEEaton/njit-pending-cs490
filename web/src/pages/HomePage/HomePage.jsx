@@ -52,20 +52,77 @@ const ToastWelcome = () => {
   }, [])
 }
 
+const finalTasksData = {
+  'Top Priority': [
+    {
+      id: 1,
+      title: 'Complete Math Homework',
+      notes:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      status: 'Completed',
+      pomodoros: 2,
+      expanded: false,
+    },
+    {
+      id: 0,
+      title: 'Complete Math Homework',
+      notes:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      status: 'Cancelled',
+      pomodoros: 3,
+      expanded: false,
+    },
+  ],
+  Important: [
+    {
+      id: 2,
+      title: 'Complete Math Homework',
+      notes:
+        'Lorem ipsum dolor sit amet, consectetur adipisprevtacing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      status: 'InProgress',
+      pomodoros: 4,
+      expanded: false,
+    },
+  ],
+  Other: [],
+}
+
+function FindID() {
+  let idsArray = []
+  Object.keys(finalTasksData).map((data) => {
+    finalTasksData[data].map(({ id }) => {
+      idsArray.push(id)
+    })
+  })
+  idsArray.sort()
+  let i = 0
+  for (; i < idsArray.length; i++) {
+    if (i !== idsArray[i]) break
+  }
+  console.log("New task's id should be: " + i)
+  return i
+}
+
 const AddTask = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [tasksData, updateTasksData] = useState(finalTasksData)
   const [formData, setFormData] = useState({
+    id: FindID(),
     title: '',
-    note: '',
-    timerAmount: 0,
+    notes: '',
+    pomodoros: 1,
+    status: 'NotStarted',
   })
   const handleChange = (field, value) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }))
   }
 
   const handleSubmit = () => {
-    // Handle form submission logic here
+    console.log('Before push', tasksData)
     console.log('Form data submitted:', formData)
+    updateTasksData(tasksData['Important'].push({ formData }))
+    console.log('after push', tasksData)
+
     onClose()
   }
   return (
@@ -100,9 +157,10 @@ const AddTask = () => {
               <FormLabel mt={4}>Pomodoro Timer</FormLabel>
               <NumberInput
                 min={0}
-                value={formData.timerAmount}
+                defaultValue={1}
+                value={formData.pomodoros}
                 onChange={(valueString) =>
-                  handleChange('timerAmount', parseInt(valueString, 10))
+                  handleChange('pomodoros', parseInt(valueString, 10))
                 }
               >
                 <NumberInputField />
@@ -115,8 +173,8 @@ const AddTask = () => {
             <FormControl mt={4}>
               <FormLabel>Task Notes</FormLabel>
               <Textarea
-                value={formData.note}
-                onChange={(e) => handleChange('note', e.target.value)}
+                value={formData.notes}
+                onChange={(e) => handleChange('notes', e.target.value)}
               />
             </FormControl>
           </ModalBody>
@@ -168,9 +226,7 @@ const HomePage = () => {
             p={'20px'}
             borderRadius={'10px'}
             boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
-          >
-            <TaskBox />
-          </Box>
+          ></Box>
         </Box>
         <Box>
           <Text fontSize={'30px'} fontWeight={'700'}>

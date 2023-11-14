@@ -7,6 +7,7 @@ import { toast, Toaster } from '@redwoodjs/web/dist/toast'
 import TaskType from 'src/components/TaskType/TaskType'
 
 // Below is a placeholder for the final version of the tasks datatype
+/*
 const finalTasksData = {
   'Top Priority': [
     {
@@ -41,8 +42,8 @@ const finalTasksData = {
   ],
   Other: [],
 }
-
-const TaskBox = () => {
+*/
+const TaskBox = ({ finalTasksData }) => {
   const [tasksData, updateTasksData] = useState(finalTasksData)
   // Easter egg stuff - dw about it
   const [dndEasterEgg, updateDndEasterEgg] = useState([])
