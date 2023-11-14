@@ -106,7 +106,13 @@ const DatePicker = () => {
                 outlineColor={'#6284FF'}
                 fill={'none'}
                 rightIcon={
-                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronUpIcon />
+                  isOpen ? (
+                    <CircleChevronDownIcon
+                      style={{ transform: `scaleY(-1)` }}
+                    />
+                  ) : (
+                    <CircleChevronDownIcon />
+                  )
                 }
               >
                 {month}
@@ -159,7 +165,13 @@ const DatePicker = () => {
                 outlineColor={'#6284FF'}
                 fill={'none'}
                 rightIcon={
-                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                  isOpen ? (
+                    <CircleChevronDownIcon
+                      style={{ transform: `scaleY(-1)` }}
+                    />
+                  ) : (
+                    <CircleChevronDownIcon />
+                  )
                 }
               >
                 {day}
@@ -213,7 +225,13 @@ const DatePicker = () => {
                 outlineColor={'#6284FF'}
                 fill={'none'}
                 rightIcon={
-                  isOpen ? <CircleChevronUpIcon /> : <CircleChevronDownIcon />
+                  isOpen ? (
+                    <CircleChevronDownIcon
+                      style={{ transform: `scaleY(-1)` }}
+                    />
+                  ) : (
+                    <CircleChevronDownIcon />
+                  )
                 }
               >
                 {year}
