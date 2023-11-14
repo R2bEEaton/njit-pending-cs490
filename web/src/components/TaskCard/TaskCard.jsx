@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import {
   Box,
   Collapse,
-  Editable,
   Textarea,
   HStack,
   Spacer,
@@ -79,13 +78,21 @@ const StatusIcons = ({ status, callback, task, idx }) => {
 
 const TaskCard = ({ dragHandle, task, idx, callback }) => {
   const [show, setShow] = React.useState(task.expanded)
-  const [notesEdit, setNotesEdit] = React.useState(false)
-  const [pomosEdit, setPomosEdit] = React.useState(false)
+  const [notesEdit, setNotesEdit] = React.useState(false);
+  const [pomosEdit, setPomosEdit] = React.useState(false);
   const { currentUser } = useAuth()
 
-  const [pomos, setPomos] = React.useState(task.pomodoros)
-  const handleToggle = () => setShow(!show)
-  const handleNotesToggle = () => setNotesEdit(!notesEdit)
+  const [pomos, setPomos] = React.useState(task.pomodoros);
+  const [notes, setNotes] = React.useState(task.notes);
+  const handleToggle = () => setShow(!show);
+  const handleNotesToggle = () => {
+    setNotesEdit(!notesEdit);
+    if (notesEdit) {
+      task.notes = notes
+      callback(idx, task, true)
+    }
+  }
+
   const handlePomosToggle = () => {
     setPomosEdit(!pomosEdit)
     // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change

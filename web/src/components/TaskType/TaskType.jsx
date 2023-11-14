@@ -9,6 +9,10 @@ const TaskType = ({type, data, callback}) => {
     callback(type, data, saveworthy)
   }
 
+  const onDragOver = () => {
+    console.log('test');
+  }
+
   return (
     <>
       <Box backgroundColor={'#F5F7F9'} w={'100%'} mb={'10px'} p={'16px'} borderRadius={'8px'}>
