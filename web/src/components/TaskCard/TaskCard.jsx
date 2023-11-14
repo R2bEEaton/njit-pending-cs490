@@ -12,7 +12,7 @@ import {
 
 import { useAuth } from 'src/auth'
 
-const StatusIcons = () => {
+const StatusIcons = ({ status }) => {
   const images = [
     'img/not_started.svg',
     'img/in_progress.svg',
@@ -20,11 +20,29 @@ const StatusIcons = () => {
     'img/rollover.svg',
     'img/cancelled.svg',
   ]
-  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const getIndexFromStatus = (status) => {
+    switch (status) {
+      case 'NotStarted':
+        return 0
+      case 'InProgress':
+        return 1
+      case 'Completed':
+        return 2
+      case 'Rollover':
+        return 3
+      case 'Cancelled':
+        return 4
+      default:
+        return 0 // Default to the first image if status is not recognized
+    }
+  }
+  const [currentIndex, setCurrentIndex] = useState(getIndexFromStatus(status))
 
   const changeImage = () => {
     setCurrentIndex((currentIndex + 1) % images.length)
   }
+
   return (
     <>
       <Box w="22px" h="22px" rounded="md" color="white" borderColor="#ccd0d5">
@@ -78,7 +96,7 @@ const TaskCard = ({ dragHandle, task, idx, callback }) => {
     <>
       <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
         <HStack>
-          <StatusIcons />
+          <StatusIcons status={task.status} />
           <Text color={'#6284FF'}>{task.title}</Text>
           <Spacer />
           <Box {...dragHandle}>
