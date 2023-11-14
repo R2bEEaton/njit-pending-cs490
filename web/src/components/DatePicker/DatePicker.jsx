@@ -244,8 +244,6 @@ const DatePicker = ({ setDateProp }) => {
   )
 }
 
-export default DatePicker
-
 const ArrowCircleLeftIcon = (props) => (
   <Icon width="23" height="22" viewBox="0 0 23 22" fill="none" {...props}>
     <path
@@ -313,3 +311,5 @@ const CircleChevronDownIcon = (props) => (
     />
   </Icon>
 )
+
+export default DatePicker
