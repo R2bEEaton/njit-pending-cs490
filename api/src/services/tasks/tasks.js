@@ -4,6 +4,15 @@ export const tasks = () => {
   return db.task.findMany()
 }
 
+export const tasksByUserIdAndDate = ({ userId, date }) => {
+  return db.task.findMany({
+    where: {
+      userId,
+      date,
+    },
+  })
+}
+
 export const task = ({ id }) => {
   return db.task.findUnique({
     where: { id },
