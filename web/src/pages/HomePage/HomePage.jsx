@@ -15,6 +15,15 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  FormControl,
+  FormLabel,
+  NumberInputField,
+  NumberInput,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Input,
+  Textarea,
 } from '@chakra-ui/react'
 
 import { Link, routes } from '@redwoodjs/router'
@@ -45,6 +54,20 @@ const ToastWelcome = () => {
 
 const AddTask = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [formData, setFormData] = useState({
+    title: '',
+    note: '',
+    timerAmount: 0,
+  })
+  const handleChange = (field, value) => {
+    setFormData((prevData) => ({ ...prevData, [field]: value }))
+  }
+
+  const handleSubmit = () => {
+    // Handle form submission logic here
+    console.log('Form data submitted:', formData)
+    onClose()
+  }
   return (
     <>
       <IconButton
@@ -62,17 +85,46 @@ const AddTask = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New task</ModalHeader>
+          <ModalHeader>Create New task</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>blah </Text>
+            <FormControl>
+              <FormLabel>Task Title</FormLabel>
+              <Input
+                type="text"
+                value={formData.title}
+                onChange={(e) => handleChange('title', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel mt={4}>Pomodoro Timer</FormLabel>
+              <NumberInput
+                min={0}
+                value={formData.timerAmount}
+                onChange={(valueString) =>
+                  handleChange('timerAmount', parseInt(valueString, 10))
+                }
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Task Notes</FormLabel>
+              <Textarea
+                value={formData.note}
+                onChange={(e) => handleChange('note', e.target.value)}
+              />
+            </FormControl>
           </ModalBody>
-
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Save
+            <Button mt={5} mr={3} colorScheme="blue" onClick={handleSubmit}>
+              Submit
             </Button>
-            <Button variant="ghost" onClick={onClose}>
+            <Button mt={5} variant="ghost" onClick={onClose}>
               Cancel
             </Button>
           </ModalFooter>

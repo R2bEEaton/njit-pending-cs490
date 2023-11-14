@@ -14,7 +14,7 @@ const finalTasksData = {
       title: 'Complete Math Homework',
       notes:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      status: 'NotStarted',
+      status: 'Completed',
       pomodoros: 2,
       expanded: false,
     },
@@ -23,7 +23,7 @@ const finalTasksData = {
       title: 'Complete Math Homework',
       notes:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      status: 'NotStarted',
+      status: 'Cancelled',
       pomodoros: 3,
       expanded: false,
     },
