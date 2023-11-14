@@ -201,26 +201,16 @@ const AddTask = () => {
 const HomePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
   ToastWelcome()
+  const [date, setDate] = useState()
   return (
     <>
       <MetaTags title="Home" description="Home page" />
-
-      <h1>HomePage</h1>
-      <p>
-        Find me in <code>./web/src/pages/HomePage/HomePage.jsx</code>
-      </p>
-      <p>
-        My default route is named <code>home</code>, link to me with `
-        <Link to={routes.home()}>Home</Link>`
-      </p>
-
-      {isAuthenticated ? <p>{currentUser ? currentUser.email : ''}</p> : <p>nothing to see here</p>}
-
+      <DatePicker setDateProp={setDate} />
       <Flex fontFamily={'DM Sans'} gap={'5%'}>
           <Box w={"50%"}>
               <Text fontSize={'30px'} fontWeight={'700'}>Tasks</Text>
               <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}>
-                  <TaskBox />
+                  <TaskBox date={date} />
               </Box>
           </Box>
           <Box>
