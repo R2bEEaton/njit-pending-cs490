@@ -70,6 +70,13 @@ const GET_TASKS = gql`
     }
   }
 `;
+const CREATE_TASKS = gql`
+  mutation CreateTasksMutation($input: CreateTaskInput!) {
+    createTask(input: $input) {
+      id
+    }
+  }
+`
 
 
 
@@ -78,10 +85,15 @@ const TaskBox = () => {
       const { currentUser, reauthenticate } = useAuth()
       const [tasksData, updateTasksData] = useState(finalTasksData)
       const [fetchTasks, {data, loading, error }] = useLazyQuery(GET_TASKS);
-      const [create] = useMutation(
+      const [update] = useMutation(
         UPDATE_TASKS,
         { onCompleted: reauthenticate }
       )
+      const [create] = useMutation(
+        CREATE_TASKS,
+        { onCompleted: reauthenticate }
+      )
+      
       // Easter egg stuff - dw about it
       const [dndEasterEgg, updateDndEasterEgg] = useState([]);
 
@@ -93,6 +105,7 @@ const TaskBox = () => {
         fetchTasks({
           variables: { userId: currentUser.id, date: new Date().toISOString() },
         });
+        console.log(tasksDataTemp)
         updateTasksData(tasksDataTemp)
         if (saveworthy) updateDatabase(tasksDataTemp)
       }
@@ -125,9 +138,12 @@ const TaskBox = () => {
       
       useEffect(() => {
         if (data) {
-          //const taskLists = data.tasks.map((task) => task.taskList);
-          //console.log('Task Lists:', taskLists);
-          console.log('Fetched Tasks:', data.tasksByUserIdAndDate);
+          const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
+          console.log('Task Lists:', taskLists);
+          let dataTemp = {...taskLists[0]}
+          console.log(taskLists[0])
+          //updateTasksData(dataTemp)
+          //console.log('Fetched Tasks:', data.tasksByUserIdAndDate);
         }
       }, [data]);
       
@@ -160,7 +176,8 @@ const TaskBox = () => {
         //console.log(JSON.stringify(data))
         //console.log(theData)
 
-        create({variables: {id: 1, input: theData}})
+        update({variables: {id: 1, input: theData}})
+        //create({variables: {input: theData}})
   
         // TODO: Update database
       }
