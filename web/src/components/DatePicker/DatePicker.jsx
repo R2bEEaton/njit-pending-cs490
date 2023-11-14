@@ -53,7 +53,7 @@ const months = [
   'November',
   'December',
 ]
-
+const currentYear = currentTime.getFullYear()
 let SelectedDate = {}
 
 const DatePicker = () => {
@@ -62,7 +62,7 @@ const DatePicker = () => {
   )
 
   const [day, setDay] = useState(currentTime.getDate())
-  const [year, setYear] = useState(currentTime.getFullYear())
+  const [year, setYear] = useState(currentYear)
 
   SelectedDate.month = month
   SelectedDate.day = day
@@ -73,7 +73,7 @@ const DatePicker = () => {
     'YYYY-MM'
   ).daysInMonth()
   let days = Array.from({ length: numDays }, (_, i) => i + 1)
-  const years = Array.from({ length: 5 }, (_, i) => i + year)
+  const years = Array.from({ length: 5 }, (_, i) => i + currentYear)
   console.log('years: ' + years)
   return (
     <Flex
