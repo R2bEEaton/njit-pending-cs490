@@ -9,9 +9,9 @@ const TaskType = ({type, data, callback}) => {
     callback(type, data, saveworthy)
   }
 
-  const onDragOver = () => {
-    console.log('test');
-  }
+    const onDragOver = () => {
+      console.log('YOoo')
+    }
 
   return (
     <>

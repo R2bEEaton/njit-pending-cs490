@@ -86,35 +86,35 @@ const TaskCard = ({ dragHandle, task, idx, callback }) => {
   const [notes, setNotes] = React.useState(task.notes);
   const handleToggle = () => setShow(!show);
   const handleNotesToggle = () => {
-    setNotesEdit(!notesEdit);
-    if (notesEdit) {
-      task.notes = notes
-      callback(idx, task, true)
+      setNotesEdit(!notesEdit);
+      if (notesEdit) {
+        task.notes = notes
+        callback(idx, task, true)
     }
   }
-
   const handlePomosToggle = () => {
-    setPomosEdit(!pomosEdit)
-    // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
-    if (pomosEdit) {
-      task.pomodoros = pomos
-      callback(idx, task, true)
-    }
+      setPomosEdit(!pomosEdit);
+      // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
+      if (pomosEdit) {
+          task.pomodoros = pomos
+          callback(idx, task, true)
+      }
   }
 
   function updatePomos(by) {
-    // Update pomodoro state
-    if (pomos + by < 0) {
+      // Update pomodoro state
+      if (pomos + by < 0)  {
       return
-    }
-    setPomos(pomos + by)
+      }
+      setPomos(pomos + by)
   }
 
+
   useEffect(() => {
-    // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
-    // Maybe a card being open is save-worthy?
-    task.expanded = show
-    callback(idx, task, true)
+      // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
+      // Maybe a card being open is save-worthy?
+      task.expanded = show
+      callback(idx, task, true)
   }, [show])
 
   return (

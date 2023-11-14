@@ -39,13 +39,12 @@ const finalTasksData = {
   ],
   "Other": []
 }
-/*
-const finalTasksData = {
+
+const finalTasksData2 = {
   "Top Priority": [],
   "Important": [],
   "Other": []
 }
-*/
 
 const UPDATE_TASKS = gql`
   mutation UpdateTasksMutation($id: Int!, $input: UpdateTaskInput!) {
@@ -74,8 +73,7 @@ const CREATE_TASKS = gql`
 
 
 
-const TaskBox = () => {
-  
+const TaskBox = ({ date}) => {  
       const { currentUser, reauthenticate } = useAuth()
       const [tasksData, updateTasksData] = useState(finalTasksData)
       const [fetchTasks, {data, loading, error }] = useLazyQuery(GET_TASKS);
@@ -95,11 +93,6 @@ const TaskBox = () => {
         // Receive callback from TaskType
         let tasksDataTemp = {...tasksData}
         tasksDataTemp[typeidx] = data
-        
-        fetchTasks({
-          variables: { userId: currentUser.id, date: new Date().toISOString() },
-        });
-        console.log(tasksDataTemp)
         updateTasksData(tasksDataTemp)
         if (saveworthy) updateDatabase(tasksDataTemp)
       }
@@ -131,33 +124,26 @@ const TaskBox = () => {
       }
       
       useEffect(() => {
-        if (data) {
+        fetchTasks({
+          variables: { userId: currentUser.id, date: new Date().toISOString() },
+        }).then((result) => {
+          const data = result.data;
+          console.log("this -> ", data)
           const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
           console.log('Task Lists:', taskLists);
           let dataTemp = {...taskLists[0]}
-          console.log(taskLists[0])
+          console.log(dataTemp)
+          updateTasksData({...dataTemp})
+        });
+        
+        //const taskLists = result.data.tasksByUserIdAndDate.map((task) => task.taskList);
+        //console.log('Task Lists:', taskLists);
+        //let dataTemp = {...taskLists[0]}
+        //console.log(dataTemp)
           //updateTasksData(dataTemp)
           //console.log('Fetched Tasks:', data.tasksByUserIdAndDate);
-        }
-      }, [data]);
-      
-      // When the tasks change, compute the ID value of a new card if it were to be added
-      useEffect(() => {
-        // The ID of a new task
-        let idsArray = []
-        Object.keys(tasksData).map((data) => {
-          tasksData[data].map(({id}) => {
-            idsArray.push(id)
-          })
-        })
-        idsArray.sort()
-        let i = 0
-        for (; i < idsArray.length; i++) {
-          if (i !== idsArray[i]) break;
-        }
-        console.log("New task's id should be: " + i);
-      }, [tasksData])
-      
+        
+      }, [date]);
 
       function updateDatabase(data) {
         const theData = {
@@ -178,7 +164,7 @@ const TaskBox = () => {
 
       return (
         <>
-          
+          <h1>{date}</h1>
           <Toaster />
           <DragDropContext onDragEnd={onDragEnd}>
             {Object.keys(tasksData).map((type, index) => {
