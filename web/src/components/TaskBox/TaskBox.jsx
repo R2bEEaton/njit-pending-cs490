@@ -73,7 +73,7 @@ const CREATE_TASKS = gql`
 
 
 
-const TaskBox = ({ date}) => {  
+const TaskBox = ({ date}) => {
       const { currentUser, reauthenticate } = useAuth()
       const [tasksData, updateTasksData] = useState(finalTasksData)
       const [fetchTasks, {data, loading, error }] = useLazyQuery(GET_TASKS);
@@ -85,7 +85,7 @@ const TaskBox = ({ date}) => {
         CREATE_TASKS,
         { onCompleted: reauthenticate }
       )
-      
+
       // Easter egg stuff - dw about it
       const [dndEasterEgg, updateDndEasterEgg] = useState([]);
 
@@ -122,32 +122,36 @@ const TaskBox = ({ date}) => {
         updateTasksData(tasksDataTemp)
         updateDatabase(tasksDataTemp)
       }
-      
+
       useEffect(() => {
+        console.log(date + "T00:00:00.000Z")
         fetchTasks({
-          variables: { userId: currentUser.id, date: new Date().toISOString() },
+          variables: { userId: currentUser.id, date: new Date().toISOString()},
         }).then((result) => {
-          const data = result.data;
-          console.log("this -> ", data)
-          const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
-          console.log('Task Lists:', taskLists);
-          let dataTemp = {...taskLists[0]}
-          console.log(dataTemp)
-          updateTasksData({...dataTemp})
+          console.log(result)
+          try {
+            const data = result.data;
+            console.log("this -> ", data)
+            const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
+            console.log('Task Lists:', taskLists);
+            let dataTemp = {...taskLists[0]}
+            console.log(dataTemp)
+            updateTasksData({...dataTemp})
+          } catch (error) {}
         });
-        
+
         //const taskLists = result.data.tasksByUserIdAndDate.map((task) => task.taskList);
         //console.log('Task Lists:', taskLists);
         //let dataTemp = {...taskLists[0]}
         //console.log(dataTemp)
           //updateTasksData(dataTemp)
           //console.log('Fetched Tasks:', data.tasksByUserIdAndDate);
-        
+
       }, [date]);
 
       function updateDatabase(data) {
         const theData = {
-          date: new Date().toISOString(), // Current date
+          date: date, // Current date
           taskList: data, // Your JSON task list
           userId: currentUser?.id, // Replace with the actual user ID
         };
@@ -158,7 +162,7 @@ const TaskBox = ({ date}) => {
 
         update({variables: {id: 1, input: theData}})
         //create({variables: {input: theData}})
-  
+
         // TODO: Update database
       }
 

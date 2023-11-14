@@ -38,9 +38,7 @@ const DatePicker = ({ setDateProp }) => {
 
   const [day, setDay] = useState(currentTime.getDate())
   const [year, setYear] = useState(currentYear)
-  setDateProp(
-    ('0' + (months.indexOf(month) + 1)).slice(-2) + '/' + day + '/' + year
-  )
+  setDateProp(year + '-' + ('0' + (months.indexOf(month) + 1)).slice(-2) + '-' + day)
 
   let numDays = moment(
     year + '-' + (months.indexOf(month) + 1),

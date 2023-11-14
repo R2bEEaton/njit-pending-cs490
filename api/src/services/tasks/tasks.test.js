@@ -27,7 +27,7 @@ describe('tasks', () => {
       },
     })
 
-    expect(result.date).toEqual(new Date('2023-11-13T06:14:26.759Z'))
+    expect(result.date).toEqual(new Date('2023-11-13T00:00:00.000Z'))
     expect(result.userId).toEqual(scenario.task.two.userId)
   })
 
@@ -38,7 +38,7 @@ describe('tasks', () => {
       input: { date: '2023-11-14T06:14:26.759Z' },
     })
 
-    expect(result.date).toEqual(new Date('2023-11-14T06:14:26.759Z'))
+    expect(result.date).toEqual(new Date('2023-11-14T00:00:00.000Z'))
   })
 
   scenario('deletes a task', async (scenario) => {

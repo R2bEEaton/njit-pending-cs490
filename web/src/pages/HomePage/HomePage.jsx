@@ -32,6 +32,7 @@ import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import TaskBox from 'src/components/TaskBox/TaskBox'
+import DatePicker from "src/components/DatePicker/DatePicker";
 
 const ToastWelcome = () => {
   // Use a state variable to track whether the toast notification has been shown
