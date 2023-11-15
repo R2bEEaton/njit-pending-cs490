@@ -12,7 +12,7 @@ const finalTasksData = {
   "Top Priority": [
     {
       "id": 3,
-      "title": "Complete Math Homework",
+      "title": "Task 1",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "status": "NotStarted",
       "pomodoros": 2,
@@ -20,7 +20,7 @@ const finalTasksData = {
     },
     {
       "id": 0,
-      "title": "Complete Math Homework",
+      "title": "Task 2",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "status": "NotStarted",
       "pomodoros": 3,
@@ -30,7 +30,7 @@ const finalTasksData = {
   "Important": [
     {
       "id": 2,
-      "title": "Complete Math Homework",
+      "title": "Task 3",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "status": "NotStarted",
       "pomodoros": 4,
@@ -125,16 +125,16 @@ const TaskBox = ({ date}) => {
 
       useEffect(() => {
         console.log(date + "T00:00:00.000Z")
-        fetchTasks({
-          variables: { userId: currentUser.id, date: new Date(date)},
-        }).then((result) => {
-          try {
+        try {
+          fetchTasks({
+            variables: {userId: currentUser.id, date: new Date(date)},
+          }).then((result) => {
             const data = result.data;
             const taskLists = data.tasksByUserIdAndDate.map((task) => task.taskList);
             let dataTemp = {...taskLists[0]}
             console.log(dataTemp)
-          } catch (error) {}
-        });
+          });
+        } catch (error) {}
 
         //const taskLists = result.data.tasksByUserIdAndDate.map((task) => task.taskList);
         //console.log('Task Lists:', taskLists);
