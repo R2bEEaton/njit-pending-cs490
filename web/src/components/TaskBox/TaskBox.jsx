@@ -1,6 +1,6 @@
 import TaskType from "src/components/TaskType/TaskType";
 import {DragDropContext} from "react-beautiful-dnd";
-import { useMutation, fetch } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
 import { useAuth } from "src/auth";
 import {useEffect, useState} from "react";
 import {toast, Toaster} from "@redwoodjs/web/dist/toast";
