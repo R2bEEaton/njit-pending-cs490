@@ -9,21 +9,19 @@ const TaskType = ({type, data, callback}) => {
     callback(type, data, saveworthy)
   }
 
-    const onDragOver = () => {
-      console.log('YOoo')
-    }
+  if (!type) throw new Error('type is required')
+  if (!data) throw new Error('data is required')
+  if (!callback) throw new Error('callback is required')
 
   return (
     <>
       <Box backgroundColor={'#F5F7F9'} w={'100%'} mb={'10px'} p={'16px'} borderRadius={'8px'}>
           <Text fontSize={'20px'}>{type}</Text>
-          <Droppable droppableId={type} onDragEnter={onDragOver}>
+          <Droppable droppableId={type}>
             {(provided) => (
-              <>
                 <Flex flexDirection={'column'} {...provided.droppableProps} ref={provided.innerRef}>
                   {data.map((task, idx) => {
                     return (
-                      <>
                         <Draggable key={task.id} draggableId={task.id.toString()} index={idx}>
                           {(provided) => (
                             <Box {...provided.draggableProps} ref={provided.innerRef} mt={'6px'} mb={'6px'}>
@@ -31,13 +29,11 @@ const TaskType = ({type, data, callback}) => {
                             </Box>
                           )}
                         </Draggable>
-                      </>
                     )
                   })}
                     {provided.placeholder}
                     {(!data.length) ? (<Text fontStyle={'italic'} fontWeight={'normal'} fontSize={'12px'}>Your {type} tasks.</Text>) : ''}
                 </Flex>
-              </>
             )}
           </Droppable>
       </Box>

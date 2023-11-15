@@ -29,7 +29,7 @@ const taskDatas = [
   }
 ]
 
-const itif = (condition) => condition ? it : console.log;
+const itif = (condition) => condition ? it : () => {};
 
 const currentUser = {pomodoro: 25}
 mockCurrentUser(currentUser)
