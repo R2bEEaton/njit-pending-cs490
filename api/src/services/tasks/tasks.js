@@ -5,7 +5,7 @@ export const tasks = () => {
 }
 
 export const tasksByUserIdAndDate = ({ userId, date }) => {
-  return db.task.findMany({
+  return db.task.findFirst({
     where: {
       userId,
       date,

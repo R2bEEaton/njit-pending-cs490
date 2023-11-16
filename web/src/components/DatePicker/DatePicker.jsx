@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 
 import {
   Button,
@@ -38,7 +38,9 @@ const DatePicker = ({ setDateProp }) => {
 
   const [day, setDay] = useState(currentTime.getDate())
   const [year, setYear] = useState(currentYear)
-  setDateProp(year + '-' + ('0' + (months.indexOf(month) + 1)).slice(-2) + '-' + day)
+  useEffect(() => {
+    setDateProp(year + '-' + ('0' + (months.indexOf(month) + 1)).slice(-2) + '-' + day)
+  })
 
   let numDays = moment(
     year + '-' + (months.indexOf(month) + 1),
