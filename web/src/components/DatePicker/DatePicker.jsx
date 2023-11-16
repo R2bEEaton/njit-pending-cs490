@@ -11,6 +11,7 @@ import {
   Icon,
   IconButton,
 } from '@chakra-ui/react'
+import { toInteger } from 'lodash'
 import moment from 'moment'
 
 let currentTime = new Date()
@@ -47,7 +48,10 @@ const DatePicker = ({ setDateProp }) => {
     'YYYY-MM'
   ).daysInMonth()
   let days = Array.from({ length: moment(date).daysInMonth() }, (_, i) => i + 1)
-  const years = Array.from({ length: 5 }, (_, i) => i + currentYear)
+  const years = Array.from(
+    { length: 5 },
+    (_, i) => i + parseInt(date.format('YYYY'))
+  )
   return (
     <Flex
       h={'60px'}
@@ -173,11 +177,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setYear(
-              years[(years.indexOf(year) - 1 + years.length) % years.length]
-            )
-          }
+          onClick={() => setDate(moment(date).subtract(1, 'years'))}
         ></IconButton>
         <Menu size={'md'}>
           {({ isOpen }) => (
@@ -197,7 +197,7 @@ const DatePicker = ({ setDateProp }) => {
                   )
                 }
               >
-                {year}
+                {date.format('YYYY')}
               </MenuButton>
 
               <MenuList
@@ -210,7 +210,7 @@ const DatePicker = ({ setDateProp }) => {
                   <MenuItem
                     key={year}
                     color={'black'}
-                    onClick={() => setYear(year)}
+                    onClick={() => setDate(moment(date).year(year))}
                   >
                     {year}
                   </MenuItem>
@@ -224,9 +224,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setYear(years[(years.indexOf(year) + 1) % years.length])
-          }
+          onClick={() => setDate(moment(date).add(1, 'years'))}
         ></IconButton>
       </HStack>
     </Flex>
