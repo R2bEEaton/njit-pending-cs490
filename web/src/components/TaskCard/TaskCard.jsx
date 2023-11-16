@@ -1,17 +1,15 @@
-import {createRef, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {
     Box,
     Collapse,
-    Textarea,
     HStack,
     Spacer,
     Text,
-    Image, Editable, EditableTextarea, EditablePreview, EditableInput, useEditableControls,
+    Image, Editable, EditableTextarea, EditablePreview, useEditableControls,
 } from '@chakra-ui/react'
 
 import {useAuth} from 'src/auth'
 import TextareaAutosize from 'react-textarea-autosize'
-import * as PropTypes from "prop-types";
 
 const getStatusFromIndex = (n) => {
     switch (n) {
@@ -188,19 +186,15 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
                         </button>
                     </HStack>
                     <Editable w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false} onSubmit={handleNotes} selectAllOnFocus={false}>
-                        {(props) => (
-                            <>
-                                <HStack align={'flex-start'}>
-                                    <Box w={'100%'}>
-                                        <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
-                                        <EditablePreview/>
-                                        <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'} style={{outlineColor: "white", boxShadow: "none"}}/>
-                                    </Box>
-                                    <Spacer/>
-                                    <EditableControls/>
-                                </HStack>
-                            </>
-                        )}
+                        <HStack align={'flex-start'}>
+                            <Box w={'100%'}>
+                                <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
+                                <EditablePreview/>
+                                <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'} style={{outlineColor: "white", boxShadow: "none"}}/>
+                            </Box>
+                            <Spacer/>
+                            <EditableControls/>
+                        </HStack>
                     </Editable>
                 </Collapse>
             </Box>
