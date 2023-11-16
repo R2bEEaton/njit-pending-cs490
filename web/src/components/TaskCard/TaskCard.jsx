@@ -63,21 +63,14 @@ const StatusIcons = ({status, callback, task, idx}) => {
     return (
         <>
             <Box w="22px" h="22px" rounded="md" color="white" borderColor="#ccd0d5">
-                <Image
-                    className="task_progress"
-                    src={images[currentIndex]}
-                    alt="Status_icons"
-                    onClick={changeImage}
-                    w="20px"
-                    h="20px"
-                    cursor={'pointer'}
-                />
+                <Image className="task_progress" src={images[currentIndex]} alt="Status_icons" onClick={changeImage}
+                       w="20px" h="20px" cursor={'pointer'}/>
             </Box>
         </>
     )
 }
 
-const TaskCard = ({dragHandle, task, idx, callback, isDragging}) => {
+const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
     const [show, setShow] = React.useState(task.expanded)
     const [pomosEdit, setPomosEdit] = React.useState(false);
     const {currentUser} = useAuth()
@@ -147,7 +140,8 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging}) => {
 
     return (
         <>
-            <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} outline={isDragging ? '1px solid lightgray' : 'none'}>
+            <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}
+                 outline={isDragging ? '1px solid lightgray' : 'none'}>
                 <HStack>
                     <StatusIcons
                         status={task.status}
@@ -185,12 +179,14 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging}) => {
                             <EditIcon active={pomosEdit}/>
                         </button>
                     </HStack>
-                    <Editable w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false} onSubmit={handleNotes} selectAllOnFocus={false}>
+                    <Editable w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false}
+                              onSubmit={handleNotes} selectAllOnFocus={false}>
                         <HStack align={'flex-start'}>
                             <Box w={'100%'}>
                                 <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
                                 <EditablePreview/>
-                                <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'} style={{outlineColor: "white", boxShadow: "none"}}/>
+                                <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'}
+                                                  style={{outlineColor: "white", boxShadow: "none"}}/>
                             </Box>
                             <Spacer/>
                             <EditableControls/>
