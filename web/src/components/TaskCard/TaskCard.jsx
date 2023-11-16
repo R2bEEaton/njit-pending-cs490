@@ -77,7 +77,7 @@ const StatusIcons = ({status, callback, task, idx}) => {
     )
 }
 
-const TaskCard = ({dragHandle, task, idx, callback}) => {
+const TaskCard = ({dragHandle, task, idx, callback, isDragging}) => {
     const [show, setShow] = React.useState(task.expanded)
     const [pomosEdit, setPomosEdit] = React.useState(false);
     const {currentUser} = useAuth()
@@ -147,7 +147,7 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
 
     return (
         <>
-            <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}>
+            <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'} outline={isDragging ? '1px solid lightgray' : 'none'}>
                 <HStack>
                     <StatusIcons
                         status={task.status}
