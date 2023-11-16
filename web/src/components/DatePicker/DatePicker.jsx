@@ -13,39 +13,13 @@ import {
 } from '@chakra-ui/react'
 import moment from 'moment'
 
-let currentTime = new Date()
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
-const currentYear = currentTime.getFullYear()
 const DatePicker = ({ setDateProp }) => {
   const [date, setDate] = useState(moment())
-  const [month, setMonth] = useState(
-    currentTime.toLocaleString('default', { month: 'long' })
-  )
 
-  const [day, setDay] = useState(currentTime.getDate())
-  const [year, setYear] = useState(currentYear)
   useEffect(() => {
     setDateProp(date.format())
   })
 
-  let numDays = moment(
-    year + '-' + (months.indexOf(month) + 1),
-    'YYYY-MM'
-  ).daysInMonth()
   let days = Array.from({ length: moment(date).daysInMonth() }, (_, i) => i + 1)
   const years = Array.from(
     { length: 5 },
