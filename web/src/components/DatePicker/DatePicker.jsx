@@ -11,7 +11,6 @@ import {
   Icon,
   IconButton,
 } from '@chakra-ui/react'
-import { toInteger } from 'lodash'
 import moment from 'moment'
 
 let currentTime = new Date()
