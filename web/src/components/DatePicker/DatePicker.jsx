@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Button,
@@ -30,8 +30,8 @@ const months = [
   'December',
 ]
 const currentYear = currentTime.getFullYear()
-
 const DatePicker = ({ setDateProp }) => {
+  const [date, setDate] = useState(moment())
   const [month, setMonth] = useState(
     currentTime.toLocaleString('default', { month: 'long' })
   )
@@ -39,7 +39,7 @@ const DatePicker = ({ setDateProp }) => {
   const [day, setDay] = useState(currentTime.getDate())
   const [year, setYear] = useState(currentYear)
   useEffect(() => {
-    setDateProp(year + '-' + ('0' + (months.indexOf(month) + 1)).slice(-2) + '-' + day)
+    setDateProp(date.format())
   })
 
   let numDays = moment(
@@ -62,13 +62,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setMonth(
-              months[
-                (months.indexOf(month) - 1 + months.length) % months.length
-              ]
-            )
-          }
+          onClick={() => setDate(moment(date).subtract(1, 'months'))}
         ></IconButton>
         <Menu size={'md'}>
           {({ isOpen }) => (
@@ -88,7 +82,7 @@ const DatePicker = ({ setDateProp }) => {
                   )
                 }
               >
-                {month}
+                {date.format('MMMM')}
               </MenuButton>
               <MenuList
                 maxHeight={'239px'}
@@ -96,13 +90,13 @@ const DatePicker = ({ setDateProp }) => {
                 scrollbar-color={'#6284FF'}
                 outlineColor={'#6284FF'}
               >
-                {months.map((month) => (
+                {moment.months().map((month) => (
                   <MenuItem
                     key={month}
                     color={'black'}
-                    onClick={() => setMonth(month)}
+                    onClick={() => setDate(moment(date).month(month))}
                   >
-                    {month}
+                    {date.format('MMMM')}
                   </MenuItem>
                 ))}
               </MenuList>
@@ -114,9 +108,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setMonth(months[(months.indexOf(month) + 1) % months.length])
-          }
+          onClick={() => setDate(moment(date).add(1, 'months'))}
         ></IconButton>
       </HStack>
 
