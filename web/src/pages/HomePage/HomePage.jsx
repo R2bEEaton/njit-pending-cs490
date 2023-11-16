@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect} from 'react'
 
-import { AddIcon } from '@chakra-ui/icons'
+import {AddIcon} from '@chakra-ui/icons'
 import {
   Box,
   Flex,
@@ -26,12 +26,14 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 
-import { MetaTags } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
+import {MetaTags} from '@redwoodjs/web'
+import {toast} from '@redwoodjs/web/toast'
 
-import { useAuth } from 'src/auth'
+import {useAuth} from 'src/auth'
 import TaskBox from 'src/components/TaskBox/TaskBox'
 import DatePicker from "src/components/DatePicker/DatePicker";
+import handleDatabase from "src/pages/HomePage/handleDatabase";
+import { useApolloClient } from "@apollo/client";
 
 const ToastWelcome = () => {
   // Use a state variable to track whether the toast notification has been shown
@@ -52,68 +54,28 @@ const ToastWelcome = () => {
   }, [])
 }
 
-let finalTasksData = {
-  'Top Priority': [
-    {
-      id: 1,
-      title: 'Complete Math Homework',
-      notes:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      status: 'Completed',
-      pomodoros: 2,
-      expanded: false,
-    },
-    {
-      id: 0,
-      title: 'Complete Math Homework',
-      notes:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      status: 'Cancelled',
-      pomodoros: 3,
-      expanded: false,
-    },
-  ],
-  Important: [
-    {
-      id: 2,
-      title: 'Complete Math Homework',
-      notes:
-        'Lorem ipsum dolor sit amet, consectetur adipisprevtacing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      status: 'InProgress',
-      pomodoros: 4,
-      expanded: false,
-    },
-  ],
-  Other: [],
-}
-
-function FindID() {
-  let idsArray = []
-  Object.keys(finalTasksData).map((data) => {
-    finalTasksData[data].map(({ id }) => {
-      idsArray.push(id)
-    })
-  })
-  idsArray.sort()
-  let i = 0
-  for (; i < idsArray.length; i++) {
-    if (i !== idsArray[i]) break
-  }
-  return i
-}
+// function FindID() {
+//   let idsArray = []
+//   Object.keys(tasks).map((data) => {
+//     tasks[data].map(({id}) => {
+//       idsArray.push(id)
+//     })
+//   })
+//   idsArray.sort()
+//   let i = 0
+//   for (; i < idsArray.length; i++) {
+//     if (i !== idsArray[i]) break
+//   }
+//   return i
+// }
 
 const AddTask = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {isOpen, onOpen, onClose} = useDisclosure()
   const [formData, setFormData] = useState({
-    id: FindID(),
-    title: '',
-    notes: '',
-    pomodoros: 1,
-    status: 'NotStarted',
-    expanded: false,
+    id: 1 /*FindID()*/, title: '', notes: '', pomodoros: 1, status: 'NotStarted', expanded: false,
   })
   const handleChange = (field, value) => {
-    setFormData((prevData) => ({ ...prevData, [field]: value }))
+    setFormData((prevData) => ({...prevData, [field]: value}))
   }
 
   const handleSubmit = () => {
@@ -121,17 +83,11 @@ const AddTask = () => {
     //add new task to database
     //clear form data
     setFormData({
-      id: FindID(),
-      title: '',
-      notes: '',
-      pomodoros: 1,
-      status: 'NotStarted',
-      expanded: false,
+      id: FindID(), title: '', notes: '', pomodoros: 1, status: 'NotStarted', expanded: false,
     })
     onClose()
   }
-  return (
-    <>
+  return (<>
       <IconButton
         isRound={true}
         w="39px"
@@ -139,16 +95,16 @@ const AddTask = () => {
         variant="solid"
         colorScheme="blue"
         aria-label="add task"
-        icon={<AddIcon color="white" h="16px" w="16px" />}
+        icon={<AddIcon color="white" h="16px" w="16px"/>}
         ml=".5vw"
         mb=".5vw"
         onClick={onOpen}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay/>
         <ModalContent>
           <ModalHeader>Create New task</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton/>
           <ModalBody>
             <FormControl>
               <FormLabel>Task Title</FormLabel>
@@ -164,14 +120,12 @@ const AddTask = () => {
                 min={0}
                 defaultValue={1}
                 value={formData.pomodoros}
-                onChange={(valueString) =>
-                  handleChange('pomodoros', parseInt(valueString, 10))
-                }
+                onChange={(valueString) => handleChange('pomodoros', parseInt(valueString, 10))}
               >
-                <NumberInputField />
+                <NumberInputField/>
                 <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
+                  <NumberIncrementStepper/>
+                  <NumberDecrementStepper/>
                 </NumberInputStepper>
               </NumberInput>
             </FormControl>
@@ -193,34 +147,66 @@ const AddTask = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
-  )
+    </>)
 }
 
+const EMPTY_TASKS_DATA = {"Top Priority": [], "Important": [], "Other": []}
+
 const HomePage = () => {
-  const { currentUser, isAuthenticated } = useAuth()
+  const {currentUser} = useAuth()
   ToastWelcome()
   const [date, setDate] = useState()
-  return (
-    <>
-      <MetaTags title="Home" description="Home page" />
-      <DatePicker setDateProp={setDate} />
+  const [tasks, setTasks] = useState(EMPTY_TASKS_DATA)
+
+  /**
+   * When the tasks state changes, save to the database
+   * TODO: Re-add the database save functionality
+   */
+  useEffect(() => {
+    if (!tasks) return
+    console.log('Tasks Update Triggered, saving to database')
+    console.log(tasks)
+
+    /**
+     * TODO: Create function in handleDatabase.js to handle create / udpate
+     */
+  }, [tasks])
+
+
+  const client = useApolloClient()
+  /**
+   * When the date changes, refresh the tasks list
+   */
+  useEffect(() => {
+    if (!date) return
+    console.log(`The date changed to ${date} so we need to grab data`)
+
+    handleDatabase({userId: currentUser.id, date: date, client}).then((res) => {
+      setTasks(JSON.parse(JSON.stringify(res.taskList)))
+    }).catch(() => {
+      setTasks(EMPTY_TASKS_DATA)
+    })
+  }, [date])
+
+  return (<>
+      <MetaTags title="Home" description="Home page"/>
+      <DatePicker setDateProp={setDate}/>
       <Flex fontFamily={'DM Sans'} gap={'5%'} mt={'20px'}>
-          <Box w={"50%"} mt={'20px'}>
-              <Text fontSize={'30px'} fontWeight={'700'}>
-                Tasks
-                <AddTask />
-              </Text>
-              <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'} mt={'20px'}>
-                  <TaskBox date={date} />
-              </Box>
+        <Box w={"50%"} mt={'20px'}>
+          <Text fontSize={'30px'} fontWeight={'700'}>
+            Tasks
+            <AddTask/>
+          </Text>
+          <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
+               mt={'20px'}>
+            <TaskBox tasksData={tasks} updateTasksData={setTasks}/>
           </Box>
-          <Box>
-              <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
-          </Box>
+        </Box>
+        <Box>
+          <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
+        </Box>
       </Flex>
-    </>
-  )
+    </>)
 }
 
 export default HomePage

@@ -7,12 +7,11 @@ const TaskType = ({type, data, callback}) => {
      * Send data back to the parent after updating the current task
      * @param idx
      * @param task
-     * @param saveworthy
      */
-    const onUpdate = (idx, task, saveworthy) => {
+    const onUpdate = (idx, task) => {
         // Receive callback from TaskCard and send along to TaskBox
         data[idx] = task
-        callback(type, data, saveworthy)
+        callback(type, data)
     }
 
     if (!type) throw new Error('type is required')

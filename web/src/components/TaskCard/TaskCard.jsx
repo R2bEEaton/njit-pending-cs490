@@ -107,7 +107,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         if (task.notes === value) return // If the notes actually changed
         task.notes = value
         setNotes(value)
-        callback(idx, task, true)
+        callback(idx, task)
     }
 
     const handlePomosToggle = () => {
@@ -115,7 +115,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
         if (pomosEdit) {
             task.pomodoros = pomos
-            callback(idx, task, true)
+            callback(idx, task)
         }
     }
 
@@ -135,7 +135,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
         // Maybe a card being open is save-worthy?
         task.expanded = show
-        callback(idx, task, true)
+        callback(idx, task)
     }, [show])
 
     return (

@@ -10,7 +10,7 @@ export const schema = gql`
   type Query {
     tasks: [Task!]! @requireAuth
     task(id: Int!): Task @requireAuth
-    tasksByUserIdAndDate(userId: Int!, date: DateTime!): [Task]! @requireAuth
+    tasksByUserIdAndDate(userId: Int!, date: DateTime!): Task! @requireAuth
   }
 
   input CreateTaskInput {
