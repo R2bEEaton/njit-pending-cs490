@@ -182,7 +182,16 @@ const HomePage = () => {
     console.log(`The date changed to ${date} so we need to grab data`)
 
     handleDatabase({userId: currentUser.id, date: date, client}).then((res) => {
-      setTasks(JSON.parse(JSON.stringify(res.taskList)))
+      let orderedData = JSON.parse(JSON.stringify(res.taskList))
+      const orderedKeys = ["Top Priority", "Important", "Other"];
+
+      // Create a new object with the desired order
+      const orderedTasks = {};
+      orderedKeys.forEach((key) => {
+        orderedTasks[key] = orderedData[key] || [];
+      });
+
+      setTasks(orderedTasks);
     }).catch(() => {
       setTasks(EMPTY_TASKS_DATA)
     })
