@@ -46,7 +46,7 @@ const DatePicker = ({ setDateProp }) => {
     year + '-' + (months.indexOf(month) + 1),
     'YYYY-MM'
   ).daysInMonth()
-  let days = Array.from({ length: numDays }, (_, i) => i + 1)
+  let days = Array.from({ length: moment(date).daysInMonth() }, (_, i) => i + 1)
   const years = Array.from({ length: 5 }, (_, i) => i + currentYear)
   return (
     <Flex
@@ -96,7 +96,7 @@ const DatePicker = ({ setDateProp }) => {
                     color={'black'}
                     onClick={() => setDate(moment(date).month(month))}
                   >
-                    {date.format('MMMM')}
+                    {month}
                   </MenuItem>
                 ))}
               </MenuList>
@@ -117,9 +117,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setDay(days[(days.indexOf(day) - 1 + days.length) % days.length])
-          }
+          onClick={() => setDate(moment(date).subtract(1, 'days'))}
         ></IconButton>
         <Menu size={'md'}>
           {({ isOpen }) => (
@@ -139,7 +137,7 @@ const DatePicker = ({ setDateProp }) => {
                   )
                 }
               >
-                {days.includes(day) ? day : days.at(-1)}
+                {date.format('DD')}
               </MenuButton>
 
               <MenuList
@@ -152,7 +150,7 @@ const DatePicker = ({ setDateProp }) => {
                   <MenuItem
                     key={day}
                     color={'black'}
-                    onClick={() => setDay(day)}
+                    onClick={() => setDate(moment(date).date(day))}
                   >
                     {day}
                   </MenuItem>
@@ -166,7 +164,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() => setDay(days[(days.indexOf(day) + 1) % days.length])}
+          onClick={() => setDate(moment(date).add(1, 'days'))}
         ></IconButton>
       </HStack>
 
