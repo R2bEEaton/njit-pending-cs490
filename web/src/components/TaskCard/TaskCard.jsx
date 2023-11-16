@@ -6,10 +6,11 @@ import {
     HStack,
     Spacer,
     Text,
-    Image, Editable, EditableTextarea, EditablePreview, EditableInput,
+    Image, Editable, EditableTextarea, EditablePreview, EditableInput, useEditableControls,
 } from '@chakra-ui/react'
 
 import {useAuth} from 'src/auth'
+import TextareaAutosize from 'react-textarea-autosize'
 import * as PropTypes from "prop-types";
 
 const getStatusFromIndex = (n) => {
@@ -78,15 +79,6 @@ const StatusIcons = ({status, callback, task, idx}) => {
     )
 }
 
-function EditableControls({isEditing, onSubmit, onCancel, onEdit}) {
-
-    return (
-        <button onClick={isEditing ? onSubmit : onEdit}>
-            <EditIcon active={isEditing}/>
-        </button>
-    )
-}
-
 const TaskCard = ({dragHandle, task, idx, callback}) => {
     const [show, setShow] = React.useState(task.expanded)
     const [pomosEdit, setPomosEdit] = React.useState(false);
@@ -95,13 +87,38 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
     const [pomos, setPomos] = React.useState(task.pomodoros);
     const [notes, setNotes] = React.useState(task.notes);
 
+    /**
+     * Button for editing the notes
+     * @returns {JSX.Element}
+     * @constructor
+     */
+    function EditableControls() {
+        const {
+            isEditing,
+            getSubmitButtonProps,
+            getEditButtonProps,
+        } = useEditableControls()
+
+        return isEditing ? (
+            <button {...getSubmitButtonProps()}>
+                <EditIcon active={isEditing}/>
+            </button>
+        ) : (
+            <button {...getEditButtonProps()}>
+                <EditIcon active={isEditing}/>
+            </button>
+        )
+    }
+
     const handleToggle = () => setShow(!show);
+
     const handleNotes = (value) => {
-        console.log(value)
+        if (task.notes === value) return // If the notes actually changed
         task.notes = value
         setNotes(value)
         callback(idx, task, true)
     }
+
     const handlePomosToggle = () => {
         setPomosEdit(!pomosEdit);
         // If the user confirms a pomodoros edit, send it back to the parent as a save-worthy change
@@ -111,6 +128,10 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
         }
     }
 
+    /**
+     * Function for updating the pomodoros by + or - 1
+     * @param by
+     */
     function updatePomos(by) {
         // Update pomodoro state
         if (pomos + by < 0) {
@@ -118,7 +139,6 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
         }
         setPomos(pomos + by)
     }
-
 
     useEffect(() => {
         // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
@@ -167,23 +187,21 @@ const TaskCard = ({dragHandle, task, idx, callback}) => {
                             <EditIcon active={pomosEdit}/>
                         </button>
                     </HStack>
-                    <HStack alignItems={'top'}>
-                        <Editable w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false} onSubmit={handleNotes}>
-                            {(props) => (
-                                <>
-                                    <Box>
-                                        <Text fontSize={'12px'} color={'#545454'}>
-                                            Notes
-                                        </Text>
+                    <Editable w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false} onSubmit={handleNotes} selectAllOnFocus={false}>
+                        {(props) => (
+                            <>
+                                <HStack align={'flex-start'}>
+                                    <Box w={'100%'}>
+                                        <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
                                         <EditablePreview/>
-                                        <EditableInput/>
+                                        <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'} style={{outlineColor: "white", boxShadow: "none"}}/>
                                     </Box>
                                     <Spacer/>
-                                    <EditableControls {...props} />
-                                </>
-                            )}
-                        </Editable>
-                    </HStack>
+                                    <EditableControls/>
+                                </HStack>
+                            </>
+                        )}
+                    </Editable>
                 </Collapse>
             </Box>
         </>
