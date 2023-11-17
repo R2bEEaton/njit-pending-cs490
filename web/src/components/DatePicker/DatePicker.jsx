@@ -17,7 +17,7 @@ const DatePicker = ({ setDateProp }) => {
   const [date, setDate] = useState(moment())
 
   useEffect(() => {
-    setDateProp(date.format())
+    setDateProp(date.format('YYYY-MM-DD'))
   })
 
   let days = Array.from({ length: moment(date).daysInMonth() }, (_, i) => i + 1)
