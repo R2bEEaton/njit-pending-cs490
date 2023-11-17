@@ -26,13 +26,13 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 
-import {MetaTags} from '@redwoodjs/web'
+import {MetaTags, useMutation} from '@redwoodjs/web'
 import {toast} from '@redwoodjs/web/toast'
 
 import {useAuth} from 'src/auth'
 import TaskBox from 'src/components/TaskBox/TaskBox'
 import DatePicker from "src/components/DatePicker/DatePicker";
-import handleDatabase from "src/pages/HomePage/handleDatabase";
+import {handleDatabase} from "src/pages/HomePage/handleDatabase";
 import { useApolloClient } from "@apollo/client";
 
 const ToastWelcome = () => {
@@ -151,8 +151,26 @@ const AddTask = () => {
 }
 
 const EMPTY_TASKS_DATA = {"Top Priority": [], "Important": [], "Other": []}
+/*
+const UPDATE_TASKS = gql`
+  mutation UpdateTaskMutation($id: Int!, $input: UpdateTaskInput!) {
+    updateTask(id: $id, input: $input) {
+      id
+    }
+  }
+`
+*/
+
+const UPDATE_TASKS = gql`
+  mutation UpdateTaskwDateMutation($userId: Int!, $date: DateTime!, $input: UpdateTaskwDateInput!) {
+    updateTaskwDate(userId: $userId, date: $date, input: $input) {
+      date
+    }
+  }
+`;
 
 const HomePage = () => {
+  const [create] = useMutation(UPDATE_TASKS)
   const {currentUser} = useAuth()
   ToastWelcome()
   const [date, setDate] = useState()
@@ -162,23 +180,44 @@ const HomePage = () => {
    * When the tasks state changes, save to the database
    * TODO: Re-add the database save functionality
    */
+
   useEffect(() => {
-    if (!tasks) return
+    if (!tasks || tasks == EMPTY_TASKS_DATA) return
     console.log('Tasks Update Triggered, saving to database')
-    console.log(tasks)
+    console.log("yo", tasks)
+    const updatedTaskData = {
+      // Replace with the fields you want to update and their new values
+      taskList: tasks,
+    };
+    const convertedDate = new Date(date);
+    const formattedDate = convertedDate.toISOString();
+    console.log(formattedDate)
+    create({variables: {userId: currentUser.id, date: formattedDate, input: updatedTaskData}})
+    
+    
+
+    
+    /*
+    updateDatabase({userId: currentUser.id, input: updatedTaskData, client}).then((res) => {
+      console.log(res)
+    })
+    */
+    
+    
 
     /**
      * TODO: Create function in handleDatabase.js to handle create / udpate
      */
   }, [tasks])
 
-
   const client = useApolloClient()
+  
   /**
    * When the date changes, refresh the tasks list
    */
   useEffect(() => {
     if (!date) return
+
     console.log(`The date changed to ${date} so we need to grab data`)
 
     handleDatabase({userId: currentUser.id, date: date, client}).then((res) => {
