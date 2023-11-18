@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Button,
@@ -13,41 +13,18 @@ import {
 } from '@chakra-ui/react'
 import moment from 'moment'
 
-let currentTime = new Date()
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
-const currentYear = currentTime.getFullYear()
-
 const DatePicker = ({ setDateProp }) => {
-  const [month, setMonth] = useState(
-    currentTime.toLocaleString('default', { month: 'long' })
-  )
+  const [date, setDate] = useState(moment())
 
-  const [day, setDay] = useState(currentTime.getDate())
-  const [year, setYear] = useState(currentYear)
   useEffect(() => {
-    setDateProp(year + '-' + ('0' + (months.indexOf(month) + 1)).slice(-2) + '-' + day)
+    setDateProp(date.format('YYYY-MM-DD'))
   })
 
-  let numDays = moment(
-    year + '-' + (months.indexOf(month) + 1),
-    'YYYY-MM'
-  ).daysInMonth()
-  let days = Array.from({ length: numDays }, (_, i) => i + 1)
-  const years = Array.from({ length: 5 }, (_, i) => i + currentYear)
+  let days = Array.from({ length: moment(date).daysInMonth() }, (_, i) => i + 1)
+  const years = Array.from(
+    { length: 5 },
+    (_, i) => i + parseInt(date.format('YYYY'))
+  )
   return (
     <Flex
       h={'60px'}
@@ -62,13 +39,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setMonth(
-              months[
-                (months.indexOf(month) - 1 + months.length) % months.length
-              ]
-            )
-          }
+          onClick={() => setDate(moment(date).subtract(1, 'months'))}
         ></IconButton>
         <Menu size={'md'}>
           {({ isOpen }) => (
@@ -88,7 +59,7 @@ const DatePicker = ({ setDateProp }) => {
                   )
                 }
               >
-                {month}
+                {date.format('MMMM')}
               </MenuButton>
               <MenuList
                 maxHeight={'239px'}
@@ -96,11 +67,11 @@ const DatePicker = ({ setDateProp }) => {
                 scrollbar-color={'#6284FF'}
                 outlineColor={'#6284FF'}
               >
-                {months.map((month) => (
+                {moment.months().map((month) => (
                   <MenuItem
                     key={month}
                     color={'black'}
-                    onClick={() => setMonth(month)}
+                    onClick={() => setDate(moment(date).month(month))}
                   >
                     {month}
                   </MenuItem>
@@ -114,9 +85,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setMonth(months[(months.indexOf(month) + 1) % months.length])
-          }
+          onClick={() => setDate(moment(date).add(1, 'months'))}
         ></IconButton>
       </HStack>
 
@@ -125,9 +94,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setDay(days[(days.indexOf(day) - 1 + days.length) % days.length])
-          }
+          onClick={() => setDate(moment(date).subtract(1, 'days'))}
         ></IconButton>
         <Menu size={'md'}>
           {({ isOpen }) => (
@@ -147,7 +114,7 @@ const DatePicker = ({ setDateProp }) => {
                   )
                 }
               >
-                {days.includes(day) ? day : days.at(-1)}
+                {date.format('DD')}
               </MenuButton>
 
               <MenuList
@@ -160,7 +127,7 @@ const DatePicker = ({ setDateProp }) => {
                   <MenuItem
                     key={day}
                     color={'black'}
-                    onClick={() => setDay(day)}
+                    onClick={() => setDate(moment(date).date(day))}
                   >
                     {day}
                   </MenuItem>
@@ -174,7 +141,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() => setDay(days[(days.indexOf(day) + 1) % days.length])}
+          onClick={() => setDate(moment(date).add(1, 'days'))}
         ></IconButton>
       </HStack>
 
@@ -183,11 +150,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setYear(
-              years[(years.indexOf(year) - 1 + years.length) % years.length]
-            )
-          }
+          onClick={() => setDate(moment(date).subtract(1, 'years'))}
         ></IconButton>
         <Menu size={'md'}>
           {({ isOpen }) => (
@@ -207,7 +170,7 @@ const DatePicker = ({ setDateProp }) => {
                   )
                 }
               >
-                {year}
+                {date.format('YYYY')}
               </MenuButton>
 
               <MenuList
@@ -220,7 +183,7 @@ const DatePicker = ({ setDateProp }) => {
                   <MenuItem
                     key={year}
                     color={'black'}
-                    onClick={() => setYear(year)}
+                    onClick={() => setDate(moment(date).year(year))}
                   >
                     {year}
                   </MenuItem>
@@ -234,9 +197,7 @@ const DatePicker = ({ setDateProp }) => {
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
-          onClick={() =>
-            setYear(years[(years.indexOf(year) + 1) % years.length])
-          }
+          onClick={() => setDate(moment(date).add(1, 'years'))}
         ></IconButton>
       </HStack>
     </Flex>
