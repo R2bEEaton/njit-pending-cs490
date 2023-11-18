@@ -168,9 +168,17 @@ const UPDATE_TASKS = gql`
     }
   }
 `;
+const CREATE_TASKS = gql`
+  mutation CreateTaskMutation($input: CreateTaskInput!) {
+    createTask(input: $input) {
+      date
+    }
+  }
+`;
 
 const HomePage = () => {
-  const [create] = useMutation(UPDATE_TASKS)
+  const [update] = useMutation(UPDATE_TASKS)
+  const [create] = useMutation(CREATE_TASKS)
   const {currentUser} = useAuth()
   ToastWelcome()
   const [date, setDate] = useState()
@@ -192,7 +200,7 @@ const HomePage = () => {
     const convertedDate = new Date(date);
     const formattedDate = convertedDate.toISOString();
     console.log(formattedDate)
-    create({variables: {userId: currentUser.id, date: formattedDate, input: updatedTaskData}})
+    update({variables: {userId: currentUser.id, date: formattedDate, input: updatedTaskData}})
     
     
 
@@ -232,6 +240,14 @@ const HomePage = () => {
 
       setTasks(orderedTasks);
     }).catch(() => {
+      const convertedDate = new Date(date);
+      const formattedDate = convertedDate.toISOString();
+      const inputTask = {
+        date: formattedDate,
+        taskList: EMPTY_TASKS_DATA,
+        userId: currentUser.id,
+      };
+      create({variables: {input: inputTask}})
       setTasks(EMPTY_TASKS_DATA)
     })
   }, [date])
