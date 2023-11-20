@@ -44,6 +44,7 @@ const UPDATE_TASKS = gql`
     }
   }
 `;
+
 const CREATE_TASKS = gql`
   mutation CreateTaskMutation($input: CreateTaskInput!) {
     createTask(input: $input) {
@@ -59,11 +60,6 @@ const HomePage = () => {
   ToastWelcome()
   const [date, setDate] = useState()
   const [tasks, setTasks] = useState(EMPTY_TASKS_DATA)
-
-  /**
-   * When the tasks state changes, save to the database
-   * TODO: Re-add the database save functionality
-   */
 
   useEffect(() => {
     if (!tasks || tasks === EMPTY_TASKS_DATA) return
@@ -110,6 +106,14 @@ const HomePage = () => {
 
       setTasks(orderedTasks);
     }).catch(() => {
+      const convertedDate = new Date(date);
+      const formattedDate = convertedDate.toISOString();
+      const inputTask = {
+        date: formattedDate,
+        taskList: EMPTY_TASKS_DATA,
+        userId: currentUser.id,
+      };
+      create({variables: {input: inputTask}})
       setTasks(EMPTY_TASKS_DATA)
     })
   }, [date])
@@ -121,11 +125,11 @@ const HomePage = () => {
       <Box w={"50%"} mt={'20px'}>
         <Text fontSize={'30px'} fontWeight={'700'}>
           Tasks
-          <AddTaskModal tasks={tasks} setTasks={setTasks}/>
+          <AddTaskModal tasks={tasks} setTasks={setTasks} />
         </Text>
         <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
              mt={'20px'}>
-          <TaskBox tasksData={tasks} updateTasksData={setTasks}/>
+          <TaskBox tasksData={tasks} updateTasksData={setTasks} />
         </Box>
       </Box>
       <Box>
