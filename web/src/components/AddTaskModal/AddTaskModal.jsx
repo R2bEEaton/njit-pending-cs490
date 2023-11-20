@@ -1,26 +1,27 @@
 import {
-  Button,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Textarea,
-  useDisclosure
+    Button,
+    FormControl,
+    FormLabel,
+    IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    Textarea,
+    useDisclosure
 } from "@chakra-ui/react";
 import {useState} from "react";
 import {AddIcon} from "@chakra-ui/icons";
+import {toast} from "@redwoodjs/web/toast";
 
 const AddTaskModal = ({tasks, setTasks}) => {
   function FindID() {
@@ -40,14 +41,20 @@ const AddTaskModal = ({tasks, setTasks}) => {
 
   const {isOpen, onOpen, onClose} = useDisclosure()
   const [formData, setFormData] = useState({
-    id: 1, title: '', notes: '', pomodoros: 1, status: 'NotStarted', expanded: false,
+    id: 1, title: '', notes: '', pomodoros: 1, status: 'NotStarted', expanded: true,
   })
   const handleChange = (field, value) => {
     setFormData((prevData) => ({...prevData, [field]: value}))
   }
-
   const handleSubmit = () => {
     console.log('Form data submitted:', formData)
+
+    // force valid title
+    if (formData.title.trim() === "") {
+        toast.error("Title must be valid")
+        return
+    }
+
     //add new task to database
     //clear form data
     const category = 'Important'; // Adjust the category as needed
