@@ -31,6 +31,26 @@ export const updateTask = ({ id, input }) => {
     where: { id },
   })
 }
+/*
+export const updateTaskwDate = ({ userId, date, input }) => {
+  return db.task.update({
+    data: input,
+    where: { userId, date, },
+  })
+}
+*/
+export const updateTaskwDate = ({ userId, date, input }) => {
+  return db.task.update({
+    data: input,
+    where: {
+      userId_date: {
+        userId,
+        date,
+      }
+    }
+  })
+}
+
 
 export const deleteTask = ({ id }) => {
   return db.task.delete({
