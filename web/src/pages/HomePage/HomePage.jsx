@@ -117,7 +117,7 @@ const HomePage = () => {
      console.log('Form data submitted:', formData)
      //add new task to database
      //clear form data
-     const category = 'Top Priority'; // Adjust the category as needed
+     const category = 'Important'; // Adjust the category as needed
      const newTask = {
        id: FindID(), // Use FindID() if needed
        title: formData.title,
