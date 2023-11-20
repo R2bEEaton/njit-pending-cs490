@@ -1,15 +1,16 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {
     Box,
     Collapse,
     HStack,
     Spacer,
     Text,
-    Image, Editable, EditableTextarea, EditablePreview, useEditableControls,
+    Image, Editable, EditableTextarea, EditablePreview, useEditableControls
 } from '@chakra-ui/react'
 
 import {useAuth} from 'src/auth'
 import TextareaAutosize from 'react-textarea-autosize'
+import {v4 as uuidv4} from "uuid"
 
 const getStatusFromIndex = (n) => {
     switch (n) {
@@ -26,7 +27,7 @@ const getStatusFromIndex = (n) => {
     }
 }
 
-const StatusIcons = ({status, callback, task, idx}) => {
+const StatusIcons = ({status, callback, task, idx, setTaskStatus}) => {
     const images = [
         'img/not_started.svg',
         'img/in_progress.svg',
@@ -51,11 +52,13 @@ const StatusIcons = ({status, callback, task, idx}) => {
                 return 0 // Default to the first image if status is not recognized
         }
     }
-    const [currentIndex, setCurrentIndex] = useState(getIndexFromStatus(status))
+    let currentIndex = getIndexFromStatus(status)
+
 
     const changeImage = () => {
-        setCurrentIndex((currentIndex + 1) % images.length)
+        currentIndex = (currentIndex + 1) % images.length
         task.status = getStatusFromIndex((currentIndex + 1) % images.length)
+        setTaskStatus(task.status)
         //console.log(getStatusFromIndex((currentIndex + 1) % images.length))
         callback(idx, task, true)
     }
@@ -71,12 +74,26 @@ const StatusIcons = ({status, callback, task, idx}) => {
 }
 
 const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
-    const [show, setShow] = React.useState(task.expanded)
-    const [pomosEdit, setPomosEdit] = React.useState(false);
+    const [pomosEdit, setPomosEdit] = useState(false);
     const {currentUser} = useAuth()
 
-    const [pomos, setPomos] = React.useState(task.pomodoros);
-    const [notes, setNotes] = React.useState(task.notes);
+    const [show, setShow] = useState(task.expanded)
+    const [pomos, setPomos] = useState(task.pomodoros)
+    const [notes, setNotes] = useState(task.notes)
+    const [taskStatus, setTaskStatus] = useState(task.status)
+
+    const notesBox = useRef()
+
+    /**
+     * Update states that depend on task
+     */
+    useEffect(() => {
+        setShow(task.expanded)
+        setPomosEdit(false)
+        setPomos(task.pomodoros)
+        setNotes(task.notes)
+        setTaskStatus(task.status)
+    }, [task]);
 
     /**
      * Button for editing the notes
@@ -144,10 +161,11 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                  outline={isDragging ? '1px solid lightgray' : 'none'}>
                 <HStack>
                     <StatusIcons
-                        status={task.status}
+                        status={taskStatus}
                         callback={callback}
                         task={task}
                         idx={idx}
+                        setTaskStatus={setTaskStatus}
                     />
                     <Text color={'#6284FF'}>{task.title}</Text>
                     <Spacer/>
@@ -179,12 +197,12 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                             <EditIcon active={pomosEdit}/>
                         </button>
                     </HStack>
-                    <Editable w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false}
-                              onSubmit={handleNotes} selectAllOnFocus={false}>
+                    <Editable key={uuidv4()} w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false}
+                              onSubmit={handleNotes} selectAllOnFocus={false} ref={notesBox}>
                         <HStack align={'flex-start'}>
                             <Box w={'100%'}>
                                 <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
-                                <EditablePreview/>
+                                <EditablePreview />
                                 <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'}
                                                   style={{outlineColor: "white", boxShadow: "none"}}/>
                             </Box>
