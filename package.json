@@ -33,6 +33,7 @@
     "@fontsource/dm-sans": "^5.0.17",
     "@fontsource/fredoka-one": "^5.0.5",
     "moment": "^2.29.4",
-    "react-beautiful-dnd": "^13.1.1"
+    "react-beautiful-dnd": "^13.1.1",
+    "react-textarea-autosize": "^8.5.3"
   }
 }

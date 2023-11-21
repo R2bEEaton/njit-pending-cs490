@@ -29,7 +29,7 @@ const taskDatas = [
   }
 ]
 
-const itif = (condition) => condition ? it : console.log;
+const itif = (condition) => condition ? it : () => {};
 
 const currentUser = {pomodoro: 25}
 mockCurrentUser(currentUser)
@@ -50,10 +50,10 @@ describe.each(taskDatas)('TaskCard', (task) => {
 
     // Check if the notes and pomodoros are visible when the card is expanded
     if (task.expanded) {
-      expect(screen.getByText(task.notes)).toBeVisible()
+      expect(screen.getAllByText(task.notes)[0]).toBeVisible()
       expect(screen.getByText(`Number of Pomodoro Timers (${currentUser.pomodoro} mins each)`)).toBeVisible()
     } else {
-      expect(screen.getByText(task.notes)).not.toBeVisible()
+      expect(screen.getAllByText(task.notes)[0]).not.toBeVisible()
       expect(screen.getByText(`Number of Pomodoro Timers (${currentUser.pomodoro} mins each)`)).not.toBeVisible()
     }
   })

@@ -47,6 +47,7 @@ model Task {
   taskList Json     @default("{\"Top Priority\": [],\"Important\": [],\"Other\": []}")
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
+  @@unique([userId, date])
 }
 
 // The Taskstable expects the date in the format "YYYY-MM-DD"

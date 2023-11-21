@@ -22,12 +22,12 @@ describe('tasks', () => {
   scenario('creates a task', async (scenario) => {
     const result = await createTask({
       input: {
-        date: '2023-11-13T06:14:26.759Z',
+        date: '2023-11-14T00:00:00.000Z',
         userId: scenario.task.two.userId,
       },
     })
 
-    expect(result.date).toEqual(new Date('2023-11-13T06:14:26.759Z'))
+    expect(result.date).toEqual(new Date('2023-11-14T00:00:00.000Z'))
     expect(result.userId).toEqual(scenario.task.two.userId)
   })
 
@@ -35,10 +35,10 @@ describe('tasks', () => {
     const original = await task({ id: scenario.task.one.id })
     const result = await updateTask({
       id: original.id,
-      input: { date: '2023-11-14T06:14:26.759Z' },
+      input: { date: '2023-11-14T00:00:00.000Z', userId: scenario.task.one.userId },
     })
 
-    expect(result.date).toEqual(new Date('2023-11-14T06:14:26.759Z'))
+    expect(result.date).toEqual(new Date('2023-11-14T00:00:00.000Z'))
   })
 
   scenario('deletes a task', async (scenario) => {

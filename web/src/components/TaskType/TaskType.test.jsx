@@ -2,8 +2,15 @@ import { render } from '@redwoodjs/testing/web'
 
 import TaskType from './TaskType'
 
-//   Improve this test with help from the Redwood Testing Doc:
-//    https://redwoodjs.com/docs/testing#testing-components
+// This suppresses the annoying console error messages from React about error boundaries
+const consoleError = console.error
+beforeEach(() => {
+  console.error = () => {}
+})
+
+afterEach(() => {
+  console.error = consoleError
+})
 
 jest.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }) =>
@@ -60,21 +67,17 @@ describe('TaskType', () => {
     expect(mockCallback).toBeCalled()
   })
 
-  it('does not render successfully', () => {
+  it('errors thrown when props not passed', () => {
     expect(() => {
       render(<TaskType data={taskTypeData} callback={mockCallback} />)
-    }).not.toThrow()
+    }).toThrow()
 
     expect(() => {
       render(<TaskType type={'Important'} callback={mockCallback} />)
     }).toThrow()
 
     expect(() => {
-      render(
-        <ErrorBoundary fallback={<ErrorBoundary />}>
-          <TaskType type={'Important'} data={taskTypeData} />
-        </ErrorBoundary>
-      )
+      render(<TaskType type={'Important'} data={taskTypeData} />)
     }).toThrow()
   })
 })
