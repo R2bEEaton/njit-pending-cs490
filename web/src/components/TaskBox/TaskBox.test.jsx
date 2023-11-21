@@ -9,10 +9,24 @@ jest.mock('../TaskType/TaskType', () => {
   return () => <div/>;
 });
 
+const mockTaskData = {
+  "Top Priority": [
+    {
+      "id": 1,
+      "title": "Complete math homework",
+      "notes": "test",
+      "pomodoros": 20,
+      "expanded": false
+    }
+  ],
+  "Important": [],
+  "Other": []
+}
+
 describe('TaskBox', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<TaskBox />)
+      render(<TaskBox tasksData={mockTaskData} updateTasksData={jest.fn()}/>)
     }).not.toThrow()
   })
 })

@@ -92,7 +92,7 @@ const HomePage = () => {
   useEffect(() => {
     if (!date) return
 
-    console.log(`The date changed to ${date} so we need to grab data`)
+    // console.log(`The date changed to ${date} so we need to grab data`)
 
     handleDatabase({userId: currentUser.id, date: date, client}).then((res) => {
       let orderedData = JSON.parse(JSON.stringify(res.taskList))
