@@ -11,6 +11,7 @@ import {
 import {useAuth} from 'src/auth'
 import TextareaAutosize from 'react-textarea-autosize'
 import {v4 as uuidv4} from "uuid"
+import FocusTimeModal from "src/components/FocusTimeModal/FocusTimeModal";
 
 const getStatusFromIndex = (n) => {
     switch (n) {
@@ -155,6 +156,14 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         callback(idx, task)
     }, [show])
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
+  
+    const handleTaskTitleClick = (title) => {
+      setSelectedTaskTitle(title);
+      setModalOpen(true);
+    };
+
     return (
         <>
             <Box backgroundColor={'white'} borderRadius={'8px'} p={'14px'}
@@ -166,8 +175,11 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                         task={task}
                         idx={idx}
                         setTaskStatus={setTaskStatus}
+                        _hover={{ cursor: 'pointer' }}
                     />
-                    <Text color={'#6284FF'}>{task.title}</Text>
+                    <Text color={'#6284FF'} onClick={() => handleTaskTitleClick(task.title)} _hover={{ cursor: 'pointer' }}>
+                        {task.title}
+                    </Text>
                     <Spacer/>
                     <Box {...dragHandle}>
                         <DragIcon/>
@@ -212,6 +224,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                     </Editable>
                 </Collapse>
             </Box>
+            <FocusTimeModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} taskTitle={selectedTaskTitle} />
         </>
     )
 }
