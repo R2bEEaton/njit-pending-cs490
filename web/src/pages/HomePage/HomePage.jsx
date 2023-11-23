@@ -15,6 +15,7 @@ import DatePicker from "src/components/DatePicker/DatePicker";
 import {handleDatabase} from "src/pages/HomePage/handleDatabase";
 import {useApolloClient} from "@apollo/client";
 import AddTaskModal from "src/components/AddTaskModal/AddTaskModal";
+import AppointmentsBox from "src/components/AppointmentsBox/AppointmentsBox";
 
 const ToastWelcome = () => {
   // Use a state variable to track whether the toast notification has been shown
@@ -121,19 +122,23 @@ const HomePage = () => {
   return (<>
     <MetaTags title="Home" description="Home page"/>
     <DatePicker setDateProp={setDate}/>
-    <Flex fontFamily={'DM Sans'} gap={'5%'} mt={'20px'}>
-      <Box w={"50%"} mt={'20px'}>
+    <Flex fontFamily={'DM Sans'} gap={'16px'} mt={'20px'}>
+      <Box w={"55%"}>
         <Text fontSize={'30px'} fontWeight={'700'}>
           Tasks
           <AddTaskModal tasks={tasks} setTasks={setTasks} />
         </Text>
         <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
-             mt={'20px'}>
+             mt={'15px'}>
           <TaskBox tasksData={tasks} updateTasksData={setTasks} />
         </Box>
       </Box>
-      <Box>
+      <Box w={"45%"}>
         <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
+        <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
+             mt={'15px'}>
+          <AppointmentsBox />
+        </Box>
       </Box>
     </Flex>
   </>)
