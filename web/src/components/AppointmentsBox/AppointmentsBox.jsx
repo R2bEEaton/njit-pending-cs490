@@ -1,4 +1,4 @@
-import {Box, Flex, Progress, Text} from "@chakra-ui/react"
+import {Box, Flex, Text} from "@chakra-ui/react"
 import moment from "moment"
 import {useEffect, useState} from "react"
 import {setTimeout} from 'worker-timers'
@@ -33,26 +33,26 @@ const dummyAppointments = [
     "allDay": false
   },
   {
-      "id": 5,
-      "summary": "Meeting with Counselor",
-      "startTime": "19:00:00",
-      "endTime": "19:30:00",
-      "allDay": false
+    "id": 5,
+    "summary": "Meeting with Counselor",
+    "startTime": "19:00:00",
+    "endTime": "19:30:00",
+    "allDay": false
   },
   {
-      "id": 6,
-      "summary": "Meeting with Counselor",
-      "startTime": "19:30:00",
-      "endTime": "21:00:00",
-      "allDay": false
+    "id": 6,
+    "summary": "Meeting with Counselor",
+    "startTime": "19:30:00",
+    "endTime": "21:30:00",
+    "allDay": false
   },
-    {
-        "id": 7,
-        "summary": "Meeting with Counselor",
-        "startTime": "18:00:00",
-        "endTime": "18:30:00",
-        "allDay": false
-    },
+  {
+    "id": 7,
+    "summary": "Meeting with Counselor",
+    "startTime": "18:00:00",
+    "endTime": "18:30:00",
+    "allDay": false
+  },
 ]
 
 /** A loop for generating random fake appointments */
@@ -108,6 +108,9 @@ const AppointmentsBox = () => {
           for (let j = 0; j < i; j++) {
               lefts += isTimeBetween(dummyAppointments[j].startTime, dummyAppointments[j].endTime, dummyAppointments[i].startTime)
           }
+          if (i > 0 && lefts === staggers[i-1]) {
+            lefts = 0
+          }
           staggers.push(lefts)
       }
       let divideBy = 0;
@@ -117,6 +120,7 @@ const AppointmentsBox = () => {
           divideBy = Math.max(staggers[i], divideBy)
           staggers[i] = staggers[i] / (divideBy + 1)
       }
+      console.log(staggers)
       return staggers;
   }
 
@@ -139,16 +143,14 @@ const AppointmentsBox = () => {
           // What is the length of the appointment in hours?
           let lengthInHours = endTimeM.diff(startTimeM, 'minutes') / 60
 
-          let staggerLeft =staggerLefts[idx]
+          let staggerLeft = staggerLefts[idx]
 
-          let completed;
-          if (moment().isAfter(endTimeM)) {
-            completed = 1
-          } else if (moment().isBefore(startTimeM)) {
-            completed = 0
-          } else {
-            completed = (moment().diff(startTimeM, 'minutes') / 60) / lengthInHours
-          }
+          const [completed, setCompleted] = useState(false)
+          setTimeout(() => {
+            setCompleted(true)
+          }, endTimeM.diff(moment(), 'milliseconds'))
+
+          // {completed > 0 && completed < 1 ? <Progress hasStripe value={completed * 100} size='xs' color={'#6284FF'} /> : ''}
 
           return (
             <Box key={id}
@@ -164,14 +166,14 @@ const AppointmentsBox = () => {
                  fontStyle={'normal'}
                  fontWeight={'500'}
                  lineHeight={'17px'}
+                 textDecoration={completed ? 'line-through' : ''}
                  width={`calc(100% - (100% * ${staggerLeft}))`}
                  ml={`calc(100% * ${staggerLeft})`}
-                 zIndex={idx}
+                 //zIndex={completed > 0 && completed < 1 ? 101 : (staggerLeft * 100).toFixed(0)}
                  //boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.05)'}
                  _hover={{backgroundColor: '#FAFAFA'}}
                  userSelect={'none'}
             >
-                {completed > 0 && completed < 1 ? <Progress hasStripe value={completed * 100} size='xs' color={'#6284FF'} bottom={'0px'} /> : ''}
               {summary}
             </Box>
           )
