@@ -188,6 +188,8 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
           <TestFocusModal
             isOpen={modalVis}
             onClose={() => setModalVis(false)}
+            title={task.title}
+            note={task.notes}
           />
 
           <Spacer />
