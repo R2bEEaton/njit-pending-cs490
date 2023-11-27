@@ -17,6 +17,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { v4 as uuidv4 } from 'uuid'
 
 import { useAuth } from 'src/auth'
+import TestFocusModal from 'src/components/TestFocusModal/TestFocusModal'
 
 const getStatusFromIndex = (n) => {
   switch (n) {
@@ -88,7 +89,7 @@ const StatusIcons = ({ status, callback, task, idx, setTaskStatus }) => {
 const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   const [pomosEdit, setPomosEdit] = useState(false)
   const { currentUser } = useAuth()
-
+  const [modalVis, setModalVis] = useState(true)
   const [show, setShow] = useState(task.expanded)
   const [pomos, setPomos] = useState(task.pomodoros)
   const [notes, setNotes] = useState(task.notes)
@@ -180,9 +181,10 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
             idx={idx}
             setTaskStatus={setTaskStatus}
           />
-          <Button color={'#6284FF'} onClick={alert.bind(null, 'test')}>
+          <Button color={'#6284FF'} onClick={() => setModalVis(!modalVis)}>
             {task.title}
           </Button>
+          {show ? <TestFocusModal /> : null}
           <Spacer />
           <Box {...dragHandle}>
             <DragIcon />
