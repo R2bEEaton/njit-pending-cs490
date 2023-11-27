@@ -158,9 +158,11 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
+    const [selectedNotes, setSelectedNotes] = useState('');
   
-    const handleTaskTitleClick = (title) => {
+    const handleTaskTitleClick = (title, notes) => {
       setSelectedTaskTitle(title);
+      setSelectedNotes(notes)
       setModalOpen(true);
     };
 
@@ -177,7 +179,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                         setTaskStatus={setTaskStatus}
                         _hover={{ cursor: 'pointer' }}
                     />
-                    <Text color={'#6284FF'} onClick={() => handleTaskTitleClick(task.title)} _hover={{ cursor: 'pointer' }}>
+                    <Text color={'#6284FF'} onClick={() => handleTaskTitleClick(task.title, task.notes)} _hover={{ cursor: 'pointer' }}>
                         {task.title}
                     </Text>
                     <Spacer/>
@@ -224,7 +226,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                     </Editable>
                 </Collapse>
             </Box>
-            <FocusTimeModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} taskTitle={selectedTaskTitle} />
+            <FocusTimeModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} taskTitle={selectedTaskTitle} taskNotes={selectedNotes} />
         </>
     )
 }
