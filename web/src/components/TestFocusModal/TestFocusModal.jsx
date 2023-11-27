@@ -7,9 +7,11 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  useDisclosure,
 } from '@chakra-ui/react'
 
 const TestFocusModal = ({ isOpen, onOpen, onClose }) => {
+  //const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>

@@ -89,7 +89,7 @@ const StatusIcons = ({ status, callback, task, idx, setTaskStatus }) => {
 const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   const [pomosEdit, setPomosEdit] = useState(false)
   const { currentUser } = useAuth()
-  const [modalVis, setModalVis] = useState(true)
+  const [modalVis, setModalVis] = useState(false)
   const [show, setShow] = useState(task.expanded)
   const [pomos, setPomos] = useState(task.pomodoros)
   const [notes, setNotes] = useState(task.notes)
@@ -181,10 +181,15 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
             idx={idx}
             setTaskStatus={setTaskStatus}
           />
-          <Button color={'#6284FF'} onClick={() => setModalVis(!modalVis)}>
+          <Button color={'#6284FF'} onClick={() => setModalVis(true)}>
             {task.title}
           </Button>
-          {show ? <TestFocusModal /> : null}
+
+          <TestFocusModal
+            isOpen={modalVis}
+            onClose={() => setModalVis(false)}
+          />
+
           <Spacer />
           <Box {...dragHandle}>
             <DragIcon />
