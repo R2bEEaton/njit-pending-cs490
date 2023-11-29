@@ -1,4 +1,4 @@
-import {Box, Flex, Text} from "@chakra-ui/react"
+import {Box, Flex, ListItem, Text, UnorderedList} from "@chakra-ui/react"
 import moment from "moment"
 import {useEffect, useState} from "react"
 import {setTimeout} from 'worker-timers'
@@ -53,6 +53,20 @@ const dummyAppointments = [
     "endTime": "18:30:00",
     "allDay": false
   },
+  {
+    "id": 8,
+    "summary": "Meeting with Counselor",
+    "startTime": "12:00:00",
+    "endTime": "13:30:00",
+    "allDay": true
+  },
+  {
+    "id": 9,
+    "summary": "Meeting with Counselor",
+    "startTime": "12:00:00",
+    "endTime": "13:30:00",
+    "allDay": true
+  },
 ]
 
 /** A loop for generating random fake appointments */
@@ -103,10 +117,11 @@ const AppointmentsBox = () => {
    */
   function staggerIt() {
       let staggers = [];
-      for (let i = 0; i < dummyAppointments.length; i++) {
+      let apptsCopy = dummyAppointments.filter(({allDay}) => {return !allDay})
+      for (let i = 0; i < apptsCopy.length; i++) {
           let lefts = 0;
           for (let j = 0; j < i; j++) {
-              lefts += isTimeBetween(dummyAppointments[j].startTime, dummyAppointments[j].endTime, dummyAppointments[i].startTime)
+              lefts += isTimeBetween(apptsCopy[j].startTime, apptsCopy[j].endTime, apptsCopy[i].startTime)
           }
           if (i > 0 && lefts === staggers[i-1]) {
             lefts = 0
@@ -127,70 +142,84 @@ const AppointmentsBox = () => {
   const staggerLefts = staggerIt()
 
   return (
-    <Box position={'relative'}>
-      <Box position={'absolute'} zIndex={'1'} width={'90%'} right={'0'}>
-        {dummyAppointments.map(({id, summary, startTime, endTime, allDay}, idx) => {
-          let today = moment().format('YYYY-MM-DD')
-          let dayStart = moment(`${today}T05:00:00`)
-          let dayEnd = moment(`${today}T20:00:00`)
-
-          let startTimeM = moment(`${today}T${startTime}`)
-          // Clamp the end time to be 8 PM
-          let endTimeM = moment.min(moment(`${today}T${endTime}`), dayEnd)
-
-          // How many hours after fiveAM does the appointment start?
-          let startHour = startTimeM.diff(dayStart, 'minutes') / 60
-          // What is the length of the appointment in hours?
-          let lengthInHours = endTimeM.diff(startTimeM, 'minutes') / 60
-
-          let staggerLeft = staggerLefts[idx]
-
-          const [completed, setCompleted] = useState(false)
-          setTimeout(() => {
-            setCompleted(true)
-          }, endTimeM.diff(moment(), 'milliseconds'))
-
-          // {completed > 0 && completed < 1 ? <Progress hasStripe value={completed * 100} size='xs' color={'#6284FF'} /> : ''}
-
+    <Flex flexDirection={'column'} gap={'20px'}>
+      <Box hidden={!dummyAppointments.filter(({allDay}) => {return allDay}).length}>
+        <Text><i>All-day Appointments</i></Text>
+        <UnorderedList>
+        {dummyAppointments.filter(({allDay}) => {return allDay}).map(({id, summary}) => {
           return (
-            <Box key={id}
-                 position={'absolute'}
-                 outline={'1px solid #E2EAF1'}
-                 padding={'10px'}
-                 minHeight={'44px'}
-                 height={`calc(44px * ${lengthInHours})`}
-                 mt={`calc((44px * ${startHour}) + 8.5px)`}
-                 backgroundColor={'#FFF'}
-                 color={'#1F1F1F'}
-                 fontSize={'14px'}
-                 fontStyle={'normal'}
-                 fontWeight={'500'}
-                 lineHeight={'17px'}
-                 textDecoration={completed ? 'line-through' : ''}
-                 width={`calc(100% - (100% * ${staggerLeft}))`}
-                 ml={`calc(100% * ${staggerLeft})`}
-                 //zIndex={completed > 0 && completed < 1 ? 101 : (staggerLeft * 100).toFixed(0)}
-                 //boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.05)'}
-                 _hover={{backgroundColor: '#FAFAFA'}}
-                 userSelect={'none'}
-            >
+            <ListItem key={id} color={'#1F1F1F'}>
               {summary}
-            </Box>
+            </ListItem>
           )
         })}
+        </UnorderedList>
       </Box>
-      <Flex flexDirection={'column'} gap={'27px'} fontSize={'14px'} fonstStyle={'normal'} fontWeight={'400'}
-            lineHeight={'17px'} color={'#1F1F1F'} alignItems={'flex-start'}>
-        {timeMap.map((time, idx) => {
-          return (
-            <Text key={idx} color={time === currentHour ? '#6284FF' : ''}
-                  outline={time === currentHour ? '1px solid #6284FF' : ''}
-                  outlineOffset={'2px'} padding={'0px 4px'} borderRadius={'6px'}
-                  flexShrink={1} userSelect={'none'}>{time}</Text>
-          )
-        })}
-      </Flex>
-    </Box>
+      <Box position={'relative'}>
+        <Box position={'absolute'} zIndex={'1'} width={'90%'} right={'0'}>
+          {dummyAppointments.filter(({allDay}) => {return !allDay}).map(({id, summary, startTime, endTime, allDay}, idx) => {
+            let today = moment().format('YYYY-MM-DD')
+            let dayStart = moment(`${today}T05:00:00`)
+            let dayEnd = moment(`${today}T20:00:00`)
+
+            let startTimeM = moment(`${today}T${startTime}`)
+            // Clamp the end time to be 8 PM
+            let endTimeM = moment.min(moment(`${today}T${endTime}`), dayEnd)
+
+            // How many hours after fiveAM does the appointment start?
+            let startHour = startTimeM.diff(dayStart, 'minutes') / 60
+            // What is the length of the appointment in hours?
+            let lengthInHours = endTimeM.diff(startTimeM, 'minutes') / 60
+
+            let staggerLeft = staggerLefts[idx]
+
+            const [completed, setCompleted] = useState(false)
+            setTimeout(() => {
+              setCompleted(true)
+            }, endTimeM.diff(moment(), 'milliseconds'))
+
+            // {completed > 0 && completed < 1 ? <Progress hasStripe value={completed * 100} size='xs' color={'#6284FF'} /> : ''}
+
+            return (
+              <Box key={id}
+                   position={'absolute'}
+                   outline={'1px solid #E2EAF1'}
+                   padding={'10px'}
+                   minHeight={'44px'}
+                   height={`calc(44px * ${lengthInHours})`}
+                   mt={`calc((44px * ${startHour}) + 8.5px)`}
+                   backgroundColor={'#FFF'}
+                   color={'#1F1F1F'}
+                   fontSize={'14px'}
+                   fontStyle={'normal'}
+                   fontWeight={'500'}
+                   lineHeight={'17px'}
+                   textDecoration={completed ? 'line-through' : ''}
+                   width={`calc(100% - (100% * ${staggerLeft}))`}
+                   ml={`calc(100% * ${staggerLeft})`}
+                   //zIndex={completed > 0 && completed < 1 ? 101 : (staggerLeft * 100).toFixed(0)}
+                   //boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.05)'}
+                   _hover={{backgroundColor: '#FAFAFA'}}
+                   //userSelect={'none'}
+              >
+                {summary}
+              </Box>
+            )
+          })}
+        </Box>
+        <Flex flexDirection={'column'} gap={'27px'} fontSize={'14px'} fonstStyle={'normal'} fontWeight={'400'}
+              lineHeight={'17px'} color={'#1F1F1F'} alignItems={'flex-start'}>
+          {timeMap.map((time, idx) => {
+            return (
+              <Text key={idx} color={time === currentHour ? '#6284FF' : ''}
+                    outline={time === currentHour ? '1px solid #6284FF' : ''}
+                    outlineOffset={'2px'} padding={'0px 4px'} borderRadius={'6px'}
+                    flexShrink={1} userSelect={'none'}>{time}</Text>
+            )
+          })}
+        </Flex>
+      </Box>
+    </Flex>
   )
 }
 
