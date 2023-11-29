@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { Button } from '@chakra-ui/react'
+import { setInterval, clearInterval } from 'worker-timers'
 
 const Timer = ({ numMinutes }) => {
   const [minutes, setMinutes] = useState(numMinutes)
   const [seconds, setSeconds] = useState(0)
 
   useEffect(() => {
-    if (minutes <= 0 && seconds <= 0) return
+    if (minutes === 0 && seconds === 0) return
     const timer = setInterval(() => {
       if (seconds === 0) {
         setMinutes((prevMinutes) => prevMinutes - 1)
