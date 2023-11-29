@@ -10,6 +10,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
+import Timer from 'src/components/Timer/Timer'
+
 const TestFocusModal = ({ isOpen, onOpen, onClose, note, title }) => {
   //const { isOpen, onOpen, onClose } = useDisclosure()
   return (
@@ -19,7 +21,10 @@ const TestFocusModal = ({ isOpen, onOpen, onClose, note, title }) => {
         <ModalContent>
           <ModalHeader>{'Title: ' + title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{'Notes: ' + note}</ModalBody>
+          <ModalBody>
+            <Timer secondsProp={30} />
+            {'Notes: ' + note}
+          </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>
           </ModalFooter>
