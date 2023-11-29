@@ -22,7 +22,7 @@ const TestFocusModal = ({ isOpen, onOpen, onClose, note, title }) => {
           <ModalHeader>{'Title: ' + title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Timer secondsProp={30} />
+            <Timer numMinutes={25} />
             {'Notes: ' + note}
           </ModalBody>
           <ModalFooter>
