@@ -144,23 +144,25 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
           <Box
             bg="#F5F7F9"
             width="90%"
-            height="42.921%" // Adjust this value based on your needs
+            height="45.6%"
             borderRadius="8px 8px 8px 8px"
             >
              
-            <Editable key={uuidv4()} w={'100%'} defaultValue={taskNotes} isPreviewFocusable={false} submitOnBlur={false}
-              selectAllOnFocus={false} ref={notesBox} fontSize="13px" lineHeight="18.23px">
+            <Editable key={uuidv4()} width = "100%" defaultValue={taskNotes} isPreviewFocusable={false} submitOnBlur={false}
+              selectAllOnFocus={false} ref={notesBox} fontSize="11px" lineHeight="14px" fontFamily="DM Sans">
               <HStack align={'flex-start'} mr = "3%" mt = "3%">
                 <Box w={'100%'} >
                   <Text fontFamily="DM Sans" fontSize="13px" fontWeight="700" lineHeight="15.24px" color={'#6284FF'}ml = "3%">Notes:</Text>
                   <EditablePreview 
-                     maxH="65.513px" // Set a maximum height to limit expansion
+                     //maxH="45.513px" // Set a maximum height to limit expansion
+                     maxH ="6.2vh"
                      overflowY="auto"
-                     
+                     marginLeft= "3%"
+                     width = "100%"
                   
                   />
-                  <EditableTextarea  resize={'none'} border={'none'}
-                    style={{ outlineColor: "#F5F7F9", boxShadow: "none" }}/>
+                  <EditableTextarea  resize={'none'} border={'none'} width = "100%" height="6.2vh"
+                    style={{ outlineColor: "#F5F7F9", boxShadow: "none", width: "100%", marginLeft: "3%"}}/>
                 </Box>
                 <Spacer />
                 <EditableControls />
@@ -169,7 +171,28 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
             </Box>
             </Flex>
           
-          
+        <Box bg="#252628" position="absolute" bottom="4.5%" ml="5%" width="90%" height="11.5%" borderRadius="8px 8px 8px 8px" borderWidth="1px" borderColor="#6284FF">
+        
+          <HStack  alignItems="center" mt ="4.3%">
+            <Flex direction="row" alignItems="center" ml = "17.96%">
+              <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr = "5%">
+                Pomos:
+              </Text>
+              <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
+                0/3
+              </Text>
+            </Flex>
+            <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml = "7%">
+              <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr = "3%">
+                Finish At:
+              </Text>
+              <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF" >
+                19:53 (1.4h)
+              </Text>
+            </Flex>
+          </HStack>
+       
+        </Box>
           
 
           
