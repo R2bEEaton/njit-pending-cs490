@@ -8,11 +8,12 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
+  Text,
 } from '@chakra-ui/react'
 
 import Timer from 'src/components/Timer/Timer'
 
-const TestFocusModal = ({ isOpen, onOpen, onClose, note, title }) => {
+const TestFocusModal = ({ isOpen, onOpen, onClose, note, title, pomos }) => {
   //const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -22,12 +23,11 @@ const TestFocusModal = ({ isOpen, onOpen, onClose, note, title }) => {
           <ModalHeader>{'Title: ' + title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <p>
-              {'Pomodoro: '} <Timer numMinutes={25} />
-            </p>
+            {'Pomodoro: '} <Timer numMinutes={25} />
             {'Short Break: '} <Timer numMinutes={25} />
             {'Long Break: '} <Timer numMinutes={25} />
-            {'Notes: ' + note}
+            <Text>{'Notes: ' + note}</Text>
+            <Text>{'Pomos: ' + pomos}</Text>
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>

@@ -190,6 +190,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
             onClose={() => setModalVis(false)}
             title={task.title}
             note={task.notes}
+            pomos={task.pomodoros}
           />
 
           <Spacer />
