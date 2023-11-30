@@ -24,7 +24,9 @@ const Timer = ({ numMinutes }) => {
 
   return (
     <div>
-      {minutes}:{seconds < 10 ? '0' + seconds : seconds}
+      <p>
+        {minutes}:{seconds < 10 ? '0' + seconds : seconds}
+      </p>
       <Button onClick={() => setIsRunning(true)} disabled={isRunning}>
         start
       </Button>
