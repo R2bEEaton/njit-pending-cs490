@@ -11,10 +11,12 @@ import {
   Text,
 } from '@chakra-ui/react'
 
+import { useAuth } from 'src/auth'
 import Timer from 'src/components/Timer/Timer'
 
 const TestFocusModal = ({ isOpen, onOpen, onClose, note, title, pomos }) => {
   //const { isOpen, onOpen, onClose } = useDisclosure()
+  const { currentUser, reauthenticate } = useAuth()
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -23,9 +25,9 @@ const TestFocusModal = ({ isOpen, onOpen, onClose, note, title, pomos }) => {
           <ModalHeader>{'Title: ' + title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {'Pomodoro: '} <Timer numMinutes={25} />
-            {'Short Break: '} <Timer numMinutes={25} />
-            {'Long Break: '} <Timer numMinutes={25} />
+            {'Pomodoro: '} <Timer numMinutes={currentUser.pomodoro} />
+            {'Short Break: '} <Timer numMinutes={currentUser.shortBreak} />
+            {'Long Break: '} <Timer numMinutes={currentUser.longBreak} />
             <Text>{'Notes: ' + note}</Text>
             <Text>{'Pomos: ' + pomos}</Text>
           </ModalBody>
