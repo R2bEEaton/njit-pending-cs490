@@ -20,8 +20,7 @@ const Timer = ({ numMinutes }) => {
 
   return (
     <p>
-      {' '}
-      Timer: {minutes}:{seconds < 10 ? '0' + seconds : seconds}{' '}
+      {minutes}:{seconds < 10 ? '0' + seconds : seconds}
     </p>
   )
 }
