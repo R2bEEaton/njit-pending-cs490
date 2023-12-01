@@ -152,6 +152,8 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
     function updatePomos(by) {
         // Update pomodoro state
         if (pomos + by < numPomosComplete) {
+            if (pomos < numPomosComplete)
+                setPomos(numPomosComplete)
             return
         }
         setPomos(pomos + by)
