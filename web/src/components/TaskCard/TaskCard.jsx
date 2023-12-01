@@ -78,6 +78,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
     const {currentUser} = useAuth()
 
     const [show, setShow] = useState(task.expanded)
+    const [numPomosComplete, setNumPomosComplete] = useState(task.pomodorosComplete)
     const [pomos, setPomos] = useState(task.pomodoros)
     const [notes, setNotes] = useState(task.notes)
     const [taskStatus, setTaskStatus] = useState(task.status)
@@ -90,6 +91,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
     useEffect(() => {
         setShow(task.expanded)
         setPomosEdit(false)
+        setNumPomosComplete(task.pomodorosComplete)
         setPomos(task.pomodoros)
         setNotes(task.notes)
         setTaskStatus(task.status)
@@ -136,13 +138,20 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         }
     }
 
+    const updateNumPomosComplete = (value) => {
+      if (task.pomodorosComplete === value) return // If the number of pomos completed is already that
+      task.pomodorosComplete = value
+      setNumPomosComplete(value)
+      callback(idx, task)
+    }
+
     /**
      * Function for updating the pomodoros by + or - 1
      * @param by
      */
     function updatePomos(by) {
         // Update pomodoro state
-        if (pomos + by < 0) {
+        if (pomos + by < numPomosComplete) {
             return
         }
         setPomos(pomos + by)
@@ -187,7 +196,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                         }}>
                             <PlusIcon/>
                         </button>
-                        <Text fontSize={'16px'} color={'#FE754D'} aria-label={'pomodoros'}>{pomos}</Text>
+                        <Text fontSize={'16px'} color={'#FE754D'} aria-label={'pomodoros'}>{numPomosComplete} / <Text color={pomosEdit ? '#6284FF' : ''} as={'span'}>{pomos}</Text></Text>
                         <button aria-label="decrement pomodoros" hidden={!pomosEdit} onClick={() => {
                             updatePomos(-1)
                         }}>

@@ -41,7 +41,7 @@ const AddTaskModal = ({tasks, setTasks}) => {
 
   const {isOpen, onOpen, onClose} = useDisclosure()
   const [formData, setFormData] = useState({
-    id: 1, title: '', notes: '', pomodoros: 1, status: 'NotStarted', expanded: true,
+    id: 1, title: '', notes: '', pomodorosComplete: 0, pomodoros: 1, status: 'NotStarted', expanded: true,
   })
   const handleChange = (field, value) => {
     setFormData((prevData) => ({...prevData, [field]: value}))
@@ -62,6 +62,7 @@ const AddTaskModal = ({tasks, setTasks}) => {
       id: FindID(),
       title: formData.title,
       notes: formData.notes,
+      pomodorosComplete: formData.pomodorosComplete,
       pomodoros: formData.pomodoros,
       status: formData.status,
       expanded: formData.expanded,
@@ -72,7 +73,7 @@ const AddTaskModal = ({tasks, setTasks}) => {
     }));
 
     setFormData({
-      id: FindID(), title: '', notes: '', pomodoros: 1, status: 'NotStarted', expanded: false,
+      id: FindID(), title: '', notes: '', pomodorosComplete: 0, pomodoros: 1, status: 'NotStarted', expanded: true,
     })
 
     onClose()
