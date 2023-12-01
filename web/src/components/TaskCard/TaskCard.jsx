@@ -97,6 +97,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   const [pomos, setPomos] = useState(task.pomodoros)
   const [notes, setNotes] = useState(task.notes)
   const [taskStatus, setTaskStatus] = useState(task.status)
+  const [modalVis, setModalVis] = useState(false)
 
   const notesBox = useRef()
 
@@ -193,7 +194,17 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
             idx={idx}
             setTaskStatus={setTaskStatus}
           />
-          <Text color={'#6284FF'}>{task.title}</Text>
+          <Button color={'#6284FF'} onClick={() => setModalVis(true)}>
+            {task.title}
+          </Button>
+
+          <TestFocusModal
+            isOpen={modalVis}
+            onClose={() => setModalVis(false)}
+            title={task.title}
+            note={task.notes}
+            pomos={task.pomodoros}
+          />
           <Spacer />
           <Box {...dragHandle}>
             <DragIcon />
