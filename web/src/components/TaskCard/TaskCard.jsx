@@ -89,8 +89,11 @@ const StatusIcons = ({ status, callback, task, idx, setTaskStatus }) => {
 const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   const [pomosEdit, setPomosEdit] = useState(false)
   const { currentUser } = useAuth()
-  const [modalVis, setModalVis] = useState(false)
+
   const [show, setShow] = useState(task.expanded)
+  const [numPomosComplete, setNumPomosComplete] = useState(
+    task.pomodorosComplete
+  )
   const [pomos, setPomos] = useState(task.pomodoros)
   const [notes, setNotes] = useState(task.notes)
   const [taskStatus, setTaskStatus] = useState(task.status)
@@ -103,6 +106,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   useEffect(() => {
     setShow(task.expanded)
     setPomosEdit(false)
+    setNumPomosComplete(task.pomodorosComplete)
     setPomos(task.pomodoros)
     setNotes(task.notes)
     setTaskStatus(task.status)
@@ -146,13 +150,21 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
     }
   }
 
+  const updateNumPomosComplete = (value) => {
+    if (task.pomodorosComplete === value) return // If the number of pomos completed is already that
+    task.pomodorosComplete = value
+    setNumPomosComplete(value)
+    callback(idx, task)
+  }
+
   /**
    * Function for updating the pomodoros by + or - 1
    * @param by
    */
   function updatePomos(by) {
     // Update pomodoro state
-    if (pomos + by < 0) {
+    if (pomos + by < numPomosComplete) {
+      if (pomos < numPomosComplete) setPomos(numPomosComplete)
       return
     }
     setPomos(pomos + by)
@@ -181,18 +193,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
             idx={idx}
             setTaskStatus={setTaskStatus}
           />
-          <Button color={'#6284FF'} onClick={() => setModalVis(true)}>
-            {task.title}
-          </Button>
-
-          <TestFocusModal
-            isOpen={modalVis}
-            onClose={() => setModalVis(false)}
-            title={task.title}
-            note={task.notes}
-            pomos={task.pomodoros}
-          />
-
+          <Text color={'#6284FF'}>{task.title}</Text>
           <Spacer />
           <Box {...dragHandle}>
             <DragIcon />
@@ -218,7 +219,10 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
               <PlusIcon />
             </button>
             <Text fontSize={'16px'} color={'#FE754D'} aria-label={'pomodoros'}>
-              {pomos}
+              {numPomosComplete} /{' '}
+              <Text color={pomosEdit ? '#6284FF' : ''} as={'span'}>
+                {pomos}
+              </Text>
             </Text>
             <button
               aria-label="decrement pomodoros"
