@@ -16,9 +16,23 @@ import UserInfo from 'src/components/UserInfo';
 import theme from "src/pages/LoginPage/theme";
 import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/700.css'
-
+import { useState } from 'react'
 const MainLayout = ({ children }) => {
   const { currentUser, isAuthenticated } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = () => {
+    // Set isLoading to true when the button is clicked
+    setIsLoading(true);
+
+    // Simulate an asynchronous action (e.g., API call, data fetching)
+    // Replace this with your actual asynchronous logic
+    console.log(currentUser)
+    setTimeout(() => {
+      // Reset isLoading to false when the asynchronous action is complete
+      setIsLoading(false);
+    }, 2000); // Replace 2000 with the actual duration of your asynchronous action
+  };
 
   function clearCookie(name){
     let domain = location.hostname;
@@ -54,7 +68,7 @@ const MainLayout = ({ children }) => {
             The following will need to be selectively hidden if the user has already planned their day
             */ }
             <Text textAlign={"center"} fontSize={20} fontFamily={"DM Sans"} fontWeight={"700"}>It's time to plan your day!</Text>
-            <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7}>Plan Day</Button>
+            <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7} onClick={handleClick} isLoading={isLoading}>Plan Day</Button>
             <Spacer />
             <Button colorScheme={"white"} variant={"outline"} type='button' onClick={logout} mb={'5vh'}><LogoutIcon />Logout</Button>
           </Flex>
