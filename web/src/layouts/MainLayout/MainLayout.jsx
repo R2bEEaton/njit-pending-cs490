@@ -28,6 +28,8 @@ const MainLayout = ({ children }) => {
     // Simulate an asynchronous action (e.g., API call, data fetching)
     // Replace this with your actual asynchronous logic
     console.log(currentUser)
+    console.log(currentUser.identities)
+    console.log(currentUser.identities[0].accessToken)
     setTimeout(() => {
       // Reset isLoading to false when the asynchronous action is complete
       setIsLoading(false);
