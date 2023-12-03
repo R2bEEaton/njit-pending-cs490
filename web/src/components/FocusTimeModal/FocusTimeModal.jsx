@@ -22,7 +22,7 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
 }
   const notesBox = useRef()
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={false}>
       <ModalOverlay />
       
       <ModalContent
