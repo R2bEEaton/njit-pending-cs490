@@ -1,125 +1,361 @@
-import {React, useRef} from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Box, Flex, Text, Editable, HStack, EditablePreview, EditableTextarea, Spacer, useEditableControls } from '@chakra-ui/react';
-import TextareaAutosize from 'react-textarea-autosize'
-import {v4 as uuidv4} from "uuid"
+import { React, useRef, useState } from 'react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Box,
+  Flex,
+  Text,
+  Editable,
+  HStack,
+  EditablePreview,
+  EditableTextarea,
+  Spacer,
+  useEditableControls,
+} from '@chakra-ui/react';
+import TextareaAutosize from 'react-textarea-autosize';
+import { v4 as uuidv4 } from 'uuid';
 const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
+  const notesBox = useRef();
+  const [currentTab, setCurrentTab] = useState('pomodoro');
+
   function EditableControls() {
-    const {
-        isEditing,
-        getSubmitButtonProps,
-        getEditButtonProps,
-    } = useEditableControls()
+    const { isEditing, getSubmitButtonProps, getEditButtonProps } = useEditableControls();
 
     return isEditing ? (
-        <button {...getSubmitButtonProps()}>
-            <EditIcon active={isEditing}/>
-        </button>
+      <button {...getSubmitButtonProps()}>
+        <EditIcon active={isEditing} />
+      </button>
     ) : (
-        <button {...getEditButtonProps()}>
-            <EditIcon active={isEditing}/>
-        </button>
-    )
-}
-  const notesBox = useRef()
+      <button {...getEditButtonProps()}>
+        <EditIcon active={isEditing} />
+      </button>
+    );
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={false}>
       <ModalOverlay />
-      
-      <ModalContent
-        width="42%"
-        height="60%"
-        borderRadius="10px"
-        boxShadow="2px 5px 50px 0px #2425281A"
-        bg="#FFFFFF"
-      >
-        <Flex justifyContent="space-between" width="67%" ml = "5%" mt = "4%" mb = "3.6%">
-          <Text
-              color="#1F1F1F"
-              fontFamily="DM Sans"
-              fontSize="13px"
-              fontWeight="700"
-              lineHeight="15.24px"
-              letterSpacing="0em"
-          >
-            Pomodoro
-          </Text>
-          <Text
-              color="#1F1F1F"
-              fontFamily="DM Sans"
-              fontSize="13px"
-              fontWeight="700"
-              lineHeight="15.24px"
-              letterSpacing="0em"
-          >
-            Short Break
-          </Text>
-          <Text
-              color="#1F1F1F"
-              fontFamily="DM Sans"
-              fontSize="13px"
-              fontWeight="700"
-              lineHeight="15.24px"
-              letterSpacing="0em"
-          >
-            Long Break
-          </Text>
 
+      <ModalContent width="42%" height="60%" borderRadius="10px" boxShadow="2px 5px 50px 0px #2425281A" bg="#FFFFFF">
+        <Flex justifyContent="space-between" width="67%" ml="5%" mt="4%" mb="3.6%">
+          <Tab title="Pomodoro" isActive={currentTab === 'pomodoro'} />
+          <Tab title="Short Break" isActive={currentTab === 'shortBreak'} />
+          <Tab title="Long Break" isActive={currentTab === 'longBreak'} />
         </Flex>
 
-
-        <Flex
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          h="100%"
-          //marginBottom = '47.5%'
-        >
-
-          <Box
-            bg="#F5F7F9"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            height="100%" // Adjust this value based on your needs
-            width="90%"
-            borderRadius="8px 8px 8px 8px"
-            >
-
+        {currentTab === 'pomodoro' && (
+          <>
+            <Flex direction="column" alignItems="center" justifyContent="center" h="100%">
+              <Box
+                bg="#F5F7F9"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                height="100%"
+                width="90%"
+                borderRadius="8px 8px 8px 8px"
+              >
+                <Text
+                  color="#1F1F1F"
+                  fontFamily="DM Sans"
+                  fontSize="73"
+                  fontWeight="700"
+                  lineHeight="50%"
+                  letterSpacing="0em"
+                  mt="10%"
+                >
+                  25:00
+                </Text>
+                <Button
+                  position="absolute"
+                  bottom="51.6%"
+                  bg="#6284FF"
+                  color="white"
+                  borderRadius="10px"
+                  w="26.3%"
+                  h="9%"
+                  boxShadow="0px 4px 80px 0px #6284FF33"
+                  _hover={{ bg: '#4B6DE9' }}
+                >
+                  <Text
+                    color="#FFFFFF"
+                    fontFamily="DM Sans"
+                    fontSize="14"
+                    fontWeight="700"
+                    lineHeight="42.6%"
+                    letterSpacing="0em"
+                  >
+                    Start
+                  </Text>
+                </Button>
+              </Box>
+            </Flex>
             <Text
-            color="#1F1F1F"
-            fontFamily="DM Sans"
-            fontSize="73"
-            fontWeight="700"
-            lineHeight="50%"
-            letterSpacing="0em"
-            mt = "10%"
+              color="#000000"
+              fontFamily="DM Sans"
+              fontSize="16px"
+              fontWeight="700"
+              lineHeight="20%"
+              letterSpacing="0em"
+              mt="5%"
+              ml="5%"
             >
-              25:00
+              {taskTitle}
             </Text>
-            <Button
+
+            <Flex direction="column" alignItems="center" mt="4%" h="100%">
+              <Box bg="#F5F7F9" width="90%" height="45.6%" borderRadius="8px 8px 8px 8px">
+                <Editable
+                  key={uuidv4()}
+                  width="100%"
+                  defaultValue={taskNotes}
+                  isPreviewFocusable={false}
+                  submitOnBlur={false}
+                  selectAllOnFocus={false}
+                  ref={notesBox}
+                  fontSize="11px"
+                  lineHeight="14px"
+                  fontFamily="DM Sans"
+                >
+                  <HStack align="flex-start" mr="3%" mt="3%">
+                    <Box w="100%">
+                      <Text fontFamily="DM Sans" fontSize="13px" fontWeight="700" lineHeight="15.24px" color="#6284FF" ml="3%">
+                        Notes:
+                      </Text>
+                      <EditablePreview maxH="6.2vh" overflowY="auto" marginLeft="3%" width="100%" />
+                      <EditableTextarea
+                        resize="none"
+                        border="none"
+                        width="100%"
+                        height="6.2vh"
+                        style={{ outlineColor: "#F5F7F9", boxShadow: "none", width: "100%", marginLeft: "3%" }}
+                      />
+                    </Box>
+                    <Spacer />
+                    <EditableControls />
+                  </HStack>
+                </Editable>
+              </Box>
+            </Flex>
+
+            <Box
+              bg="#252628"
               position="absolute"
-              bottom="51.6%" // Adjust the position as needed
-              //right="20px" // Adjust the position as needed
-              bg="#6284FF"
-              color="white"
-              borderRadius = "10px"
-              w = "26.3%"
-              h = "9%"
-              boxShadow="0px 4px 80px 0px #6284FF33"
-              _hover={{ bg: '#4B6DE9' }}
+              bottom="4.5%"
+              ml="5%"
+              width="90%"
+              height="11.5%"
+              borderRadius="8px 8px 8px 8px"
+              borderWidth="1px"
+              borderColor="#6284FF"
+            >
+              <HStack alignItems="center" mt="4.3%">
+                <Flex direction="row" alignItems="center" ml="17.96%">
+                  <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="5%">
+                    Pomos:
+                  </Text>
+                  <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
+                    0/3
+                  </Text>
+                </Flex>
+                <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml="7%">
+                  <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="3%">
+                    Finish At:
+                  </Text>
+                  <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF" >
+                    19:53 (1.4h)
+                  </Text>
+                </Flex>
+              </HStack>
+
+            </Box>
+
+
+          </>
+          
+
+        )}
+        {currentTab === 'short break' && (
+          <>
+            <Flex direction="column" alignItems="center" justifyContent="center" h="100%">
+              <Box
+                bg="#F5F7F9"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                height="100%"
+                width="90%"
+                borderRadius="8px 8px 8px 8px"
+              >
+                <Text
+                  color="#1F1F1F"
+                  fontFamily="DM Sans"
+                  fontSize="73"
+                  fontWeight="700"
+                  lineHeight="50%"
+                  letterSpacing="0em"
+                  mt="10%"
+                >
+                  25:00
+                </Text>
+                <Button
+                  position="absolute"
+                  bottom="51.6%"
+                  bg="#6284FF"
+                  color="white"
+                  borderRadius="10px"
+                  w="26.3%"
+                  h="9%"
+                  boxShadow="0px 4px 80px 0px #6284FF33"
+                  _hover={{ bg: '#4B6DE9' }}
+                >
+                  <Text
+                    color="#FFFFFF"
+                    fontFamily="DM Sans"
+                    fontSize="14"
+                    fontWeight="700"
+                    lineHeight="42.6%"
+                    letterSpacing="0em"
+                  >
+                    Start
+                  </Text>
+                </Button>
+              </Box>
+            </Flex>
+            <Text
+              color="#000000"
+              fontFamily="DM Sans"
+              fontSize="16px"
+              fontWeight="700"
+              lineHeight="20%"
+              letterSpacing="0em"
+              mt="5%"
+              ml="5%"
+            >
+              {taskTitle}
+            </Text>
+
+            <Flex direction="column" alignItems="center" mt="4%" h="100%">
+              <Box bg="#F5F7F9" width="90%" height="45.6%" borderRadius="8px 8px 8px 8px">
+                <Editable
+                  key={uuidv4()}
+                  width="100%"
+                  defaultValue={taskNotes}
+                  isPreviewFocusable={false}
+                  submitOnBlur={false}
+                  selectAllOnFocus={false}
+                  ref={notesBox}
+                  fontSize="11px"
+                  lineHeight="14px"
+                  fontFamily="DM Sans"
+                >
+                  <HStack align="flex-start" mr="3%" mt="3%">
+                    <Box w="100%">
+                      <Text fontFamily="DM Sans" fontSize="13px" fontWeight="700" lineHeight="15.24px" color="#6284FF" ml="3%">
+                        Notes:
+                      </Text>
+                      <EditablePreview maxH="6.2vh" overflowY="auto" marginLeft="3%" width="100%" />
+                      <EditableTextarea
+                        resize="none"
+                        border="none"
+                        width="100%"
+                        height="6.2vh"
+                        style={{ outlineColor: "#F5F7F9", boxShadow: "none", width: "100%", marginLeft: "3%" }}
+                      />
+                    </Box>
+                    <Spacer />
+                    <EditableControls />
+                  </HStack>
+                </Editable>
+              </Box>
+            </Flex>
+
+            <Box
+              bg="#252628"
+              position="absolute"
+              bottom="4.5%"
+              ml="5%"
+              width="90%"
+              height="11.5%"
+              borderRadius="8px 8px 8px 8px"
+              borderWidth="1px"
+              borderColor="#6284FF"
+            >
+              <HStack alignItems="center" mt="4.3%">
+                <Flex direction="row" alignItems="center" ml="17.96%">
+                  <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="5%">
+                    Pomos:
+                  </Text>
+                  <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
+                    0/3
+                  </Text>
+                </Flex>
+                <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml="7%">
+                  <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="3%">
+                    Finish At:
+                  </Text>
+                  <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF" >
+                    19:53 (1.4h)
+                  </Text>
+                </Flex>
+              </HStack>
+
+            </Box>
+
+
+          </>
+        )}
+        {currentTab === 'long break' && (
+          <>
+          <Flex direction="column" alignItems="center" justifyContent="center" h="100%">
+            <Box
+              bg="#F5F7F9"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              height="100%"
+              width="90%"
+              borderRadius="8px 8px 8px 8px"
             >
               <Text
-                color="#FFFFFF"
+                color="#1F1F1F"
                 fontFamily="DM Sans"
-                fontSize="14"
+                fontSize="73"
                 fontWeight="700"
-                lineHeight="42.6%"
+                lineHeight="50%"
                 letterSpacing="0em"
-                //mt = "10%"
+                mt="10%"
               >
-              Start
+                25:00
               </Text>
-            </Button>
+              <Button
+                position="absolute"
+                bottom="51.6%"
+                bg="#6284FF"
+                color="white"
+                borderRadius="10px"
+                w="26.3%"
+                h="9%"
+                boxShadow="0px 4px 80px 0px #6284FF33"
+                _hover={{ bg: '#4B6DE9' }}
+              >
+                <Text
+                  color="#FFFFFF"
+                  fontFamily="DM Sans"
+                  fontSize="14"
+                  fontWeight="700"
+                  lineHeight="42.6%"
+                  letterSpacing="0em"
+                >
+                  Start
+                </Text>
+              </Button>
             </Box>
           </Flex>
           <Text
@@ -129,83 +365,114 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
             fontWeight="700"
             lineHeight="20%"
             letterSpacing="0em"
-            mt = "5%"
-            //mb = "42%"
-            ml = "5%"
+            mt="5%"
+            ml="5%"
           >
             {taskTitle}
           </Text>
-          <Flex
-          direction="column"
-          alignItems="center"
-          mt = "4%"
-          h="100%"
-          >
-          <Box
-            bg="#F5F7F9"
-            width="90%"
-            height="45.6%"
-            borderRadius="8px 8px 8px 8px"
-            >
-             
-            <Editable key={uuidv4()} width = "100%" defaultValue={taskNotes} isPreviewFocusable={false} submitOnBlur={false}
-              selectAllOnFocus={false} ref={notesBox} fontSize="11px" lineHeight="14px" fontFamily="DM Sans">
-              <HStack align={'flex-start'} mr = "3%" mt = "3%">
-                <Box w={'100%'} >
-                  <Text fontFamily="DM Sans" fontSize="13px" fontWeight="700" lineHeight="15.24px" color={'#6284FF'}ml = "3%">Notes:</Text>
-                  <EditablePreview 
-                     //maxH="45.513px" // Set a maximum height to limit expansion
-                     maxH ="6.2vh"
-                     overflowY="auto"
-                     marginLeft= "3%"
-                     width = "100%"
-                  
-                  />
-                  <EditableTextarea  resize={'none'} border={'none'} width = "100%" height="6.2vh"
-                    style={{ outlineColor: "#F5F7F9", boxShadow: "none", width: "100%", marginLeft: "3%"}}/>
-                </Box>
-                <Spacer />
-                <EditableControls />
-              </HStack>
-            </Editable>
-            </Box>
-            </Flex>
-          
-        <Box bg="#252628" position="absolute" bottom="4.5%" ml="5%" width="90%" height="11.5%" borderRadius="8px 8px 8px 8px" borderWidth="1px" borderColor="#6284FF">
-        
-          <HStack  alignItems="center" mt ="4.3%">
-            <Flex direction="row" alignItems="center" ml = "17.96%">
-              <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr = "5%">
-                Pomos:
-              </Text>
-              <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
-                0/3
-              </Text>
-            </Flex>
-            <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml = "7%">
-              <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr = "3%">
-                Finish At:
-              </Text>
-              <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF" >
-                19:53 (1.4h)
-              </Text>
-            </Flex>
-          </HStack>
-       
-        </Box>
-          
 
-          
+          <Flex direction="column" alignItems="center" mt="4%" h="100%">
+            <Box bg="#F5F7F9" width="90%" height="45.6%" borderRadius="8px 8px 8px 8px">
+              <Editable
+                key={uuidv4()}
+                width="100%"
+                defaultValue={taskNotes}
+                isPreviewFocusable={false}
+                submitOnBlur={false}
+                selectAllOnFocus={false}
+                ref={notesBox}
+                fontSize="11px"
+                lineHeight="14px"
+                fontFamily="DM Sans"
+              >
+                <HStack align="flex-start" mr="3%" mt="3%">
+                  <Box w="100%">
+                    <Text fontFamily="DM Sans" fontSize="13px" fontWeight="700" lineHeight="15.24px" color="#6284FF" ml="3%">
+                      Notes:
+                    </Text>
+                    <EditablePreview maxH="6.2vh" overflowY="auto" marginLeft="3%" width="100%" />
+                    <EditableTextarea
+                      resize="none"
+                      border="none"
+                      width="100%"
+                      height="6.2vh"
+                      style={{ outlineColor: "#F5F7F9", boxShadow: "none", width: "100%", marginLeft: "3%" }}
+                    />
+                  </Box>
+                  <Spacer />
+                  <EditableControls />
+                </HStack>
+              </Editable>
+            </Box>
+          </Flex>
+
+          <Box
+            bg="#252628"
+            position="absolute"
+            bottom="4.5%"
+            ml="5%"
+            width="90%"
+            height="11.5%"
+            borderRadius="8px 8px 8px 8px"
+            borderWidth="1px"
+            borderColor="#6284FF"
+          >
+            <HStack alignItems="center" mt="4.3%">
+              <Flex direction="row" alignItems="center" ml="17.96%">
+                <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="5%">
+                  Pomos:
+                </Text>
+                <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
+                  0/3
+                </Text>
+              </Flex>
+              <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml="7%">
+                <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="3%">
+                  Finish At:
+                </Text>
+                <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF" >
+                  19:53 (1.4h)
+                </Text>
+              </Flex>
+            </HStack>
+
+          </Box>
+
+
+        </>
+        )}
+
+
+        
 
         <ModalCloseButton position="absolute" top="1%" right="1%">
           <CloseIcon />
         </ModalCloseButton>
-
       </ModalContent>
-
     </Modal>
   );
-};
+  function Tab({ title }) {
+    const isActive = currentTab === title.toLowerCase();
+  
+    return (
+      <Text
+        key={title}
+        color={isActive ? '#6284FF' : '#1F1F1F'}
+        fontFamily="DM Sans"
+        fontSize="13px"
+        fontWeight="700"
+        lineHeight="15.24px"
+        letterSpacing="0em"
+        cursor="pointer"
+        onClick={() => setCurrentTab(title.toLowerCase())}
+      >
+        {title}
+      </Text>
+    );
+  }
+}
+
+
 const CloseIcon = () => {
   return (
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -216,21 +483,6 @@ const CloseIcon = () => {
       
   )
 }
-/*
-          <Editable key={uuidv4()} w={'100%'} defaultValue={taskNotes} isPreviewFocusable={false} submitOnBlur={false}
-            selectAllOnFocus={false} ref={notesBox}>
-            <HStack align={'flex-start'}>
-              <Box w={'100%'}>
-                <Text fontSize={'12px'} color={'#545454'}>Notes</Text>
-                <EditablePreview />
-                <EditableTextarea as={TextareaAutosize} resize={'none'} border={'none'}
-                  style={{ outlineColor: "white", boxShadow: "none" }} />
-              </Box>
-              <Spacer />
-              <EditableControls />
-            </HStack>
-          </Editable>
-          */
 
 const EditIcon = ({
   active
