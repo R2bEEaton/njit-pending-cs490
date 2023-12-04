@@ -5611,6 +5611,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/client@npm:latest":
+  version: 5.6.0
+  resolution: "@prisma/client@npm:5.6.0"
+  dependencies:
+    "@prisma/engines-version": 5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee
+  peerDependencies:
+    prisma: "*"
+  peerDependenciesMeta:
+    prisma:
+      optional: true
+  checksum: 21f5840833dbd88cf60d6d3585faab192481a8caf16a6ee2cba8ec8720d8995bc0eee13d66e3bbe31b6f3809c832fd95cf2d2993aaa2dc1ca354e37685852aef
+  languageName: node
+  linkType: hard
+
 "@prisma/debug@npm:5.3.1":
   version: 5.3.1
   resolution: "@prisma/debug@npm:5.3.1"
@@ -5626,6 +5640,13 @@ __metadata:
   version: 5.3.1-2.61e140623197a131c2a6189271ffee05a7aa9a59
   resolution: "@prisma/engines-version@npm:5.3.1-2.61e140623197a131c2a6189271ffee05a7aa9a59"
   checksum: e0c363e68c2ce28c8e112ad1dac8074b2d186e1dc88dcbda1280b4dd07ae8efded3e4a46d7bed4615c8f189c4ae1bfc4360e3966ea63b7c3d3720d37075cf7cc
+  languageName: node
+  linkType: hard
+
+"@prisma/engines-version@npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee":
+  version: 5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee
+  resolution: "@prisma/engines-version@npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee"
+  checksum: 06a0e9126213cb881ef15e6d13b2ba29be1d31c65aca6bf070b5182ce82a04de3b93b721549a27be3ddb551e003aa94fa0ca61b78736d5bd3579b9114ba96b49
   languageName: node
   linkType: hard
 
@@ -22483,6 +22504,7 @@ __metadata:
     "@emotion/styled": ^11.11.0
     "@fontsource/dm-sans": ^5.0.17
     "@fontsource/fredoka-one": ^5.0.5
+    "@prisma/client": latest
     "@redwoodjs/auth-dbauth-setup": 6.3.3
     "@redwoodjs/cli-storybook": 6.3.3
     "@redwoodjs/core": 6.3.3

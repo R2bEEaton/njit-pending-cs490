@@ -1,4 +1,4 @@
-import { React, useRef, useState } from 'react';
+import {useEffect, React, useRef, useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -20,12 +20,17 @@ import {
 } from '@chakra-ui/react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { v4 as uuidv4 } from 'uuid';
-const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
-  const notesBox = useRef();
+const FocusTimeModal = ({setNotes, isOpen, onClose, taskTitle, taskNotes }) => {
+  
+  const pomodoroNotesBox = useRef();
+  const shortBreakNotesBox = useRef();
+  const longBreakNotesBox = useRef();
   const [currentTab, setCurrentTab] = useState('pomodoro');
+  const [currentNotes, setCurrentNotes] = useState(taskNotes);
 
   function EditableControls() {
     const { isEditing, getSubmitButtonProps, getEditButtonProps } = useEditableControls();
+    
 
     return isEditing ? (
       <button {...getSubmitButtonProps()}>
@@ -37,6 +42,37 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
       </button>
     );
   }
+  
+  const handleNotes = (value) => {
+    if (taskNotes === value) return // If the notes actually changed
+    console.log("vlue ", value)
+    setCurrentNotes(value)
+}
+
+const handleTab = (value) => {
+  
+  //taskNotes = currentNotes
+  setCurrentTab(value)
+
+
+}
+
+useEffect(() => {
+  setNotes(currentNotes);
+}, [currentNotes, setNotes]);
+
+// Use useEffect to update currentNotes before the modal opens
+useEffect(() => {
+  console.log('isOpen:', isOpen);
+  console.log('taskNotes:', taskNotes);
+
+  if (isOpen) {
+    console.log('Updating currentNotes:', taskNotes);
+    setCurrentNotes(taskNotes);
+  }
+}, [isOpen, taskNotes]);
+
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={false}>
@@ -114,14 +150,15 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
                 <Editable
                   key={uuidv4()}
                   width="100%"
-                  defaultValue={taskNotes}
+                  defaultValue={currentNotes}
                   isPreviewFocusable={false}
                   submitOnBlur={false}
                   selectAllOnFocus={false}
-                  ref={notesBox}
+                  ref={pomodoroNotesBox}
                   fontSize="11px"
                   lineHeight="14px"
                   fontFamily="DM Sans"
+                  onSubmit={handleNotes}
                 >
                   <HStack align="flex-start" mr="3%" mt="3%">
                     <Box w="100%">
@@ -246,14 +283,15 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
                 <Editable
                   key={uuidv4()}
                   width="100%"
-                  defaultValue={taskNotes}
+                  defaultValue={currentNotes}
                   isPreviewFocusable={false}
                   submitOnBlur={false}
                   selectAllOnFocus={false}
-                  ref={notesBox}
+                  ref={shortBreakNotesBox}
                   fontSize="11px"
                   lineHeight="14px"
                   fontFamily="DM Sans"
+                  onSubmit={handleNotes}
                 >
                   <HStack align="flex-start" mr="3%" mt="3%">
                     <Box w="100%">
@@ -374,17 +412,18 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
           <Flex direction="column" alignItems="center" mt="4%" h="100%">
             <Box bg="#F5F7F9" width="90%" height="45.6%" borderRadius="8px 8px 8px 8px">
               <Editable
-                key={uuidv4()}
-                width="100%"
-                defaultValue={taskNotes}
-                isPreviewFocusable={false}
-                submitOnBlur={false}
-                selectAllOnFocus={false}
-                ref={notesBox}
-                fontSize="11px"
-                lineHeight="14px"
-                fontFamily="DM Sans"
-              >
+                  key={uuidv4()}
+                  width="100%"
+                  defaultValue={currentNotes}
+                  isPreviewFocusable={false}
+                  submitOnBlur={false}
+                  selectAllOnFocus={false}
+                  ref={longBreakNotesBox}
+                  fontSize="11px"
+                  lineHeight="14px"
+                  fontFamily="DM Sans"
+                  onSubmit={handleNotes}
+                >
                 <HStack align="flex-start" mr="3%" mt="3%">
                   <Box w="100%">
                     <Text fontFamily="DM Sans" fontSize="13px" fontWeight="700" lineHeight="15.24px" color="#6284FF" ml="3%">
@@ -451,10 +490,13 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
       </ModalContent>
     </Modal>
   );
-  function Tab({ title }) {
-    const isActive = currentTab === title.toLowerCase();
+function Tab({ title }) {
+  const isActive = currentTab === title.toLowerCase();
   
-    return (
+
+  return (
+    
+    <Box position="relative">
       <Text
         key={title}
         color={isActive ? '#6284FF' : '#1F1F1F'}
@@ -464,12 +506,26 @@ const FocusTimeModal = ({ isOpen, onClose, taskTitle, taskNotes }) => {
         lineHeight="15.24px"
         letterSpacing="0em"
         cursor="pointer"
-        onClick={() => setCurrentTab(title.toLowerCase())}
+        //onClick={() => setCurrentTab(title.toLowerCase())}
+        onClick={() => handleTab(title.toLowerCase())}
+
       >
         {title}
       </Text>
-    );
-  }
+
+      {isActive && (
+        <Box
+          position="absolute"
+          width="37.5%"
+          height="3px"  
+          bg="#6284FF"  
+          borderRadius="3px" 
+          mt = "6.5%"
+        />
+      )}
+    </Box>
+  );
+}
 }
 
 

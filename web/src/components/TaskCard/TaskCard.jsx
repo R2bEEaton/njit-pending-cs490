@@ -75,6 +75,7 @@ const StatusIcons = ({status, callback, task, idx, setTaskStatus}) => {
 }
 
 const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
+    const [selectedNotes, setSelectedNotes] = useState('');
     const [pomosEdit, setPomosEdit] = useState(false);
     const {currentUser} = useAuth()
 
@@ -95,6 +96,12 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         setNotes(task.notes)
         setTaskStatus(task.status)
     }, [task]);
+    useEffect(() => {
+
+        task.notes = notes
+        setNotes(notes)
+        callback(idx, task)
+    }, [notes]);
 
     /**
      * Button for editing the notes
@@ -123,6 +130,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
 
     const handleNotes = (value) => {
         if (task.notes === value) return // If the notes actually changed
+        setSelectedNotes(value)
         task.notes = value
         setNotes(value)
         callback(idx, task)
@@ -158,7 +166,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
-    const [selectedNotes, setSelectedNotes] = useState('');
+    
   
     const handleTaskTitleClick = (title, notes) => {
       setSelectedTaskTitle(title);
@@ -181,6 +189,8 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                     />
                     <Text color={'#6284FF'} onClick={() => handleTaskTitleClick(task.title, task.notes)} _hover={{ cursor: 'pointer' }}>
                         {task.title}
+                        
+                        
                     </Text>
                     <Spacer/>
                     <Box {...dragHandle}>
@@ -226,7 +236,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                     </Editable>
                 </Collapse>
             </Box>
-            <FocusTimeModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} taskTitle={selectedTaskTitle} taskNotes={selectedNotes} />
+            <FocusTimeModal isOpen={isModalOpen} setNotes={setNotes} taskTitle={selectedTaskTitle} taskNotes={selectedNotes} onClose={() => setModalOpen(false)}  />
         </>
     )
 }
