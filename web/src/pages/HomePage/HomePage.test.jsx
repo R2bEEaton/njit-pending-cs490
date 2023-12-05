@@ -7,8 +7,15 @@ jest.mock('../../components/TaskBox/TaskBox', () => {
   return () => <div/>;
 });
 
-mockCurrentUser({id: 1})
+jest.mock('../../components/AppointmentsBox/AppointmentsBox', () => {
+  return () => <div/>;
+});
 
+jest.mock('../../components/AddTaskModal/AddTaskModal', () => {
+  return () => <div/>;
+});
+
+mockCurrentUser({id: 1})
 describe('HomePage', () => {
   it('renders successfully', () => {
     expect(() => {
