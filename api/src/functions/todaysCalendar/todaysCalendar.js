@@ -51,7 +51,7 @@ export const handler = async (event, context) => {
   // Get a list of at most 100 events from today
   let res = await calendar.events.list({
     calendarId: 'primary',
-    timeMin: moment().format('YYYY-MM-DD') + "T00:00:00-05:00",
+    timeMin: moment().format('YYYY-MM-DD') + "T05:00:00Z",
     timeMax: moment().add(1, 'day').format('YYYY-MM-DD') + "T00:00:00-05:00",
     maxResults: 100,
     singleEvents: true,
@@ -100,8 +100,7 @@ export const handler = async (event, context) => {
       date:"2023-12-09T00:00:00.000Z",
       taskList:{"Other":[],"Important":[],"Top Priority":[]},
       userId:1
-    }
-  })*/
+  })
   await updateTask({
     id:1,
     input:{
@@ -110,6 +109,20 @@ export const handler = async (event, context) => {
       userId:1,
     },
   })
+
+  //this only works if there is no other
+  await updateTask({
+    id:16,
+    input:{
+      userId:currentUser.id,
+      appointments: events
+  }})*/
+  await createTask({
+    input:{
+      date:moment().format('YYYY-MM-DD') + "T05:00:00Z",
+      userId:currentUser.id,
+      appointments: events
+  }})
   return {
     statusCode: 200,
     headers: {
