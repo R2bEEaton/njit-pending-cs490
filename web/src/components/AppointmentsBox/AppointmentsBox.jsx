@@ -69,7 +69,6 @@ const AppointmentsBox = ({appointmentsJSON}) => {
           divideBy = Math.max(staggers[i], divideBy)
           staggers[i] = staggers[i] / (divideBy + 1)
       }
-      console.log(staggers)
       return staggers;
   }
 
@@ -125,23 +124,19 @@ const AppointmentsBox = ({appointmentsJSON}) => {
                    backgroundColor={'#FFF'}
                    color={'#1F1F1F'}
                    fontSize={'14px'}
-                   fontStyle={'normal'}
                    fontWeight={'500'}
                    lineHeight={'17px'}
                    textDecoration={completed ? 'line-through' : ''}
                    width={`calc(100% - (100% * ${staggerLeft}))`}
                    ml={`calc(100% * ${staggerLeft})`}
-                   //zIndex={completed > 0 && completed < 1 ? 101 : (staggerLeft * 100).toFixed(0)}
-                   //boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.05)'}
                    _hover={{backgroundColor: '#FAFAFA'}}
-                   //userSelect={'none'}
               >
                 {summary}
               </Box>
             )
           })}
         </Box>
-        <Flex flexDirection={'column'} gap={'27px'} fontSize={'14px'} fonstStyle={'normal'} fontWeight={'400'}
+        <Flex flexDirection={'column'} gap={'27px'} fontSize={'14px'} fontWeight={'400'}
               lineHeight={'17px'} color={'#1F1F1F'} alignItems={'flex-start'}>
           {timeMap.map((time, idx) => {
             return (
