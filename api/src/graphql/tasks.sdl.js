@@ -31,7 +31,7 @@ export const schema = gql`
     taskList: JSON
     userId: Int
   }
-  
+
 
   type Mutation {
     updateTaskwDate(userId: Int!, date: DateTime!, input: UpdateTaskwDateInput!): Task! @requireAuth
@@ -48,6 +48,7 @@ export const schema = gql`
     taskList: JSON!
     user: User!
     userId: Int!
+    appointments: JSON
   }
 
   type Query {
@@ -73,12 +74,19 @@ export const schema = gql`
     taskList: JSON
     userId: Int
   }
-  
+
+  input UpdateAppswDateInput {
+    date: DateTime
+    userId: Int
+    appointments: JSON
+  }
 
   type Mutation {
     updateTaskwDate(userId: Int!, date: DateTime!, input: UpdateTaskwDateInput!): Task! @requireAuth
     createTask(input: CreateTaskInput!): Task! @requireAuth
     updateTask(id: Int!, input: UpdateTaskInput!): Task! @requireAuth
     deleteTask(id: Int!): Task! @requireAuth
+    updateAppswDate(userId: Int!, date: DateTime!, input: UpdateAppswDateInput!): Task! @requireAuth
+
   }
 `
