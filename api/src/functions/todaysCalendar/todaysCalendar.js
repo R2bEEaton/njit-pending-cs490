@@ -51,7 +51,7 @@ export const handler = async (event, context) => {
   // Get a list of at most 100 events from today
   let res = await calendar.events.list({
     calendarId: 'primary',
-    timeMin: moment().format('YYYY-MM-DD') + "T05:00:00Z",
+    timeMin: moment().format('YYYY-MM-DD') + "T00:00:00-05:00:00",
     timeMax: moment().add(1, 'day').format('YYYY-MM-DD') + "T00:00:00-05:00",
     maxResults: 100,
     singleEvents: true,
@@ -68,13 +68,15 @@ export const handler = async (event, context) => {
   const events = calendarEvents.map((item, i) => {
     const start = item.start.dateTime || item.start.date
     const end = item.end.dateTime || item.end.date
-    const allday=checkAllDay(start,end)
+    const allday = checkAllDay(start,end)
+    const ucalid = item.iCalUID
     const event = {
       summary: item.summary,
       description: item.description,
       start: start,
       end: end,
       allday: allday,
+      iCalUID: ucalid,
     }
     return event
   })
@@ -127,7 +129,7 @@ export const handler = async (event, context) => {
 
   await createTask({
     input:{
-      date:moment().format('YYYY-MM-DD') + "T05:00:00Z",
+      date:moment().format('YYYY-MM-DD') + "T00:00:00Z",
       userId:currentUser.id,
       appointments: events
   }})
