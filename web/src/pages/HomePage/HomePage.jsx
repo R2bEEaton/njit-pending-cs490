@@ -62,6 +62,8 @@ const HomePage = () => {
   const [date, setDate] = useState()
   const [tasks, setTasks] = useState(EMPTY_TASKS_DATA)
 
+  const [appts, setAppts] = useState([])
+
   useEffect(() => {
     if (!tasks || tasks === EMPTY_TASKS_DATA) return
     console.log('Tasks Update Triggered, saving to database')
@@ -94,6 +96,9 @@ const HomePage = () => {
     if (!date) return
 
     // console.log(`The date changed to ${date} so we need to grab data`)
+
+    /* TODO: Fetch tasks from Google API */
+    // fetch("./.redwood/functions/todaysCalendar?userId=22")?
 
     handleDatabase({userId: currentUser.id, date: date, client}).then((res) => {
       let orderedData = JSON.parse(JSON.stringify(res.taskList))
@@ -137,7 +142,7 @@ const HomePage = () => {
         <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
         <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
              mt={'15px'}>
-          <AppointmentsBox />
+          <AppointmentsBox appointmentsJSON={appts}/>
         </Box>
       </Box>
     </Flex>

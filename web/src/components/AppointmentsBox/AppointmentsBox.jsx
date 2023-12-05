@@ -3,77 +3,11 @@ import moment from "moment"
 import {useEffect, useState} from "react"
 import {setTimeout} from 'worker-timers'
 
-const dummyAppointments = [
-  {
-    "id": 1,
-    "summary": "Meeting with Counselor",
-    "startTime": "12:45:00",
-    "endTime": "15:45:00",
-    "allDay": false
-  },
-  {
-    "id": 2,
-    "summary": "Meeting with Teammates",
-    "startTime": "13:15:00",
-    "endTime": "14:00:00",
-    "allDay": false
-  },
-  {
-    "id": 3,
-    "summary": "Meeting with Counselor",
-    "startTime": "13:30:00",
-    "endTime": "14:30:00",
-    "allDay": false
-  },
-  {
-    "id": 4,
-    "summary": "Meeting with Counselor",
-    "startTime": "14:45:00",
-    "endTime": "16:00:00",
-    "allDay": false
-  },
-  {
-    "id": 5,
-    "summary": "Meeting with Counselor",
-    "startTime": "19:00:00",
-    "endTime": "19:30:00",
-    "allDay": false
-  },
-  {
-    "id": 6,
-    "summary": "Meeting with Counselor",
-    "startTime": "19:30:00",
-    "endTime": "21:30:00",
-    "allDay": false
-  },
-  {
-    "id": 7,
-    "summary": "Meeting with Counselor",
-    "startTime": "18:00:00",
-    "endTime": "18:30:00",
-    "allDay": false
-  },
-  {
-    "id": 8,
-    "summary": "Meeting with Counselor",
-    "startTime": "12:00:00",
-    "endTime": "13:30:00",
-    "allDay": true
-  },
-  {
-    "id": 9,
-    "summary": "Meeting with Counselor",
-    "startTime": "12:00:00",
-    "endTime": "13:30:00",
-    "allDay": true
-  },
-]
-
 /** A loop for generating random fake appointments */
 // for (let i = 0; i < 15; i++) {
 //   let startHour = parseInt(Math.random() * 15 + 5)
 //
-//   dummyAppointments.push({
+//   appointmentsJSON.push({
 //     id: Math.random(),
 //     summary: "test",
 //     startTime: `${startHour.toString().padStart(2, '0')}:00:00`,
@@ -82,10 +16,10 @@ const dummyAppointments = [
 //   })
 // }
 
-// Sort appointments by startTime
-dummyAppointments.sort((a, b) => {return a.startTime.localeCompare(b.startTime)})
+const AppointmentsBox = ({appointmentsJSON}) => {
+  // Sort appointments by startTime
+  appointmentsJSON.sort((a, b) => {return a.startTime.localeCompare(b.startTime)})
 
-const AppointmentsBox = () => {
   let timeMap = [];
   for (let i = 5; i <= 20; i++) {
     timeMap.push(((i - 1) % 12 + 1) + (i < 12 ? ' AM' : ' PM'))
@@ -117,7 +51,7 @@ const AppointmentsBox = () => {
    */
   function staggerIt() {
       let staggers = [];
-      let apptsCopy = dummyAppointments.filter(({allDay}) => {return !allDay})
+      let apptsCopy = appointmentsJSON.filter(({allDay}) => {return !allDay})
       for (let i = 0; i < apptsCopy.length; i++) {
           let lefts = 0;
           for (let j = 0; j < i; j++) {
@@ -143,10 +77,10 @@ const AppointmentsBox = () => {
 
   return (
     <Flex flexDirection={'column'} gap={'20px'}>
-      <Box hidden={!dummyAppointments.filter(({allDay}) => {return allDay}).length}>
+      <Box hidden={!appointmentsJSON.filter(({allDay}) => {return allDay}).length}>
         <Text><i>All-day Appointments</i></Text>
         <UnorderedList>
-        {dummyAppointments.filter(({allDay}) => {return allDay}).map(({id, summary}) => {
+        {appointmentsJSON.filter(({allDay}) => {return allDay}).map(({id, summary}) => {
           return (
             <ListItem key={id} color={'#1F1F1F'}>
               {summary}
@@ -157,7 +91,7 @@ const AppointmentsBox = () => {
       </Box>
       <Box position={'relative'}>
         <Box position={'absolute'} zIndex={'1'} width={'90%'} right={'0'}>
-          {dummyAppointments.filter(({allDay}) => {return !allDay}).map(({id, summary, startTime, endTime, allDay}, idx) => {
+          {appointmentsJSON.filter(({allDay}) => {return !allDay}).map(({id, summary, startTime, endTime, allDay}, idx) => {
             let today = moment().format('YYYY-MM-DD')
             let dayStart = moment(`${today}T05:00:00`)
             let dayEnd = moment(`${today}T20:00:00`)
