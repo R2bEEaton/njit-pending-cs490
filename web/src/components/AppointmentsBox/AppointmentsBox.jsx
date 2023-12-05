@@ -112,13 +112,6 @@ const AppointmentsBox = ({appointmentsJSON}) => {
 
             let staggerLeft = staggerLefts[idx]
 
-            const [completed, setCompleted] = useState(false)
-            setTimeout(() => {
-              setCompleted(true)
-            }, endTimeM.diff(moment(), 'milliseconds'))
-
-            // {completed > 0 && completed < 1 ? <Progress hasStripe value={completed * 100} size='xs' color={'#6284FF'} /> : ''}
-
             return (
               <Box key={idx}
                    position={'absolute'}
@@ -132,7 +125,6 @@ const AppointmentsBox = ({appointmentsJSON}) => {
                    fontSize={'14px'}
                    fontWeight={'500'}
                    lineHeight={'17px'}
-                   textDecoration={completed ? 'line-through' : ''}
                    width={`calc(100% - (100% * ${staggerLeft}))`}
                    ml={`calc(100% * ${staggerLeft})`}
                    _hover={{backgroundColor: '#FAFAFA'}}
