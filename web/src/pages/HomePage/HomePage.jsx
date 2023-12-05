@@ -101,6 +101,7 @@ const HomePage = () => {
       const response = await fetch(`http://localhost:8910/.redwood/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}`); // Assuming your API endpoint is /api/data
       const data = await response.json();
       console.log(data.events)
+      setAppts(data.events)
     }
     get_cal_data()
 

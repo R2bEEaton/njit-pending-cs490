@@ -25,16 +25,22 @@ const AppointmentsBox = ({appointmentsJSON}) => {
     timeMap.push(((i - 1) % 12 + 1) + (i < 12 ? ' AM' : ' PM'))
   }
 
-  const [currentHour, setCurrentHour] = useState(moment().format('h A'));
+  //const [currentHour, setCurrentHour] = useState(moment().format('h A'));
+  const currentHour = moment().format('h A')
 
   /**
    * Set highlighted hour on the hour. This is currently broken due to setTimeout going to sleep when the browser is slept.
    */
-  useEffect(() => {
+
+    /**
+     * TODO: Fix this current time highlighting
+     */
+
+  /*useEffect(() => {
     setTimeout(() => {
       setCurrentHour(moment().format('h A'))
     }, moment().startOf('hour').add(1, 'hour').diff(moment(), 'milliseconds') + 1000)
-  }, [currentHour]);
+  }, [currentHour]);*/
 
   function isTimeBetween(startTime, endTime, targetTime) {
     let startMoment = moment(startTime, 'HH:mm:ss')
@@ -114,7 +120,7 @@ const AppointmentsBox = ({appointmentsJSON}) => {
             // {completed > 0 && completed < 1 ? <Progress hasStripe value={completed * 100} size='xs' color={'#6284FF'} /> : ''}
 
             return (
-              <Box key={id}
+              <Box key={idx}
                    position={'absolute'}
                    outline={'1px solid #E2EAF1'}
                    padding={'10px'}

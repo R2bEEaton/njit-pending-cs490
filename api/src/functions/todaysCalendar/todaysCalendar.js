@@ -74,8 +74,8 @@ export const handler = async (event, context) => {
     const event = {
       summary: item.summary,
       description: item.description,
-      start: start,
-      end: end,
+      startTime: start,
+      endTime: end,
       allday: allday,
       iCalUID: ucalid,
     }
