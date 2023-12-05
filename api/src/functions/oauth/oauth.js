@@ -86,12 +86,14 @@ const getUser = async ({ providerUser, accessToken, refreshToken, expiresIn, sco
 
   const accessTokenEnc = CryptoJS.AES.encrypt(
     accessToken,
-    process.env.SESSION_SECRET
+    process.env.SESSION_SECRET,
+    {iv: "test"}
   ).toString()
 
   const refreshTokenEnc = CryptoJS.AES.encrypt(
     refreshToken,
-    process.env.SESSION_SECRET
+    process.env.SESSION_SECRET,
+    {iv: "test"}
   ).toString()
 
   await db.identity.update({

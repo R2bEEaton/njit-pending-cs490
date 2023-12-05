@@ -97,10 +97,15 @@ const HomePage = () => {
 
     // console.log(`The date changed to ${date} so we need to grab data`)
 
-    /* TODO: Fetch tasks from Google API */
-    // fetch("./.redwood/functions/todaysCalendar?userId=22")?
+    async function get_cal_data() {
+      const response = await fetch(`http://localhost:8910/.redwood/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}`); // Assuming your API endpoint is /api/data
+      const data = await response.json();
+      console.log(data.events)
+      setAppts(data.events)
+    }
+    get_cal_data()
 
-    handleDatabase({userId: currentUser.id, date: date, client}).then((res) => {
+    handleDatabase({userId: currentUser?.id, date: date, client}).then((res) => {
       let orderedData = JSON.parse(JSON.stringify(res.taskList))
       const orderedKeys = ["Top Priority", "Important", "Other"];
 

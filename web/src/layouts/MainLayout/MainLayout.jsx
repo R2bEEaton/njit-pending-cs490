@@ -1,14 +1,5 @@
-import {
-  Box,
-  ChakraProvider,
-  Flex,
-  VStack,
-  Image,
-  Text,
-  Button,
-  Spacer,
-} from "@chakra-ui/react";
-import { useAuth } from 'src/auth';
+import {Box, Button, ChakraProvider, Flex, Image, Spacer, Text, VStack,} from "@chakra-ui/react";
+import {useAuth} from 'src/auth';
 import UserInfo from 'src/components/UserInfo';
 import theme from "src/pages/LoginPage/theme";
 import '@fontsource/fredoka-one/400.css'
@@ -39,7 +30,7 @@ const MainLayout = ({ children }) => {
             The following will need to be selectively hidden if the user has already planned their day
             */ }
             <Text textAlign={"center"} fontSize={20} fontFamily={"DM Sans"} fontWeight={"700"}>It's time to plan your day!</Text>
-            <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7}>Plan Day</Button>
+            <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7} href={`/.redwood/functions/todaysCalendar?userId=${currentUser?.id}`} as={'a'}>Plan Day</Button>
             <Spacer />
             <Button colorScheme={"white"} variant={"outline"} type='button' onClick={logOut} mb={'5vh'}><LogoutIcon />Logout</Button>
           </Flex>
