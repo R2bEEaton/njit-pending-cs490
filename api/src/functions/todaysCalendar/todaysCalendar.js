@@ -27,7 +27,7 @@ export const handler = async (event, context) => {
   logger.info(`${event.httpMethod} ${event.path}: todaysCalendar function`)
 
   // Get the current user
-  const { userId } = event.queryStringParameters
+  const { userId, startDate } = event.queryStringParameters
   const authUser = await authDecoder(userId, 'dbAuth', {event, context})
   const currentUser = await getCurrentUser(authUser)
 
@@ -51,23 +51,24 @@ export const handler = async (event, context) => {
   // Get a list of at most 100 events from today
   let res = await calendar.events.list({
     calendarId: 'primary',
-    timeMin: moment().format('YYYY-MM-DD') + "T00:00:00-05:00:00",
-    timeMax: moment().add(1, 'day').format('YYYY-MM-DD') + "T00:00:00-05:00",
+    timeMin: moment(startDate).format('YYYY-MM-DD') + "T00:00:00-05:00",
+    timeMax: moment(startDate).add(1, 'day').format('YYYY-MM-DD') + "T00:00:00-05:00",
     maxResults: 100,
     singleEvents: true,
     orderBy: 'startTime',
   })
+  logger.info(res.data.items)
   let calendarEvents = res.data.items
   //
   const checkAllDay = (start,end) => {
-    const isStart = start === moment().format('YYYY-MM-DD')
-    const isEnd = end === moment().add(1, 'day').format('YYYY-MM-DD')
+    const isStart = !start.includes("-05:00")
+    const isEnd = !end.includes("-05:00")
     return isStart && isEnd
   }
   // Select useful data, and now the calendar items are in an array called events
   const events = calendarEvents.map((item, i) => {
-    const start = item.start.dateTime || item.start.date
-    const end = item.end.dateTime || item.end.date
+    const start = item.start.dateTime.split("T")[1].split("-")[0] || item.start.date
+    const end = item.end.dateTime.split("T")[1].split("-")[0] || item.end.date
     const allday = checkAllDay(start,end)
     const ucalid = item.iCalUID
     const event = {
