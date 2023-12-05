@@ -204,6 +204,8 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
             title={task.title}
             note={task.notes}
             pomos={task.pomodoros}
+            numPomosComplete={numPomosComplete}
+            updateNumPomosComplete={updateNumPomosComplete}
           />
           <Spacer />
           <Box {...dragHandle}>

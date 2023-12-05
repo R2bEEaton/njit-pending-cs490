@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import {
   Modal,
   ModalOverlay,
@@ -14,9 +16,20 @@ import {
 import { useAuth } from 'src/auth'
 import Timer from 'src/components/Timer/Timer'
 
-const TestFocusModal = ({ isOpen, onOpen, onClose, note, title, pomos }) => {
+const TestFocusModal = ({
+  isOpen,
+  onOpen,
+  onClose,
+  note,
+  title,
+  pomos,
+  numPomosComplete,
+  updateNumPomosComplete,
+}) => {
   //const { isOpen, onOpen, onClose } = useDisclosure()
+
   const { currentUser, reauthenticate } = useAuth()
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -25,11 +38,18 @@ const TestFocusModal = ({ isOpen, onOpen, onClose, note, title, pomos }) => {
           <ModalHeader>{'Title: ' + title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {'Pomodoro: '} <Timer numMinutes={currentUser.pomodoro} />
+            {'Pomodoro: '}{' '}
+            <Timer
+              isPomo={true}
+              numPomos={pomos}
+              numMinutes={currentUser.pomodoro}
+              numPomosComplete={numPomosComplete}
+              updateNumPomosComplete={updateNumPomosComplete}
+            />
             {'Short Break: '} <Timer numMinutes={currentUser.shortBreak} />
             {'Long Break: '} <Timer numMinutes={currentUser.longBreak} />
             <Text>{'Notes: ' + note}</Text>
-            <Text>{'Pomos: ' + pomos}</Text>
+            <Text>{'Pomos: ' + numPomosComplete + '/' + pomos}</Text>
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>
