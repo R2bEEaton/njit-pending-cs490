@@ -25399,6 +25399,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     uuid: ^9.0.1
+    worker-timers: ^7.0.78
   languageName: unknown
   linkType: soft
 
