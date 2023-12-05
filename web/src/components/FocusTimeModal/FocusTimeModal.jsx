@@ -64,6 +64,7 @@ const FocusTimeModal = ({
 
   const handleNotes = (value) => {
     if (taskNotes === value) return // If the notes actually changed
+    console.log('vlue ', value)
     setCurrentNotes(value)
   }
 
@@ -91,6 +92,9 @@ useEffect(() => {
   }, [isTimerRunning])
   // Use useEffect to update currentNotes before the modal opens
   useEffect(() => {
+    console.log('isOpen:', isOpen)
+    console.log('taskNotes:', taskNotes)
+
     if (isOpen) {
       console.log('Updating currentNotes:', taskNotes)
       setCurrentNotes(taskNotes)
