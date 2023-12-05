@@ -51,7 +51,9 @@ export const handler = async (event, context) => {
   // Get a list of at most 100 events from today
   let res = await calendar.events.list({
     calendarId: 'primary',
-    timeMin: moment(startDate).format('YYYY-MM-DD') + "T00:00:00-05:00",
+    // Get tasks starting at 5 AM
+    /* TODO: Fix timezone. User should send timezone. */
+    timeMin: moment(startDate).format('YYYY-MM-DD') + "T05:00:00-05:00",
     timeMax: moment(startDate).add(1, 'day').format('YYYY-MM-DD') + "T00:00:00-05:00",
     maxResults: 100,
     singleEvents: true,
