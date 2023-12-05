@@ -2,9 +2,6 @@ import {
   Box,
   ChakraProvider,
   Flex,
-  Heading,
-  HStack,
-  Stack,
   VStack,
   Image,
   Text,
@@ -18,19 +15,7 @@ import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/700.css'
 
 const MainLayout = ({ children }) => {
-  const { currentUser, isAuthenticated } = useAuth();
-
-  function clearCookie(name){
-    let domain = location.hostname;
-    let path = "/";
-    document.cookie = name + "=; expires=" + new Date + "; domain=" + domain + "; path=" + path;
-  }
-
-  const logout = () => {
-    clearCookie("session", document.domain, "/")
-    location.reload()
-  }
-
+  const { currentUser, logOut } = useAuth();
 
   // Get the route name from the location object
   const routeName = location.pathname.substring(1); // Remove the leading '/'
@@ -56,7 +41,7 @@ const MainLayout = ({ children }) => {
             <Text textAlign={"center"} fontSize={20} fontFamily={"DM Sans"} fontWeight={"700"}>It's time to plan your day!</Text>
             <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7}>Plan Day</Button>
             <Spacer />
-            <Button colorScheme={"white"} variant={"outline"} type='button' onClick={logout} mb={'5vh'}><LogoutIcon />Logout</Button>
+            <Button colorScheme={"white"} variant={"outline"} type='button' onClick={logOut} mb={'5vh'}><LogoutIcon />Logout</Button>
           </Flex>
         </VStack>
         <VStack w={"85vw"} justifyContent={"top"} p={0} m={0} spacing={0}>
