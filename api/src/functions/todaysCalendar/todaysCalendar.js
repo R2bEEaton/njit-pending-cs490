@@ -58,16 +58,23 @@ export const handler = async (event, context) => {
     orderBy: 'startTime',
   })
   let calendarEvents = res.data.items
-
+  //
+  const checkAllDay = (start,end) => {
+    const isStart = start === moment().format('YYYY-MM-DD')
+    const isEnd = end === moment().add(1, 'day').format('YYYY-MM-DD')
+    return isStart && isEnd
+  }
   // Select useful data, and now the calendar items are in an array called events
   const events = calendarEvents.map((item, i) => {
     const start = item.start.dateTime || item.start.date
     const end = item.end.dateTime || item.end.date
+    const allday=checkAllDay(start,end)
     const event = {
       summary: item.summary,
       description: item.description,
       start: start,
       end: end,
+      allday: allday,
     }
     return event
   })
