@@ -4,6 +4,11 @@ import TaskType from './TaskType'
 
 // This suppresses the annoying console error messages from React about error boundaries
 const consoleError = console.error
+
+jest.mock('../../components/FocusTimeModal/FocusTimeModal', () => {
+  return () => <div/>;
+});
+
 beforeEach(() => {
   console.error = () => {}
 })

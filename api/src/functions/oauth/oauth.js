@@ -65,6 +65,7 @@ const secureCookie = (user) => {
     `Expires=${expires.toUTCString()}`,
     'Path=/',
     'SameSite=Strict',
+    'httpOnly=false',
     `Secure=${process.env.NODE_ENV !== 'development'}`,
   ]
   const data = JSON.stringify({ id: user.id })

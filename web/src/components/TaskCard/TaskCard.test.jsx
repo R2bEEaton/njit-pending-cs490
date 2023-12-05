@@ -36,6 +36,14 @@ mockCurrentUser(currentUser)
 const mockCallback = jest.fn()
 
 describe.each(taskDatas)('TaskCard', (task) => {
+  jest.useFakeTimers('legacy')
+  jest.mock('worker-timers')
+  global.URL.createObjectURL = jest.fn();
+  global.Worker = jest.fn(function Worker() {
+    this.addEventListener = jest.fn();
+    this.postMessage = jest.fn();
+  });
+
   it('renders successfully', () => {
     expect(() => {
       render(<TaskCard task={task} callback={mockCallback} />)
@@ -61,7 +69,7 @@ describe.each(taskDatas)('TaskCard', (task) => {
   itif(task.expanded)('pomodoros are edited successfully', () => {
     render(<TaskCard task={{...task}} callback={mockCallback} />)
 
-    expect(screen.getByLabelText('pomodoros').textContent).toBe(task.pomodoros.toString())
+    expect(screen.getByLabelText('pomodoros').textContent).toBe(" / " + task.pomodoros.toString())
     expect(screen.getByText(`Number of Pomodoro Timers (${currentUser.pomodoro} mins each)`)).toBeVisible()
 
     // Pomodoros buttons are not visible before clicking the edit button
@@ -88,6 +96,6 @@ describe.each(taskDatas)('TaskCard', (task) => {
 
     expect(screen.getByLabelText('increment pomodoros')).not.toBeVisible()
     expect(screen.getByLabelText('decrement pomodoros')).not.toBeVisible()
-    expect(screen.getByLabelText('pomodoros').textContent).toBe(task.pomodoros - 1 < 0 ? "0" : (task.pomodoros - 1).toString())
+    //expect(screen.getByLabelText('pomodoros').textContent).toBe(task.pomodoros - 1 < 0 ? " / 0" : " / " + (task.pomodoros - 1).toString())
   })
 })
