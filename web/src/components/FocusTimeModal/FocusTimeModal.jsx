@@ -18,9 +18,11 @@ import {
   Spacer,
   useEditableControls,
 } from '@chakra-ui/react';
-import TextareaAutosize from 'react-textarea-autosize';
+import { useAuth } from 'src/auth'
 import { v4 as uuidv4 } from 'uuid';
-const FocusTimeModal = ({setNotes, isOpen, onClose, taskTitle, taskNotes }) => {
+import Timer from 'src/components/Timer/Timer'
+const FocusTimeModal = ({setNotes, isOpen, onClose, taskTitle, taskNotes, taskPomos, numPomosComplete, updateNumPomosComplete }) => {
+  console.log(taskPomos)
   
   const pomodoroNotesBox = useRef();
   const shortBreakNotesBox = useRef();
@@ -56,7 +58,15 @@ const handleTab = (value) => {
 
 
 }
-
+/*
+useEffect(() => {
+  if(!isOpen)
+  {
+    return
+  }
+  setCurrentTab('short break')
+}, [numPomosComplete]);
+*/
 useEffect(() => {
   setNotes(currentNotes);
 }, [currentNotes, setNotes]);
@@ -71,8 +81,21 @@ useEffect(() => {
     setCurrentNotes(taskNotes);
   }
 }, [isOpen, taskNotes]);
-
-
+const { currentUser, reauthenticate } = useAuth()
+const onTimerFinish = () => {
+  if(currentTab === 'pomodoro')
+  {
+    setCurrentTab('short break')
+  }
+  else if(currentTab == 'short break')
+  {
+    setCurrentTab('pomodoro')
+  }
+  else
+  {
+    setCurrentTab('pomodoro')
+  }
+};
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={false}>
@@ -87,51 +110,16 @@ useEffect(() => {
 
         {currentTab === 'pomodoro' && (
           <>
-            <Flex direction="column" alignItems="center" justifyContent="center" h="100%">
-              <Box
-                bg="#F5F7F9"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                height="100%"
-                width="90%"
-                borderRadius="8px 8px 8px 8px"
-              >
-                <Text
-                  color="#1F1F1F"
-                  fontFamily="DM Sans"
-                  fontSize="73"
-                  fontWeight="700"
-                  lineHeight="50%"
-                  letterSpacing="0em"
-                  mt="10%"
-                >
-                  25:00
-                </Text>
-                <Button
-                  position="absolute"
-                  bottom="51.6%"
-                  bg="#6284FF"
-                  color="white"
-                  borderRadius="10px"
-                  w="26.3%"
-                  h="9%"
-                  boxShadow="0px 4px 80px 0px #6284FF33"
-                  _hover={{ bg: '#4B6DE9' }}
-                >
-                  <Text
-                    color="#FFFFFF"
-                    fontFamily="DM Sans"
-                    fontSize="14"
-                    fontWeight="700"
-                    lineHeight="42.6%"
-                    letterSpacing="0em"
-                  >
-                    Start
-                  </Text>
-                </Button>
-              </Box>
-            </Flex>
+
+          <Timer
+              isPomo={true}
+              numPomos={taskPomos}
+              numMinutes={currentUser.pomodoro}
+              numPomosComplete={numPomosComplete}
+              updateNumPomosComplete={updateNumPomosComplete}
+              onTimerFinish={onTimerFinish}
+            />
+
             <Text
               color="#000000"
               fontFamily="DM Sans"
@@ -193,12 +181,12 @@ useEffect(() => {
               borderColor="#6284FF"
             >
               <HStack alignItems="center" mt="4.3%">
-                <Flex direction="row" alignItems="center" ml="17.96%">
+                <Flex direction="row" alignItems="center" ml="17.96%" whiteSpace={'nowrap'}>
                   <Text fontFamily="DM Sans" fontSize="15px" fontWeight="700" lineHeight="15px" color="white" mr="5%">
                     Pomos:
                   </Text>
                   <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
-                    0/3
+                    {numPomosComplete}/{taskPomos}
                   </Text>
                 </Flex>
                 <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml="7%">
@@ -220,51 +208,10 @@ useEffect(() => {
         )}
         {currentTab === 'short break' && (
           <>
-            <Flex direction="column" alignItems="center" justifyContent="center" h="100%">
-              <Box
-                bg="#F5F7F9"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                height="100%"
-                width="90%"
-                borderRadius="8px 8px 8px 8px"
-              >
-                <Text
-                  color="#1F1F1F"
-                  fontFamily="DM Sans"
-                  fontSize="73"
-                  fontWeight="700"
-                  lineHeight="50%"
-                  letterSpacing="0em"
-                  mt="10%"
-                >
-                  25:00
-                </Text>
-                <Button
-                  position="absolute"
-                  bottom="51.6%"
-                  bg="#6284FF"
-                  color="white"
-                  borderRadius="10px"
-                  w="26.3%"
-                  h="9%"
-                  boxShadow="0px 4px 80px 0px #6284FF33"
-                  _hover={{ bg: '#4B6DE9' }}
-                >
-                  <Text
-                    color="#FFFFFF"
-                    fontFamily="DM Sans"
-                    fontSize="14"
-                    fontWeight="700"
-                    lineHeight="42.6%"
-                    letterSpacing="0em"
-                  >
-                    Start
-                  </Text>
-                </Button>
-              </Box>
-            </Flex>
+            <Timer
+              numMinutes={currentUser.shortBreak}
+              onTimerFinish={onTimerFinish}
+            />
             <Text
               color="#000000"
               fontFamily="DM Sans"
@@ -331,7 +278,7 @@ useEffect(() => {
                     Pomos:
                   </Text>
                   <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
-                    0/3
+                    {numPomosComplete}/{taskPomos}
                   </Text>
                 </Flex>
                 <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml="7%">
@@ -351,51 +298,10 @@ useEffect(() => {
         )}
         {currentTab === 'long break' && (
           <>
-          <Flex direction="column" alignItems="center" justifyContent="center" h="100%">
-            <Box
-              bg="#F5F7F9"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              height="100%"
-              width="90%"
-              borderRadius="8px 8px 8px 8px"
-            >
-              <Text
-                color="#1F1F1F"
-                fontFamily="DM Sans"
-                fontSize="73"
-                fontWeight="700"
-                lineHeight="50%"
-                letterSpacing="0em"
-                mt="10%"
-              >
-                25:00
-              </Text>
-              <Button
-                position="absolute"
-                bottom="51.6%"
-                bg="#6284FF"
-                color="white"
-                borderRadius="10px"
-                w="26.3%"
-                h="9%"
-                boxShadow="0px 4px 80px 0px #6284FF33"
-                _hover={{ bg: '#4B6DE9' }}
-              >
-                <Text
-                  color="#FFFFFF"
-                  fontFamily="DM Sans"
-                  fontSize="14"
-                  fontWeight="700"
-                  lineHeight="42.6%"
-                  letterSpacing="0em"
-                >
-                  Start
-                </Text>
-              </Button>
-            </Box>
-          </Flex>
+            <Timer
+              numMinutes={currentUser.longBreak}
+              onTimerFinish={onTimerFinish}
+            />
           <Text
             color="#000000"
             fontFamily="DM Sans"
@@ -462,7 +368,7 @@ useEffect(() => {
                   Pomos:
                 </Text>
                 <Text fontFamily="DM Sans" fontSize="15px" lineHeight="15px" color="#6284FF">
-                  0/3
+                  {numPomosComplete}/{taskPomos}
                 </Text>
               </Flex>
               <Flex direction="row" alignItems="center" whiteSpace={'nowrap'} ml="7%">
