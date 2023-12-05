@@ -125,14 +125,15 @@ export const handler = async (event, context) => {
     input:{
       userId:currentUser.id,
       appointments: events
-  }})*/
-
+  }})
+  //this only works if there is no other row with the same date i believe
   await createTask({
     input:{
       date:moment().format('YYYY-MM-DD') + "T00:00:00Z",
       userId:currentUser.id,
       appointments: events
-  }})
+  }})*/
+
   return {
     statusCode: 200,
     headers: {
