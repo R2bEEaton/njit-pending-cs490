@@ -11,6 +11,7 @@ import {
 import {useAuth} from 'src/auth'
 import TextareaAutosize from 'react-textarea-autosize'
 import {v4 as uuidv4} from "uuid"
+import FocusTimeModal from "src/components/FocusTimeModal/FocusTimeModal";
 
 const getStatusFromIndex = (n) => {
     switch (n) {
@@ -74,8 +75,12 @@ const StatusIcons = ({status, callback, task, idx, setTaskStatus}) => {
 }
 
 const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
+    const [selectedNotes, setSelectedNotes] = useState('');
     const [pomosEdit, setPomosEdit] = useState(false);
     const {currentUser} = useAuth()
+    const [numPomosComplete, setNumPomosComplete] = useState(
+        task.pomodorosComplete
+      )
 
     const [show, setShow] = useState(task.expanded)
     const [pomos, setPomos] = useState(task.pomodoros)
@@ -91,9 +96,16 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
         setShow(task.expanded)
         setPomosEdit(false)
         setPomos(task.pomodoros)
+        setNumPomosComplete(task.pomodorosComplete)
         setNotes(task.notes)
         setTaskStatus(task.status)
     }, [task]);
+    useEffect(() => {
+
+        task.notes = notes
+        setNotes(notes)
+        callback(idx, task)
+    }, [notes]);
 
     /**
      * Button for editing the notes
@@ -122,10 +134,17 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
 
     const handleNotes = (value) => {
         if (task.notes === value) return // If the notes actually changed
+        setSelectedNotes(value)
         task.notes = value
         setNotes(value)
         callback(idx, task)
     }
+    const updateNumPomosComplete = (value) => {
+        if (task.pomodorosComplete === value) return // If the number of pomos completed is already that
+        task.pomodorosComplete = value
+        setNumPomosComplete(value)
+        callback(idx, task)
+      }
 
     const handlePomosToggle = () => {
         setPomosEdit(!pomosEdit);
@@ -142,18 +161,46 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
      */
     function updatePomos(by) {
         // Update pomodoro state
-        if (pomos + by < 0) {
-            return
+        if (pomos + by < numPomosComplete) {
+          if (pomos < numPomosComplete) setPomos(numPomosComplete)
+          return
         }
         setPomos(pomos + by)
-    }
-
+      }
     useEffect(() => {
         // Whenever a user opens a card, it will send it back to the parent as a non-save-worthy change
         // Maybe a card being open is save-worthy?
         task.expanded = show
         callback(idx, task)
     }, [show])
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
+    const [selectedPomos, setselectedPomos] = useState('');
+    const [selectedCompletedPomos, setselectedCompletedPomos] = useState('');
+    useEffect(() => {
+        if(!isModalOpen)
+        {
+            if(numPomosComplete === pomos)
+            {
+                task.status = getStatusFromIndex(2)
+                setTaskStatus(task.status)
+                //console.log(getStatusFromIndex((currentIndex + 1) % images.length))
+                callback(idx, task, true)
+
+            }
+        }
+
+    }, [isModalOpen])
+    
+  
+    const handleTaskTitleClick = (title, notes, pomos, numPomosComplete) => {
+      setSelectedTaskTitle(title);
+      setSelectedNotes(notes)
+      setselectedPomos(pomos)
+      setselectedCompletedPomos(numPomosComplete)
+      setModalOpen(true);
+    };
 
     return (
         <>
@@ -166,35 +213,40 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                         task={task}
                         idx={idx}
                         setTaskStatus={setTaskStatus}
+                        _hover={{ cursor: 'pointer' }}
                     />
-                    <Text color={'#6284FF'}>{task.title}</Text>
+                    <Text color={'#6284FF'} onClick={() => handleTaskTitleClick(task.title, task.notes, task.pomodoros, task.pomodorosComplete)} _hover={{ cursor: 'pointer' }}>
+                        {task.title}
+                        
+                        
+                    </Text>
                     <Spacer/>
                     <Box {...dragHandle}>
                         <DragIcon/>
                     </Box>
                     <button onClick={handleToggle} aria-label={'expand'}>
-                        <ChevronIcon active={show}/>
+                        <ChevronIcon active={show} />
                     </button>
                 </HStack>
                 <Collapse mt={4} in={show}>
-                    <hr style={{backgroundColor: '#E2EAF1', margin: '5px'}}></hr>
+                    <hr style={{ backgroundColor: '#E2EAF1', margin: '5px' }}></hr>
                     <HStack>
                         <Text fontSize={'12px'} color={'#1F1F1F'}>Number of Pomodoro Timers
                             ({currentUser?.pomodoro} mins each)</Text>
-                        <Spacer/>
+                        <Spacer />
                         <button aria-label="increment pomodoros" hidden={!pomosEdit} onClick={() => {
                             updatePomos(1)
                         }}>
-                            <PlusIcon/>
+                            <PlusIcon />
                         </button>
-                        <Text fontSize={'16px'} color={'#FE754D'} aria-label={'pomodoros'}>{pomos}</Text>
+                        <Text fontSize={'16px'} color={'#FE754D'} aria-label={'pomodoros'}>{numPomosComplete} / <Text color={pomosEdit ? '#6284FF' : ''} as={'span'}>{pomos}</Text></Text>
                         <button aria-label="decrement pomodoros" hidden={!pomosEdit} onClick={() => {
                             updatePomos(-1)
                         }}>
-                            <MinusIcon/>
+                            <MinusIcon />
                         </button>
                         <button onClick={handlePomosToggle} aria-label={'edit pomodoros'}>
-                            <EditIcon active={pomosEdit}/>
+                            <EditIcon active={pomosEdit} />
                         </button>
                     </HStack>
                     <Editable key={uuidv4()} w={'100%'} defaultValue={notes} isPreviewFocusable={false} submitOnBlur={false}
@@ -212,6 +264,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                     </Editable>
                 </Collapse>
             </Box>
+            <FocusTimeModal isOpen={isModalOpen} setModalOpen={setModalOpen} updateNumPomosComplete={updateNumPomosComplete} setNotes={setNotes} taskTitle={selectedTaskTitle} taskNotes={selectedNotes} taskPomos={selectedPomos} numPomosComplete={numPomosComplete} onClose={() => setModalOpen(false)}  />
         </>
     )
 }
