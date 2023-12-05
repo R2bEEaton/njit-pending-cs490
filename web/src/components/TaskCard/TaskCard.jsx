@@ -178,6 +178,20 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
     const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
     const [selectedPomos, setselectedPomos] = useState('');
     const [selectedCompletedPomos, setselectedCompletedPomos] = useState('');
+    useEffect(() => {
+        if(!isModalOpen)
+        {
+            if(numPomosComplete === pomos)
+            {
+                task.status = getStatusFromIndex(2)
+                setTaskStatus(task.status)
+                //console.log(getStatusFromIndex((currentIndex + 1) % images.length))
+                callback(idx, task, true)
+
+            }
+        }
+
+    }, [isModalOpen])
     
   
     const handleTaskTitleClick = (title, notes, pomos, numPomosComplete) => {
@@ -250,7 +264,7 @@ const TaskCard = ({dragHandle, task, idx, callback, isDragging = false}) => {
                     </Editable>
                 </Collapse>
             </Box>
-            <FocusTimeModal isOpen={isModalOpen} updateNumPomosComplete={updateNumPomosComplete} setNotes={setNotes} taskTitle={selectedTaskTitle} taskNotes={selectedNotes} taskPomos={selectedPomos} numPomosComplete={numPomosComplete} onClose={() => setModalOpen(false)}  />
+            <FocusTimeModal isOpen={isModalOpen} setModalOpen={setModalOpen} updateNumPomosComplete={updateNumPomosComplete} setNotes={setNotes} taskTitle={selectedTaskTitle} taskNotes={selectedNotes} taskPomos={selectedPomos} numPomosComplete={numPomosComplete} onClose={() => setModalOpen(false)}  />
         </>
     )
 }
