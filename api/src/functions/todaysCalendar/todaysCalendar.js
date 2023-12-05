@@ -110,13 +110,14 @@ export const handler = async (event, context) => {
     },
   })
 
-  //this only works if there is no other
+  //this only works if there is no other row with the same id
   await updateTask({
     id:16,
     input:{
       userId:currentUser.id,
       appointments: events
   }})*/
+
   await createTask({
     input:{
       date:moment().format('YYYY-MM-DD') + "T05:00:00Z",
