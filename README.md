@@ -2,9 +2,10 @@
 
 ## Project Description
 
-This is a project called Crush It for NJIT CS490 Fall 2023, a planner app. More details coming soon.
+This is a project called Crush It, a planner app that integrates with Google Calendar and follows the Pomodoro Technique methodology. Created as a project for NJIT CS490, Fall 2023.
 
 Team Name: ...pending...
+Team Members: Ryan Eaton (PM), Brendan Clayton, Jeremy Switlyk, Sunfee Kim
 
 ## WSL Development Setup
 Use your IDE or Git to clone the project to a directory in Windows Subsystem for Linux.
