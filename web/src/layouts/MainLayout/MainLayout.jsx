@@ -31,7 +31,7 @@ const MainLayout = ({ children }) => {
             */ }
             <Box hidden={title === 'Profile'}>
               <Text textAlign={"center"} fontSize={20} fontFamily={"DM Sans"} fontWeight={"700"}>It's time to plan your day!</Text>
-              <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7} href={`/.redwood/functions/todaysCalendar?userId=${currentUser?.id}`} as={'a'}>Plan Day</Button>
+              <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7} href={`/.netlify/functions/todaysCalendar?userId=${currentUser?.id}`} as={'a'}>Plan Day</Button>
             </Box>
             <Spacer />
             <Button colorScheme={"white"} variant={"outline"} type='button' onClick={logOut} mb={'5vh'}><LogoutIcon />Logout</Button>
