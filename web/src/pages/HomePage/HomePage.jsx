@@ -55,7 +55,7 @@ const CREATE_TASKS = gql`
   }
 `;
 
-const HomePage = () => {
+const HomePage = ({setDate2}) => {
   const [update] = useMutation(UPDATE_TASKS)
   const [create] = useMutation(CREATE_TASKS)
   const {currentUser} = useAuth()
@@ -107,6 +107,7 @@ const HomePage = () => {
     get_cal_data()
 
     handleDatabase({userId: currentUser?.id, date: date, client}).then((res) => {
+
       let orderedData = JSON.parse(JSON.stringify(res.taskList))
       const orderedKeys = ["Top Priority", "Important", "Other"];
 
@@ -128,7 +129,12 @@ const HomePage = () => {
       create({variables: {input: inputTask}})
       setTasks(EMPTY_TASKS_DATA)
     })
+    setDate2(date)
+    console.log("hey")
+
   }, [date])
+
+
 
   return (<>
     <MetaTags title="Home" description="Home page"/>

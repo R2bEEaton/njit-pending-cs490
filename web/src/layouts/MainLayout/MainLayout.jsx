@@ -2,11 +2,17 @@ import {Box, Button, ChakraProvider, Flex, Image, Spacer, Text, VStack,} from "@
 import {useAuth} from 'src/auth';
 import UserInfo from 'src/components/UserInfo';
 import theme from "src/pages/LoginPage/theme";
+import {useState} from "react"
+import HomePage from "src/pages/HomePage/HomePage";
 import '@fontsource/fredoka-one/400.css'
 import '@fontsource/dm-sans/700.css'
+import NotFoundPage from "src/pages/NotFoundPage/NotFoundPage";
+import SettingsPage from "src/pages/SettingsPage/SettingsPage";
+import moment from "moment"
 
 const MainLayout = ({ children }) => {
   const { currentUser, logOut } = useAuth();
+  const [date2, setDate2] = useState();
 
   // Get the route name from the location object
   const routeName = location.pathname.substring(1); // Remove the leading '/'
@@ -16,7 +22,9 @@ const MainLayout = ({ children }) => {
   if (routeName === 'settings') {
     title = 'Profile';
   }
-
+  console.log('date:', date2);
+  console.log(moment());
+  
   return (
 
     <ChakraProvider theme={theme}>
@@ -25,11 +33,7 @@ const MainLayout = ({ children }) => {
           <Flex flexDirection={'column'} alignItems={'center'} w={"80%"} gap={"2vh"} flexGrow={'1'}>
             <Text mt={"5vh"} fontSize={36} fontFamily={"Fredoka One"}>Crush It</Text>
             <Image mt={"10vh"} src={"img/pending.png"} />
-            { /*
-            TODO:
-            The following will also need to be selectively hidden if the user has already planned their day
-            */ }
-            <Box hidden={title === 'Profile'}>
+            <Box hidden={title === 'Profile'|| (date2 && moment(date2, 'YYYY-MM-DD').isBefore(moment(), 'day'))}>
               <Text textAlign={"center"} fontSize={20} fontFamily={"DM Sans"} fontWeight={"700"}>It's time to plan your day!</Text>
               <Button colorScheme={"white"} variant={"outline"} w={"100%"} pt={7} pb={7} href={`/.netlify/functions/todaysCalendar?userId=${currentUser?.id}`} as={'a'}>Plan Day</Button>
             </Box>
@@ -47,12 +51,24 @@ const MainLayout = ({ children }) => {
             </Flex>
           </Box>
           <Box w={"100%"} h="96vh" maxHeight={"calc(100vh - 60px)"} overflowY={"auto"} p={"24px"}>
-            <main>{children}</main>
+            {renderPage(title, { date2, setDate2 })}
           </Box>
         </VStack>
       </Flex>
     </ChakraProvider>
   )
+}
+const renderPage = (title, commonProps) => {
+  console.log(title)
+  switch (title) {
+    case 'Home':
+      return <HomePage {...commonProps} />;
+    case 'Profile':
+      return <SettingsPage/>;
+    // Add more cases for other pages
+    default:
+      return <NotFoundPage />;
+  }
 }
 
 const LogoutIcon = () => {
