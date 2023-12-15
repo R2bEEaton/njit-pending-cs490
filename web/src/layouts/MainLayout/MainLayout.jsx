@@ -22,8 +22,7 @@ const MainLayout = ({ children }) => {
   if (routeName === 'settings') {
     title = 'Profile';
   }
-  console.log('date:', date2);
-  console.log(moment());
+
   
   return (
 
@@ -59,7 +58,6 @@ const MainLayout = ({ children }) => {
   )
 }
 const renderPage = (title, commonProps) => {
-  console.log(title)
   switch (title) {
     case 'Home':
       return <HomePage {...commonProps} />;

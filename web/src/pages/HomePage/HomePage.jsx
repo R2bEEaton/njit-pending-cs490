@@ -99,7 +99,7 @@ const HomePage = ({setDate2}) => {
     // console.log(`The date changed to ${date} so we need to grab data`)
 
     async function get_cal_data() {
-      const response = await fetch(`http://localhost:8910/.redwood/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`); // Assuming your API endpoint is /api/data
+      const response = await fetch(`http://localhost:8910/.netlify/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`); // Assuming your API endpoint is /api/data
       const data = await response.json();
       console.log(data.events)
       setAppts(data.events)
@@ -130,7 +130,6 @@ const HomePage = ({setDate2}) => {
       setTasks(EMPTY_TASKS_DATA)
     })
     setDate2(date)
-    console.log("hey")
 
   }, [date])
 
@@ -154,7 +153,7 @@ const HomePage = ({setDate2}) => {
         <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
         <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
              mt={'15px'}>
-          <AppointmentsBox appointmentsJSON={appts}/>
+          <AppointmentsBox appointmentsTasks={tasks} appointmentsJSON={appts}/>
         </Box>
       </Box>
     </Flex>
