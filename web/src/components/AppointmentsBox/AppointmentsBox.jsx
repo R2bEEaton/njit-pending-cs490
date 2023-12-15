@@ -191,17 +191,39 @@ console.log(updatedAppointmentTasks);
     const targetMoment = moment(targetTime, 'HH:mm:ss')
     return targetMoment.isBetween(startMoment, endMoment, null, '[)')
   }
-  function isEndTimeBetween(startTime, endTime, targetTime) {
+  function isFoucsTimeBetween(startTime, endTime, targetTime) {
+    let startMoment = moment(startTime, 'HH:mm:ss')
+    let endMoment = moment(endTime, 'HH:mm:ss')
+    //let hourAfterStartMoment = moment(startMoment).add(1, 'hour')
+    //endMoment = moment.max(endMoment, hourAfterStartMoment)
+    const targetMoment = moment(targetTime, 'HH:mm:ss')
+    return targetMoment.isBetween(startMoment, endMoment, null, '[)')
+  }
+  function isEndTimeBetween(startTime, endTime, targetTime, focusLength) {
     let startMoment = moment(startTime, 'HH:mm:ss')
     let endMoment = moment(endTime, 'HH:mm:ss')
     let hourAfterStartMoment = moment(startMoment).add(1, 'hour')
-    endMoment = moment.max(endMoment, hourAfterStartMoment)
+    endMoment = moment.max(endMoment, endMoment)
     let targetMoment = moment(targetTime, 'HH:mm:ss')
-    const endTargetMoment = moment(targetMoment).add(1, 'hour')
+    const endTargetMoment = moment(targetMoment).add(focusLength, 'hour')
 
     return endTargetMoment.isBetween(startMoment, endMoment, null, '[)')
   }
-
+  function isEndTimeEqual(startTime, endTime, targetTime, focusLength) {
+    let startMoment = moment(startTime, 'HH:mm:ss')
+    let endMoment = moment(endTime, 'HH:mm:ss')
+    let hourAfterStartMoment = moment(startMoment).add(1, 'hour')
+    endMoment = moment.max(endMoment, endMoment)
+    let targetMoment = moment(targetTime, 'HH:mm:ss')
+    const endTargetMoment = moment(targetMoment).add(focusLength, 'hour')
+    return endTargetMoment.isSame(endMoment)
+  }
+  function isAppointmentBetween(startTime, focusLength, targetTime) {
+    let startMoment = moment(startTime, 'HH:mm:ss')
+    let endMoment = moment(startMoment).add(focusLength, 'hour')
+    let targetMoment = moment(targetTime, 'HH:mm:ss')
+    return targetMoment.isBetween(startMoment, endMoment, null, '[)')
+  }
   /**
    * Algorithm for generating stagger offsets for overlapping appointments! Super proud of this.
    * @returns {*[]}
@@ -242,8 +264,10 @@ console.log(updatedAppointmentTasks);
     items.forEach((item) => {
       
       if (!item.startTime) {
+        let focusLength = item.pomodoros
       
         // Task doesn't have a predefined start time
+
 
         // Check if there's enough time for the item
         while (
@@ -251,30 +275,41 @@ console.log(updatedAppointmentTasks);
           scheduledItems.some(
             
             (scheduledItem) =>
-              isTimeBetween(
+            isFoucsTimeBetween(
                 
                 scheduledItem.startTime,
                 scheduledItem.endTime,
                 currentTime.format('HH:mm:ss')
               ) ||
-              isTimeBetween(item.startTime, item.endTime, currentTime.format('HH:mm:ss'))
+              isAppointmentBetween(currentTime.format('HH:mm:ss'), focusLength, scheduledItem.startTime)
               ||
+              
               isEndTimeBetween(
                 scheduledItem.startTime,
                 scheduledItem.endTime,
-                currentTime.format('HH:mm:ss')
+                currentTime.format('HH:mm:ss'),
+                focusLength
+              )
+              ||
+              isEndTimeEqual(
+                scheduledItem.startTime,
+                scheduledItem.endTime,
+                currentTime.format('HH:mm:ss'),
+                focusLength
               )
           )
         ) {
           currentTime.add(15, 'minutes'); // Move to the next 15-minute interval if there's a conflict
         }
-
-        // Schedule the item
         const scheduledItem = {
           ...item,
           startTime: currentTime.format('HH:mm:ss'),
-          endTime: currentTime.add(1, 'hours').format('HH:mm:ss'),
+          endTime: currentTime.add(focusLength, 'hours').format('HH:mm:ss'),
         };
+
+        // Schedule the item
+        
+
 
 
         scheduledItems.push(scheduledItem);
