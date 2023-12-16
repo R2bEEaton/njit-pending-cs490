@@ -19,15 +19,33 @@ import {db} from 'src/lib/db';
  * @param { Context } context - contains information about the invocation,
  * function, and execution environment.
  */
+
+
 export const handler = async (event, _context) => {
   logger.info(`${event.httpMethod} ${event.path}: rolloverPreviousTasks function`)
-      // Get the current user
-      const { userId, startDate, timeZoneOffset } = event.queryStringParameters
-      const timeZone = (Math.sign(parseInt(timeZoneOffset)) ? '-' : '+') + moment.utc(60000 * Math.abs(parseInt(timeZoneOffset))).format("HH:mm")
-      const authUser = await authDecoder(userId, 'dbAuth', {event, context})
-      const currentUser = await getCurrentUser(authUser)
-      const tasks = db.user.tasks
+  function substring(string, start, end) {
+    logger.info("string:" + string + " end")
+    var result = '',
+        length = Math.min(string.length, end),
+        i = start;
 
+    while (i < length) result += string[i++];
+    return result;
+  }
+  // Get the current user
+  const { userId, date} = event.queryStringParameters
+  const dd= new Date(date)
+  const authUser = await authDecoder(userId, 'dbAuth', {event, context})
+  const currentUser = await getCurrentUser(authUser)
+  const allTasks = currentUser.tasks[0].date
+  const sub = substring("2023-12-13T00:00:00.000Z",0,9)
+
+  /*const p = allTasks.map
+  function oldTasks(item) {
+    let temp = item.date
+    if (item.taskList.length() == 0)
+    return 0
+  }*/
   return {
     statusCode: 200,
     headers: {
@@ -35,7 +53,8 @@ export const handler = async (event, _context) => {
     },
     body: JSON.stringify({
       data: 'rolloverPreviousTasks function',
-      currentUser
+      allTasks,
+      sub
     }),
   }
 }
