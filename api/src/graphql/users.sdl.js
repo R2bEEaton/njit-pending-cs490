@@ -9,6 +9,7 @@ export const schema = gql`
     longBreak: Int!
     picture: String!
     identities: [Identity]!
+    tasks: [Task]!
   }
 
   type Query {

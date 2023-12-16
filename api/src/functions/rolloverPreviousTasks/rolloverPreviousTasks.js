@@ -1,5 +1,8 @@
 import { logger } from 'src/lib/logger'
-
+import moment from "moment";
+import {authDecoder} from "@redwoodjs/auth-dbauth-api";
+import {getCurrentUser} from "src/lib/auth";
+import {db} from 'src/lib/db';
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -17,9 +20,13 @@ import { logger } from 'src/lib/logger'
  * function, and execution environment.
  */
 export const handler = async (event, _context) => {
-  logger.info(
-    `${event.httpMethod} ${event.path}: rolloverPreviousTasks function`
-  )
+  logger.info(`${event.httpMethod} ${event.path}: rolloverPreviousTasks function`)
+      // Get the current user
+      const { userId, startDate, timeZoneOffset } = event.queryStringParameters
+      const timeZone = (Math.sign(parseInt(timeZoneOffset)) ? '-' : '+') + moment.utc(60000 * Math.abs(parseInt(timeZoneOffset))).format("HH:mm")
+      const authUser = await authDecoder(userId, 'dbAuth', {event, context})
+      const currentUser = await getCurrentUser(authUser)
+      const tasks = db.user.tasks
 
   return {
     statusCode: 200,
@@ -28,6 +35,7 @@ export const handler = async (event, _context) => {
     },
     body: JSON.stringify({
       data: 'rolloverPreviousTasks function',
+      currentUser
     }),
   }
 }
