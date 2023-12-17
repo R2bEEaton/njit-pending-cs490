@@ -23,29 +23,31 @@ import {db} from 'src/lib/db';
 
 export const handler = async (event, _context) => {
   logger.info(`${event.httpMethod} ${event.path}: rolloverPreviousTasks function`)
-  function substring(string, start, end) {
-    logger.info("string:" + string + " end")
-    var result = '',
-        length = Math.min(string.length, end),
-        i = start;
-
-    while (i < length) result += string[i++];
+  function substring(string) {
+    var result = '';
+    i = 0;
+    while (string[i] != "T") result += string[i++];
+    return result;
+  }
+  function oldTasks(tasks, today) {
+    let result=[];
+    let len = tasks.length;
+    let i = 0;
+    while(i<len){
+      if (tasks[i].date<today) result+= tasks[i].id;
+      i++;
+    }
     return result;
   }
   // Get the current user
   const { userId, date} = event.queryStringParameters
-  const dd= new Date(date)
+  const dd= new Date("2023-12-14")
   const authUser = await authDecoder(userId, 'dbAuth', {event, context})
   const currentUser = await getCurrentUser(authUser)
-  const allTasks = currentUser.tasks[0].date
-  const sub = substring("2023-12-13T00:00:00.000Z",0,9)
+  const allTasks = currentUser.tasks
+  const olTasks = oldTasks(allTasks, dd)
+  //const vr = currentUser.tasks[0].date
 
-  /*const p = allTasks.map
-  function oldTasks(item) {
-    let temp = item.date
-    if (item.taskList.length() == 0)
-    return 0
-  }*/
   return {
     statusCode: 200,
     headers: {
@@ -53,8 +55,12 @@ export const handler = async (event, _context) => {
     },
     body: JSON.stringify({
       data: 'rolloverPreviousTasks function',
+      date,
+      dd,
       allTasks,
-      sub
+      olTasks,
+      //vr
+
     }),
   }
 }
