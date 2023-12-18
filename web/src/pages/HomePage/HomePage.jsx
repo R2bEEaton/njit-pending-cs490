@@ -64,6 +64,7 @@ const HomePage = ({ setDate2 }) => {
   const [tasks, setTasks] = useState(EMPTY_TASKS_DATA)
 
   const [appts, setAppts] = useState([])
+  const [scheduledItems, setScheduledItems] = useState()
 
   useEffect(() => {
     if (!tasks || tasks === EMPTY_TASKS_DATA) return
@@ -165,7 +166,7 @@ const HomePage = ({ setDate2 }) => {
             <TaskBox
               tasksData={tasks}
               updateTasksData={setTasks}
-              appointmentsJSON={appts}
+              scheduledItems={scheduledItems}
             />
           </Box>
         </Box>
@@ -183,6 +184,7 @@ const HomePage = ({ setDate2 }) => {
             <AppointmentsBox
               appointmentsTasks={tasks}
               appointmentsJSON={appts}
+              setScheduledItems={setScheduledItems}
             />
           </Box>
         </Box>

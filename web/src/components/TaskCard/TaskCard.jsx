@@ -85,10 +85,14 @@ const StatusIcons = ({ status, callback, task, idx, setTaskStatus }) => {
   )
 }
 
-const TaskCard = (
-  { dragHandle, task, idx, callback, isDragging = false },
-  appointmentsJSON
-) => {
+const TaskCard = ({
+  dragHandle,
+  task,
+  idx,
+  callback,
+  isDragging = false,
+  scheduledItems,
+}) => {
   const [selectedNotes, setSelectedNotes] = useState('')
   const [pomosEdit, setPomosEdit] = useState(false)
   const { currentUser } = useAuth()
@@ -120,11 +124,7 @@ const TaskCard = (
     callback(idx, task)
   }, [notes])
 
-  useEffect(() => {
-    console.log(
-      'appointmentsJSON: ' + JSON.stringify(appointmentsJSON, null, 4)
-    )
-  })
+  console.log('scheduledItems: ' + JSON.stringify(scheduledItems, null, 4))
 
   /**
    * Button for editing the notes

@@ -6,7 +6,7 @@ import { toast, Toaster } from '@redwoodjs/web/dist/toast'
 
 import TaskType from 'src/components/TaskType/TaskType'
 
-const TaskBox = ({ tasksData, updateTasksData, appointmentsJSON }) => {
+const TaskBox = ({ tasksData, updateTasksData, scheduledItems }) => {
   // Easter egg stuff - dw about it
   const [dndEasterEgg, updateDndEasterEgg] = useState([])
 
@@ -72,7 +72,7 @@ const TaskBox = ({ tasksData, updateTasksData, appointmentsJSON }) => {
               type={type}
               data={tasksData[type]}
               callback={onUpdate}
-              appointmentsJSON={appointmentsJSON}
+              scheduledItems={scheduledItems}
             />
           )
         })}

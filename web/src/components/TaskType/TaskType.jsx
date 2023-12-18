@@ -3,7 +3,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 import TaskCard from 'src/components/TaskCard/TaskCard'
 
-const TaskType = ({ type, data, callback, appointmentsJSON }) => {
+const TaskType = ({ type, data, callback, scheduledItems }) => {
   /**
    * Send data back to the parent after updating the current task
    * @param idx
@@ -56,7 +56,7 @@ const TaskType = ({ type, data, callback, appointmentsJSON }) => {
                           idx={idx}
                           callback={onUpdate}
                           isDragging={snapshot.isDragging}
-                          appointmentsJSON={appointmentsJSON}
+                          scheduledItems={scheduledItems}
                         />
                       </Box>
                     )}
