@@ -3,6 +3,7 @@ import moment from "moment";
 import {authDecoder} from "@redwoodjs/auth-dbauth-api";
 import {getCurrentUser} from "src/lib/auth";
 import {db} from 'src/lib/db';
+import { StatDownArrow } from '@chakra-ui/react';
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -35,7 +36,27 @@ export const handler = async (event, _context) => {
     let i = 0;
     while(i<len){
       if (tasks[i].date<today){
-        if (tasks[i].taskList.Other.length > 0 )result+= tasks[i].id
+        if (tasks[i].taskList.Other.length > 0 ){
+          let l = tasks[i].taskList.Other.length;
+          for (let j=0; j<l; j++){
+            if (tasks[i].taskList.Other[j].status == "Completed" || tasks[i].taskList.Other[j].status == "Cancelled") continue;
+            else result+= JSON.stringify(tasks[i].taskList.Other[j]);
+          }
+        }//result+= tasks[i].id
+        if (tasks[i].taskList.Important.length > 0 ){
+          let l = tasks[i].taskList.Important.length;
+          for (let j=0; j<l; j++){
+            if (tasks[i].taskList.Important[j].status == "Completed" || tasks[i].taskList.Important[j].status == "Cancelled") continue;
+            else result+= JSON.stringify(tasks[i].taskList.Important[j]);
+          }
+        }
+        if (tasks[i].taskList["Top Priority"].length > 0 ){
+          let l = tasks[i].taskList["Top Priority"].length;
+          for (let j=0; j<l; j++){
+            if (tasks[i].taskList["Top Priority"][j].status == "Completed" || tasks[i].taskList["Top Priority"][j].status == "Cancelled") continue;
+            else result+= JSON.stringify(tasks[i].taskList["Top Priority"][j]);
+          }
+        }
       } //result+= tasks[i].id;
       i++;
     }
@@ -48,7 +69,7 @@ export const handler = async (event, _context) => {
   const currentUser = await getCurrentUser(authUser)
   const allTasks = currentUser.tasks
   const olTasks = oldTasks(allTasks, dd)
-  //const vr = currentUser.tasks[2].taskList
+  //const vr = currentUser.tasks[0].taskList["Top Priority"]
   //const f = vr.Other.length
 
   return {
