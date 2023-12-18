@@ -99,9 +99,8 @@ const HomePage = () => {
     // console.log(`The date changed to ${date} so we need to grab data`)
 
     async function get_cal_data() {
-      const response = await fetch(`/.netlify/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`); // Assuming your API endpoint is /api/data
+      const response = await fetch(`/.netlify/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`);
       const data = await response.json();
-      console.log(data.events)
       setAppts(data.events)
     }
     get_cal_data()
