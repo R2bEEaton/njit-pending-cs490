@@ -2,17 +2,34 @@ import {Box, Flex, ListItem, Text, UnorderedList} from "@chakra-ui/react"
 import moment from "moment"
 import {useEffect, useState} from "react"
 import {setTimeout} from 'worker-timers'
+import {useAuth} from 'src/auth'
 
 const AppointmentsBox = ({appointmentsJSON, appointmentsTasks}) => {
   // Sort appointments by startTime
   const updatedAppointmentTasks = {};
-
+  const {currentUser} = useAuth()
+let totalTime
+let numLongBreaks
+let roundedTime
 for (const category in appointmentsTasks) {
   if (appointmentsTasks.hasOwnProperty(category)) {
     updatedAppointmentTasks[category] = appointmentsTasks[category].map((task) => {
+      if(task.pomodoros>=4)
+      {
+        numLongBreaks = (Math.floor(task.pomodoros / 4))
+        totalTime = (numLongBreaks * currentUser.longBreak) + (task.pomodoros * currentUser.pomodoro) + ((task.pomodoros - numLongBreaks) * currentUser.shortBreak)
+      }
+      else
+      {
+        totalTime = (currentUser.pomodoro * task.pomodoros) + (currentUser.shortBreak * task.pomodoros)
+      }
+      console.log("taskTime", totalTime)
+      roundedTime = Math.ceil(totalTime / 30) * 30
+      console.log("roundedTime", roundedTime)
       return {
         ...task,
         summary: `Focus Time \u00a0 \u2022 ${task.title}`, // Add a new field "summary" with the value of "title"
+        taskMinutes: `${roundedTime}`
       };
     });
   }
@@ -120,7 +137,8 @@ for (const category in appointmentsTasks) {
     items.forEach((item) => {
       
       if (!item.startTime) {
-        let focusLength = item.pomodoros
+        let focusLength = (item.taskMinutes/60)
+        //let focusLength = item.pomodoros
       
         // Task doesn't have a predefined start time
 
@@ -170,6 +188,7 @@ for (const category in appointmentsTasks) {
 
 
         scheduledItems.push(scheduledItem);
+        currentTime = moment().startOf('day').add(5, 'hours');
       } else {
         // Appointment has a predefined start time, keep it unchanged
         scheduledItems.push(item);
@@ -185,6 +204,7 @@ for (const category in appointmentsTasks) {
   //allItems.sort((a, b) => a.startTime.localeCompare(b.startTime));
   scheduledItems.sort((a, b) => a.startTime.localeCompare(b.startTime));
   const staggerLefts = staggerIt()
+  console.log(scheduledItems)
   
 
 
@@ -219,16 +239,20 @@ for (const category in appointmentsTasks) {
             // What is the length of the appointment in hours?
             let lengthInHours = endTimeM.diff(startTimeM, 'minutes') / 60
             let borderC
+            let zIndexTask
+
+            let staggerLeft = staggerLefts[idx]
             if(title===undefined)
             {
               borderC = '1px solid #E2EAF1'
+              zIndexTask=(staggerLeft * 100)
             }
             else
             {
-              borderC = '1px solid #6284FF'
+              borderC = '1px solid #6284FF';
+              zIndexTask=(staggerLeft * 100) + 1;
             }
 
-            let staggerLeft = staggerLefts[idx]
 
             return (
               <Box
@@ -244,6 +268,7 @@ for (const category in appointmentsTasks) {
               fontSize={'14px'}
               fontWeight={'500'}
               lineHeight={'17px'}
+              zIndex={zIndexTask}
               width={`calc(100% - (100% * ${staggerLeft}))`}
               ml={`calc(100% * ${staggerLeft})`}
               _hover={{ backgroundColor: '#FAFAFA' }}
