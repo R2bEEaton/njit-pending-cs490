@@ -1,22 +1,18 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
-import {
-  Box,
-  Flex,
-  Text
-} from '@chakra-ui/react'
+import { useApolloClient } from '@apollo/client'
+import { Box, Flex, Text } from '@chakra-ui/react'
+import moment from 'moment'
 
-import {MetaTags, useMutation} from '@redwoodjs/web'
-import {toast} from '@redwoodjs/web/toast'
+import { MetaTags, useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
 
-import {useAuth} from 'src/auth'
+import { useAuth } from 'src/auth'
+import AddTaskModal from 'src/components/AddTaskModal/AddTaskModal'
+import AppointmentsBox from 'src/components/AppointmentsBox/AppointmentsBox'
+import DatePicker from 'src/components/DatePicker/DatePicker'
 import TaskBox from 'src/components/TaskBox/TaskBox'
-import DatePicker from "src/components/DatePicker/DatePicker";
-import {handleDatabase} from "src/pages/HomePage/handleDatabase";
-import {useApolloClient} from "@apollo/client";
-import AddTaskModal from "src/components/AddTaskModal/AddTaskModal";
-import AppointmentsBox from "src/components/AppointmentsBox/AppointmentsBox";
-import moment from "moment";
+import { handleDatabase } from 'src/pages/HomePage/handleDatabase'
 
 const ToastWelcome = () => {
   // Use a state variable to track whether the toast notification has been shown
@@ -37,15 +33,19 @@ const ToastWelcome = () => {
   }, [])
 }
 
-const EMPTY_TASKS_DATA = {"Top Priority": [], "Important": [], "Other": []}
+const EMPTY_TASKS_DATA = { 'Top Priority': [], Important: [], Other: [] }
 
 const UPDATE_TASKS = gql`
-  mutation UpdateTaskwDateMutation($userId: Int!, $date: DateTime!, $input: UpdateTaskwDateInput!) {
+  mutation UpdateTaskwDateMutation(
+    $userId: Int!
+    $date: DateTime!
+    $input: UpdateTaskwDateInput!
+  ) {
     updateTaskwDate(userId: $userId, date: $date, input: $input) {
       date
     }
   }
-`;
+`
 
 const CREATE_TASKS = gql`
   mutation CreateTaskMutation($input: CreateTaskInput!) {
@@ -53,12 +53,12 @@ const CREATE_TASKS = gql`
       date
     }
   }
-`;
+`
 
-const HomePage = ({setDate2}) => {
+const HomePage = ({ setDate2 }) => {
   const [update] = useMutation(UPDATE_TASKS)
   const [create] = useMutation(CREATE_TASKS)
-  const {currentUser} = useAuth()
+  const { currentUser } = useAuth()
   ToastWelcome()
   const [date, setDate] = useState()
   const [tasks, setTasks] = useState(EMPTY_TASKS_DATA)
@@ -72,20 +72,28 @@ const HomePage = ({setDate2}) => {
     const updatedTaskData = {
       // Replace with the fields you want to update and their new values
       taskList: tasks,
-    };
-    const convertedDate = new Date(date);
-    const formattedDate = convertedDate.toISOString();
+    }
+    const convertedDate = new Date(date)
+    const formattedDate = convertedDate.toISOString()
     console.log(formattedDate)
-    update({variables: {userId: currentUser.id, date: formattedDate, input: updatedTaskData}}).then().catch(() => {
-      const convertedDate = new Date(date);
-      const formattedDate = convertedDate.toISOString();
-      const inputTask = {
-        date: formattedDate,
-        taskList: tasks,
+    update({
+      variables: {
         userId: currentUser.id,
-      };
-      create({variables: {input: inputTask}})
+        date: formattedDate,
+        input: updatedTaskData,
+      },
     })
+      .then()
+      .catch(() => {
+        const convertedDate = new Date(date)
+        const formattedDate = convertedDate.toISOString()
+        const inputTask = {
+          date: formattedDate,
+          taskList: tasks,
+          userId: currentUser.id,
+        }
+        create({ variables: { input: inputTask } })
+      })
   }, [tasks])
 
   const client = useApolloClient()
@@ -99,65 +107,88 @@ const HomePage = ({setDate2}) => {
     // console.log(`The date changed to ${date} so we need to grab data`)
 
     async function get_cal_data() {
-      const response = await fetch(`http://localhost:8910/.netlify/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`); // Assuming your API endpoint is /api/data
-      const data = await response.json();
+      const response = await fetch(
+        `http://localhost:8910/.netlify/functions/todaysCalendar?userId=${
+          currentUser.id
+        }&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`
+      ) // Assuming your API endpoint is /api/data
+      const data = await response.json()
       console.log(data.events)
       setAppts(data.events)
     }
     get_cal_data()
 
-    handleDatabase({userId: currentUser?.id, date: date, client}).then((res) => {
+    handleDatabase({ userId: currentUser?.id, date: date, client })
+      .then((res) => {
+        let orderedData = JSON.parse(JSON.stringify(res.taskList))
+        const orderedKeys = ['Top Priority', 'Important', 'Other']
 
-      let orderedData = JSON.parse(JSON.stringify(res.taskList))
-      const orderedKeys = ["Top Priority", "Important", "Other"];
+        // Create a new object with the desired order
+        const orderedTasks = {}
+        orderedKeys.forEach((key) => {
+          orderedTasks[key] = orderedData[key] || []
+        })
 
-      // Create a new object with the desired order
-      const orderedTasks = {};
-      orderedKeys.forEach((key) => {
-        orderedTasks[key] = orderedData[key] || [];
-      });
-
-      setTasks(orderedTasks);
-    }).catch(() => {
-      const convertedDate = new Date(date);
-      const formattedDate = convertedDate.toISOString();
-      const inputTask = {
-        date: formattedDate,
-        taskList: EMPTY_TASKS_DATA,
-        userId: currentUser.id,
-      };
-      create({variables: {input: inputTask}})
-      setTasks(EMPTY_TASKS_DATA)
-    })
+        setTasks(orderedTasks)
+      })
+      .catch(() => {
+        const convertedDate = new Date(date)
+        const formattedDate = convertedDate.toISOString()
+        const inputTask = {
+          date: formattedDate,
+          taskList: EMPTY_TASKS_DATA,
+          userId: currentUser.id,
+        }
+        create({ variables: { input: inputTask } })
+        setTasks(EMPTY_TASKS_DATA)
+      })
     setDate2(date)
-
   }, [date])
 
-
-
-  return (<>
-    <MetaTags title="Home" description="Home page"/>
-    <DatePicker setDateProp={setDate}/>
-    <Flex fontFamily={'DM Sans'} gap={'16px'} mt={'20px'}>
-      <Box w={"55%"}>
-        <Text fontSize={'30px'} fontWeight={'700'}>
-          Tasks
-          <AddTaskModal tasks={tasks} setTasks={setTasks} />
-        </Text>
-        <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
-             mt={'15px'}>
-          <TaskBox tasksData={tasks} updateTasksData={setTasks} />
+  return (
+    <>
+      <MetaTags title="Home" description="Home page" />
+      <DatePicker setDateProp={setDate} />
+      <Flex fontFamily={'DM Sans'} gap={'16px'} mt={'20px'}>
+        <Box w={'55%'}>
+          <Text fontSize={'30px'} fontWeight={'700'}>
+            Tasks
+            <AddTaskModal tasks={tasks} setTasks={setTasks} />
+          </Text>
+          <Box
+            w={'100%'}
+            p={'20px'}
+            borderRadius={'10px'}
+            boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
+            mt={'15px'}
+          >
+            <TaskBox
+              tasksData={tasks}
+              updateTasksData={setTasks}
+              appointmentsJSON={appts}
+            />
+          </Box>
         </Box>
-      </Box>
-      <Box w={"45%"}>
-        <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
-        <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
-             mt={'15px'}>
-          <AppointmentsBox appointmentsTasks={tasks} appointmentsJSON={appts}/>
+        <Box w={'45%'}>
+          <Text fontSize={'30px'} fontWeight={'700'}>
+            Appointments
+          </Text>
+          <Box
+            w={'100%'}
+            p={'20px'}
+            borderRadius={'10px'}
+            boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
+            mt={'15px'}
+          >
+            <AppointmentsBox
+              appointmentsTasks={tasks}
+              appointmentsJSON={appts}
+            />
+          </Box>
         </Box>
-      </Box>
-    </Flex>
-  </>)
+      </Flex>
+    </>
+  )
 }
 
 export default HomePage
