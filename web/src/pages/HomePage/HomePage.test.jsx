@@ -1,6 +1,8 @@
 import {render} from '@redwoodjs/testing/web'
 
 import HomePage from './HomePage'
+import {useAuth} from "src/auth";
+import {RedwoodApolloProvider} from "@redwoodjs/web/apollo";
 
 // Mock the TaskBox component
 jest.mock('../../components/TaskBox/TaskBox', () => {
@@ -19,7 +21,10 @@ mockCurrentUser({id: 1})
 describe('HomePage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<HomePage />)
+      render(
+        <RedwoodApolloProvider useAuth={useAuth}>
+          <HomePage />
+        </RedwoodApolloProvider>)
     }).not.toThrow()
   })
 })
