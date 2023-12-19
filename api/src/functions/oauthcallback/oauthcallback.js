@@ -2,16 +2,7 @@ import { db } from 'src/lib/db'
 import CryptoJS from 'crypto-js'
 
 export const handler = async (event, _context) => {
-  switch (event.path) {
-    case '/oauth/callback':
-      return await callback(event)
-    default:
-      // Whatever this is, it's not correct, so return "Not Found"
-      return {
-        statusCode: 404,
-        error: 'Error: returned status code 302',
-      }
-  }
+  return await callback(event)
 }
 
 const callback = async (event) => {
