@@ -282,51 +282,59 @@ const AppointmentsBox = ({ appointmentsJSON, appointmentsTasks }) => {
                   borderC = '1px solid #6284FF'
                   zIndexTask = staggerLeft * 100 + 1
                 }
-
-                return timeMap.map((time, idx) => {
-                  return (
-                    <Box
-                      key={idx}
-                      position={'absolute'}
-                      outline={borderC}
-                      padding={'10px'}
-                      minHeight={'44px'}
-                      height={`calc(44px * ${lengthInHours})`}
-                      mt={`calc((44px * ${startHour}) + 8.5px)`}
-                      backgroundColor={'#FFF'}
-                      color={time === currentHour ? 'red' : '#1F1F1F'}
-                      fontSize={'14px'}
-                      fontWeight={'500'}
-                      lineHeight={'17px'}
-                      zIndex={zIndexTask}
-                      width={`calc(100% - (100% * ${staggerLeft}))`}
-                      ml={`calc(100% * ${staggerLeft})`}
-                      _hover={{ backgroundColor: '#FAFAFA' }}
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
+                console.log('start time' + startTime)
+                console.log(
+                  'start time formatted ' +
+                    moment(startTime, 'HH:mm:ss').format('HH A')
+                )
+                console.log('current hour' + currentHour)
+                return (
+                  <Box
+                    key={idx}
+                    position={'absolute'}
+                    outline={borderC}
+                    padding={'10px'}
+                    minHeight={'44px'}
+                    height={`calc(44px * ${lengthInHours})`}
+                    mt={`calc((44px * ${startHour}) + 8.5px)`}
+                    backgroundColor={'#FFF'}
+                    color={
+                      moment(startTime, 'HH:mm:ss').format('HH A') ===
+                      currentHour
+                        ? 'red'
+                        : '#1F1F1F'
+                    }
+                    fontSize={'14px'}
+                    fontWeight={'500'}
+                    lineHeight={'17px'}
+                    zIndex={zIndexTask}
+                    width={`calc(100% - (100% * ${staggerLeft}))`}
+                    ml={`calc(100% * ${staggerLeft})`}
+                    _hover={{ backgroundColor: '#FAFAFA' }}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <span
+                      style={{
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
-                      <span
-                        style={{
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {summary}
-                      </span>
-                      <span
-                        style={{
-                          textAlign: 'end',
-                          visibility:
-                            pomodoros === undefined ? 'hidden' : 'visible',
-                        }}
-                      >
-                        {pomodorosComplete}/{pomodoros}
-                      </span>
-                    </Box>
-                  )
-                })
+                      {summary}
+                    </span>
+                    <span
+                      style={{
+                        textAlign: 'end',
+                        visibility:
+                          pomodoros === undefined ? 'hidden' : 'visible',
+                      }}
+                    >
+                      {pomodorosComplete}/{pomodoros}
+                    </span>
+                  </Box>
+                )
               }
             )}
         </Box>
