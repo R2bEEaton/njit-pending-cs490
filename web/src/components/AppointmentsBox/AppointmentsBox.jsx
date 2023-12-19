@@ -178,7 +178,7 @@ const AppointmentsBox = ({
   })
   console.log('log', appointmentsTasks)
   let timeMap = []
-  for (let i = 5; i <= 20; i++) {
+  for (let i = 5; i <= 24; i++) {
     timeMap.push(((i - 1) % 12) + 1 + (i < 12 ? ' AM' : ' PM'))
   }
   console.log(appointmentsJSON)

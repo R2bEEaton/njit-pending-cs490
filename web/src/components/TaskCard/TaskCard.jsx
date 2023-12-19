@@ -12,6 +12,7 @@ import {
   EditablePreview,
   useEditableControls,
 } from '@chakra-ui/react'
+import moment from 'moment'
 import TextareaAutosize from 'react-textarea-autosize'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -104,6 +105,7 @@ const TaskCard = ({
   const [pomos, setPomos] = useState(task.pomodoros)
   const [notes, setNotes] = useState(task.notes)
   const [taskStatus, setTaskStatus] = useState(task.status)
+  const [time, setTime] = useState(moment())
 
   const notesBox = useRef()
 
@@ -124,6 +126,14 @@ const TaskCard = ({
     callback(idx, task)
   }, [notes])
 
+  useEffect(() => {
+    const sortedScheduledItems = scheduledItems
+      .map((item) => item.startTime)
+      .sort()
+    for (let i = 0; i < sortedScheduledItems.length; i++) {
+      if (i === time.format('HH:mm:ss')) setModalOpen(true)
+    }
+  }, [scheduledItems, time])
   console.log('scheduledItems: ' + JSON.stringify(scheduledItems, null, 4))
 
   /**
