@@ -55,7 +55,7 @@ const CREATE_TASKS = gql`
   }
 `;
 
-const HomePage = () => {
+const HomePage = ({setDate2}) => {
   const [update] = useMutation(UPDATE_TASKS)
   const [create] = useMutation(CREATE_TASKS)
   const {currentUser} = useAuth()
@@ -99,14 +99,14 @@ const HomePage = () => {
     // console.log(`The date changed to ${date} so we need to grab data`)
 
     async function get_cal_data() {
-      const response = await fetch(`http://localhost:8910/.redwood/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`); // Assuming your API endpoint is /api/data
+      const response = await fetch(`/.netlify/functions/todaysCalendar?userId=${currentUser.id}&startDate=${date}&timeZoneOffset=${moment().utcOffset()}`);
       const data = await response.json();
-      console.log(data.events)
       setAppts(data.events)
     }
     get_cal_data()
 
     handleDatabase({userId: currentUser?.id, date: date, client}).then((res) => {
+
       let orderedData = JSON.parse(JSON.stringify(res.taskList))
       const orderedKeys = ["Top Priority", "Important", "Other"];
 
@@ -128,7 +128,11 @@ const HomePage = () => {
       create({variables: {input: inputTask}})
       setTasks(EMPTY_TASKS_DATA)
     })
+    setDate2(date)
+
   }, [date])
+
+
 
   return (<>
     <MetaTags title="Home" description="Home page"/>
@@ -149,7 +153,7 @@ const HomePage = () => {
         <Text fontSize={'30px'} fontWeight={'700'}>Appointments</Text>
         <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
              mt={'15px'}>
-          <AppointmentsBox appointmentsJSON={appts}/>
+          <AppointmentsBox appointmentsTasks={tasks} appointmentsJSON={appts}/>
         </Box>
       </Box>
     </Flex>

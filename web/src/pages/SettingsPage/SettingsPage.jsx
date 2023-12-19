@@ -3,7 +3,7 @@ import {MetaTags, useMutation} from '@redwoodjs/web'
 import {Box, Button, Center, Flex, FormControl, FormLabel, HStack, Input, Spacer, Text} from "@chakra-ui/react";
 import { useForm } from "@redwoodjs/forms";
 import { useAuth } from "src/auth";
-import {toast} from "@redwoodjs/web/toast";
+import { toast } from "@redwoodjs/web/toast";
 import { Toaster } from '@redwoodjs/web/toast'
 
 const UPDATE_SETTINGS = gql`
@@ -28,7 +28,6 @@ const SettingsPage = () => {
   )
 
   const onSubmit = (data) => {
-    console.log(data)
     data.pomodoro = parseInt(data.pomodoro)
     data.shortBreak = parseInt(data.shortBreak)
     data.longBreak = parseInt(data.longBreak)
