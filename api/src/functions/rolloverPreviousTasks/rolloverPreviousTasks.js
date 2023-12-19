@@ -1,9 +1,7 @@
 import { logger } from 'src/lib/logger'
-import moment from "moment";
 import {authDecoder} from "@redwoodjs/auth-dbauth-api";
 import {getCurrentUser} from "src/lib/auth";
 import {db} from 'src/lib/db';
-import { StatDownArrow } from '@chakra-ui/react';
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -24,131 +22,130 @@ import { StatDownArrow } from '@chakra-ui/react';
 
 export const handler = async (event, _context) => {
   logger.info(`${event.httpMethod} ${event.path}: rolloverPreviousTasks function`)
-  /*function substring(string) {
-    var result = '';
-    i = 0;
-    while (string[i] != "T") result += string[i++];
-    return result;
-  }*/
-  function oldTasks(tasks, today) {
-    let result={
-      ["Top Priority"]:[],
-      Important:[],
-      Other:[]
-    }
-    let len = tasks.length;
-    let i = 0;
-    while(i<len){
-      if (tasks[i].date<today){
-        if (tasks[i].taskList.Other.length > 0 ){
-          let l = tasks[i].taskList.Other.length;
-          for (let j=0; j<l; j++){
-            if (tasks[i].taskList.Other[j].status == "Completed" || tasks[i].taskList.Other[j].status == "Cancelled") continue;
-            else{
-              let temp =tasks[i].taskList["Other"][j]
-              temp.status="Rollover"
-              //logger.info(temp)
-              result.Other.push({temp})
-            }
-          }
-        }//result+= tasks[i].id
-        if (tasks[i].taskList.Important.length > 0 ){
-          let l = tasks[i].taskList.Important.length;
-          for (let j=0; j<l; j++){
-            if (tasks[i].taskList.Important[j].status == "Completed" || tasks[i].taskList.Important[j].status == "Cancelled") continue;
-            else{
-              let temp =tasks[i].taskList["Important"][j]
-              temp.status="Rollover"
-              //logger.info(temp)
-              result.Important.push({temp})
-            }
-          }
-        }
-        if (tasks[i].taskList["Top Priority"].length > 0 ){
-          let l = tasks[i].taskList["Top Priority"].length;
-          for (let j=0; j<l; j++){
-            if (tasks[i].taskList["Top Priority"][j].status == "Completed" || tasks[i].taskList["Top Priority"][j].status == "Cancelled") continue;
-            else{
-              let temp =tasks[i].taskList["Top Priority"][j]
-              temp.status="Rollover"
-              //logger.info(temp)
-              result['Top Priority'].push({temp})
-            }
-          }
-        }
-      } //result+= tasks[i].id;
-      i++;
-    }
-    return result;
-  }
+
   // Get the current user
-  const { userId, date} = event.queryStringParameters
+  const { userId, date } = event.queryStringParameters
   const dd= new Date(date)
-  const authUser = await authDecoder(userId, 'dbAuth', {event, context})
-  const currentUser = await getCurrentUser(authUser)
-  const allTasks = currentUser.tasks
-  var olTasks = oldTasks(allTasks, dd)/*
-  const vr = currentUser.tasks[1].taskList["Other"][0]
-  vr.status="Rollover"
 
-  let arr={
-    ["Top Priority"]:[],
-    Important:[],
-    Other:[]
+  const most_recent_tasks = await db.task.findFirst({
+    where: {
+      userId: parseInt(userId),
+      NOT: {
+        taskList: {equals: {"Other":[],"Important":[],"Top Priority":[]}}
+      },
+      date: {
+        lt: dd
+      }
+    },
+    orderBy: [
+      {date: 'desc'}
+    ],
+    select: {
+      taskList: true,
+      date: true,
+      id: true
+    },
+  })
 
+  const updated_tasks = JSON.parse(JSON.stringify(most_recent_tasks.taskList));
+  for (let type of ["Top Priority", "Important", "Other"]) {
+    for (let i = 0; i < updated_tasks[type].length; i++) {
+      if (updated_tasks[type][i].status === "InProgress") {
+        updated_tasks[type][i].status = "Rollover"
+      }
+    }
   }
-  arr['Top Priority'].push(vr)
-  //let rv=vr
-  //const f = vr.Other.length*/
+
+  let rolled_over = JSON.parse(JSON.stringify(most_recent_tasks.taskList));
+  for (let type of ["Top Priority", "Important", "Other"]) {
+    for (let i = rolled_over[type].length - 1; i >= 0; i--) {
+      if (rolled_over[type][i].status === "Completed" || rolled_over[type][i].status === "Cancelled") {
+        rolled_over[type].splice(i, 1);
+      } else {
+        rolled_over[type][i].status = "NotStarted"
+        rolled_over[type][i].pomodorosComplete = 0
+      }
+    }
+  }
+
+  const new_tasks_list = {"Top Priority": [], "Important": [], "Other": []}
+  let top_three = [];
+  for (let type of ["Top Priority", "Important", "Other"]) {
+    for (let i = 0; i < rolled_over[type].length; i++) {
+      top_three.push(rolled_over[type][i])
+      if (top_three.length >= 3) break;
+    }
+    if (top_three.length >= 3) break;
+  }
+
+  let remaining_important = [];
+  let skip = top_three.length;
+  for (let type of ["Top Priority", "Important", "Other"]) {
+    for (let i = 0; i < rolled_over[type].length; i++) {
+      if (skip <= 0 && type === "Important") {
+        remaining_important.push(rolled_over[type][i])
+      }
+      skip--;
+    }
+  }
+
+  let new_other = [];
+  if (!remaining_important.length) {
+    remaining_important = rolled_over["Other"]
+  } else {
+    new_other = rolled_over["Other"]
+  }
+
+  new_tasks_list["Top Priority"] = top_three;
+  new_tasks_list["Important"] = remaining_important;
+  new_tasks_list["Other"] = new_other;
+
+  await db.task.update({
+    where: {id: most_recent_tasks.id},
+    data: {
+      taskList: updated_tasks
+    }
+  })
+
+  await db.task.update({
+    where: {userId_date: {userId: parseInt(userId), date: dd}},
+    data: {
+      taskList: new_tasks_list
+    }
+  })
+
+
+  // //var olTasks = oldTasks(allTasks, dd)/*
+  // const vr = currentUser.tasks[1].taskList["Other"][0]
+  // vr.status="Rollover"
+  //
+  // let arr={
+  //   ["Top Priority"]:[],
+  //   Important:[],
+  //   Other:[]
+  //
+  // }
+  // arr['Top Priority'].push(vr)
+  // //let rv=vr
+  // //const f = vr.Other.length*/
+
+  // return {
+  //   statusCode: 200,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     data: 'rolloverPreviousTasks function',
+  //     updated_tasks,
+  //     new_tasks_list
+  //   }),
+  // }
 
   return {
-    statusCode: 200,
+    statusCode: 302,
     headers: {
-      'Content-Type': 'application/json',
+      Location: '/',
     },
-    body: JSON.stringify({
-      data: 'rolloverPreviousTasks function',
-      //date,
-      //dd,
-      //allTasks,
-      olTasks,
-      //vr,
-      //arr,
-      //f
-    }),
+    error: 'Planned day'
   }
 }
-/*
-  function oldTasks(tasks, today) {
-    let result=[];
-    let len = tasks.length;
-    let i = 0;
-    while(i<len){
-      if (tasks[i].date<today){
-        if (tasks[i].taskList.Other.length > 0 ){
-          let l = tasks[i].taskList.Other.length;
-          for (let j=0; j<l; j++){
-            if (tasks[i].taskList.Other[j].status == "Completed" || tasks[i].taskList.Other[j].status == "Cancelled") continue;
-            else result+= JSON.stringify(tasks[i].taskList.Other[j]);
-          }
-        }//result+= tasks[i].id
-        if (tasks[i].taskList.Important.length > 0 ){
-          let l = tasks[i].taskList.Important.length;
-          for (let j=0; j<l; j++){
-            if (tasks[i].taskList.Important[j].status == "Completed" || tasks[i].taskList.Important[j].status == "Cancelled") continue;
-            else result+= JSON.stringify(tasks[i].taskList.Important[j]);
-          }
-        }
-        if (tasks[i].taskList["Top Priority"].length > 0 ){
-          let l = tasks[i].taskList["Top Priority"].length;
-          for (let j=0; j<l; j++){
-            if (tasks[i].taskList["Top Priority"][j].status == "Completed" || tasks[i].taskList["Top Priority"][j].status == "Cancelled") continue;
-            else result+= JSON.stringify(tasks[i].taskList["Top Priority"][j]);
-          }
-        }
-      } //result+= tasks[i].id;
-      i++;
-    }
-    return result;
-  }
-  */

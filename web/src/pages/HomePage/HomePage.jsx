@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react'
 
 import {
   Box,
-  Button,
   Flex,
   Text
 } from '@chakra-ui/react'
@@ -140,7 +139,6 @@ const HomePage = () => {
         <Text fontSize={'30px'} fontWeight={'700'}>
           Tasks
           <AddTaskModal tasks={tasks} setTasks={setTasks} />
-          <Button href={`/.netlify/functions/rolloverPreviousTasks?userId=${currentUser?.id}&date=${date}`} as={'a'}>test</Button>
         </Text>
         <Box w={'100%'} p={'20px'} borderRadius={'10px'} boxShadow={'2px 5px 50px 0px rgba(36, 37, 40, 0.10);'}
              mt={'15px'}>
