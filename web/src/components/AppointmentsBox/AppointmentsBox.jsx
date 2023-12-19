@@ -285,7 +285,7 @@ const AppointmentsBox = ({ appointmentsJSON, appointmentsTasks }) => {
                 console.log('start time' + startTime)
                 console.log(
                   'start time formatted ' +
-                    moment(startTime, 'HH:mm:ss').format('HH A')
+                    moment(startTime, 'HH:mm:ss').format('h A')
                 )
                 console.log('current hour' + currentHour)
                 return (
@@ -298,21 +298,21 @@ const AppointmentsBox = ({ appointmentsJSON, appointmentsTasks }) => {
                     height={`calc(44px * ${lengthInHours})`}
                     mt={`calc((44px * ${startHour}) + 8.5px)`}
                     backgroundColor={
-                      moment(startTime, 'HH:mm:ss').format('HH A') ===
+                      moment(startTime, 'HH:mm:ss').format('h A') ===
                       currentHour
                         ? '#6284FF'
                         : moment(startTime, 'HH:mm:ss').isBefore(
-                            moment(currentHour, 'HH A')
+                            moment(currentHour, 'h A')
                           )
                         ? '#dadada'
                         : '#FFF'
                     }
                     color={
-                      moment(startTime, 'HH:mm:ss').format('HH A') ===
+                      moment(startTime, 'HH:mm:ss').format('h A') ===
                       currentHour
                         ? 'white'
                         : moment(startTime, 'HH:mm:ss').isBefore(
-                            moment(currentHour, 'HH A')
+                            moment(currentHour, 'h A')
                           )
                         ? 'gray'
                         : '#1F1F1F'
