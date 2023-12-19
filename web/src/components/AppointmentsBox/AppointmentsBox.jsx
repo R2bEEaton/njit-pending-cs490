@@ -301,6 +301,10 @@ const AppointmentsBox = ({ appointmentsJSON, appointmentsTasks }) => {
                       moment(startTime, 'HH:mm:ss').format('HH A') ===
                       currentHour
                         ? '#6284FF'
+                        : moment(startTime, 'HH:mm:ss').isBefore(
+                            moment(currentHour, 'HH A')
+                          )
+                        ? 'gray'
                         : '#FFF'
                     }
                     color={
