@@ -134,7 +134,7 @@ const TaskCard = ({
       if (i === time.format('hh:mm:ss')) setModalOpen(true)
     }
   }, [scheduledItems, time])
-  console.log('scheduledItems: ' + JSON.stringify(scheduledItems, null, 4))
+  //console.log('scheduledItems: ' + JSON.stringify(scheduledItems, null, 4))
 
   /**
    * Button for editing the notes
