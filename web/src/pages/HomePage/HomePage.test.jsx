@@ -23,8 +23,17 @@ describe('HomePage', () => {
     expect(() => {
       render(
         <RedwoodApolloProvider useAuth={useAuth}>
-          <HomePage />
+          <HomePage setDate2={() => jest.fn()}/>
         </RedwoodApolloProvider>)
     }).not.toThrow()
+  })
+
+  it('successfully renders unsuccessfully', () => {
+    expect(() => {
+      render(
+        <RedwoodApolloProvider useAuth={useAuth}>
+          <HomePage />
+        </RedwoodApolloProvider>)
+    }).toThrow()
   })
 })
