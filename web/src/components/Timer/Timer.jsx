@@ -29,7 +29,6 @@ const Timer = ({
   updateNumPomosComplete,
   onTimerFinish,
   setIsTimerRunning,
-  setTaskStatus,
 }) => {
   const [minutes, setMinutes] = useState(numMinutes)
   const [seconds, setSeconds] = useState(0)
@@ -64,9 +63,7 @@ const Timer = ({
     //numPomosComplete,
     //updateNumPomosComplete,
   ])
-  useEffect(() => {
-    if (isRunning) setTaskStatus('InProgress')
-  }, [isRunning, setTaskStatus])
+
   //useEffect(() => {
   /*const startTimer = () => {
     let timer
@@ -121,10 +118,7 @@ const Timer = ({
           {minutes}:{seconds < 10 ? '0' + seconds : seconds}
         </Text>
         <Button
-          onClick={() => {
-            setIsRunning(true)
-            //setTaskStatus('InProgress')
-          }}
+          onClick={() => setIsRunning(true)}
           disabled={isRunning}
           position="relative"
           //bottom="51.6%"

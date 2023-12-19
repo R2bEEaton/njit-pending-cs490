@@ -36,7 +36,6 @@ const FocusTimeModal = ({
   numPomosComplete,
   updateNumPomosComplete,
   setModalOpen,
-  setTaskStatus,
 }) => {
   console.log(taskPomos)
 
@@ -103,23 +102,32 @@ useEffect(() => {
   }, [isOpen, taskNotes])
   const { currentUser, reauthenticate } = useAuth()
   const onTimerFinish = () => {
+    
     if (currentTab === 'pomodoro') {
-      if ((numPomosComplete + 1) % 4 === 0) {
+      
+      if((numPomosComplete + 1) % 4 === 0)
+      {
         setCurrentTab('long break')
-      } else {
+      }
+      else
+      {
         setCurrentTab('short break')
       }
     } else if (currentTab == 'short break') {
-      if (numPomosComplete === taskPomos) {
+      if(numPomosComplete === taskPomos)
+      {
         setModalOpen(false)
-      } else {
+      }
+      else{
         setCurrentTab('pomodoro')
       }
+      
     } else {
       setCurrentTab('pomodoro')
     }
-
-    //
+    
+   //
+   
   }
 
   return (
@@ -160,7 +168,6 @@ useEffect(() => {
               updateNumPomosComplete={updateNumPomosComplete}
               onTimerFinish={onTimerFinish}
               setIsTimerRunning={setIsTimerRunning}
-              setTaskStatus={setTaskStatus}
             />
 
             <Text
