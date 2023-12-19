@@ -35,7 +35,8 @@ export const getCurrentUser = async (session) => {
       shortBreak: true,
       longBreak: true,
       picture: true,
-      identities: true},
+      identities: true,
+      tasks:true},
   });
 
   if (user === null) {
