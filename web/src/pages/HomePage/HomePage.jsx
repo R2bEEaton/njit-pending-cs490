@@ -138,6 +138,7 @@ const HomePage = ({setDate2}) => {
   return (<>
     <MetaTags title="Home" description="Home page"/>
     <DatePicker setDateProp={setDate}/>
+
     <Flex fontFamily={'DM Sans'} gap={'16px'} mt={'20px'}>
       <Box w={"55%"}>
         <Text fontSize={'30px'} fontWeight={'700'}>
