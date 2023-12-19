@@ -131,7 +131,7 @@ const TaskCard = ({
       .map((item) => item.startTime)
       .sort()
     for (let i = 0; i < sortedScheduledItems.length; i++) {
-      if (i === time.format('hh:mm:ss')) setModalOpen(true)
+      if (moment(i, 'hh:mm:ss') === time.format('hh:mm:ss')) setModalOpen(true)
     }
   }, [scheduledItems, time])
   //console.log('scheduledItems: ' + JSON.stringify(scheduledItems, null, 4))
