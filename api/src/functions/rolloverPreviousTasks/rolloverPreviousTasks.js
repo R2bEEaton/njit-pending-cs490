@@ -1,5 +1,6 @@
 import { logger } from 'src/lib/logger'
 import {db} from 'src/lib/db';
+import {authDecoder} from "@redwoodjs/auth-dbauth-api";
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -18,11 +19,15 @@ import {db} from 'src/lib/db';
  */
 
 
-export const handler = async (event, _context) => {
+export const handler = async (event, context) => {
   logger.info(`${event.httpMethod} ${event.path}: rolloverPreviousTasks function`)
 
   // Get the current user
   const { userId, date } = event.queryStringParameters
+
+  // Verify user is logged in and the same as requested
+  await authDecoder(userId, 'dbAuth', {event, context})
+
   const dd= new Date(date)
 
   const most_recent_tasks = await db.task.findFirst({
