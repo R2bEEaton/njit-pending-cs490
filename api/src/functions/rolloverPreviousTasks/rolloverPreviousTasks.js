@@ -1,6 +1,4 @@
 import { logger } from 'src/lib/logger'
-import {authDecoder} from "@redwoodjs/auth-dbauth-api";
-import {getCurrentUser} from "src/lib/auth";
 import {db} from 'src/lib/db';
 /**
  * The handler function is your code that processes http request events.
@@ -50,7 +48,7 @@ export const handler = async (event, _context) => {
   const updated_tasks = JSON.parse(JSON.stringify(most_recent_tasks.taskList));
   for (let type of ["Top Priority", "Important", "Other"]) {
     for (let i = 0; i < updated_tasks[type].length; i++) {
-      if (updated_tasks[type][i].status === "InProgress") {
+      if (updated_tasks[type][i].status !== "Completed" && updated_tasks[type][i].status !== "Cancelled") {
         updated_tasks[type][i].status = "Rollover"
       }
     }
@@ -79,26 +77,28 @@ export const handler = async (event, _context) => {
   }
 
   let remaining_important = [];
+  let remaining_other = [];
   let skip = top_three.length;
   for (let type of ["Top Priority", "Important", "Other"]) {
     for (let i = 0; i < rolled_over[type].length; i++) {
       if (skip <= 0 && type === "Important") {
         remaining_important.push(rolled_over[type][i])
       }
+      if (skip <= 0 && type === "Other") {
+        remaining_other.push(rolled_over[type][i])
+      }
       skip--;
     }
   }
 
-  let new_other = [];
   if (!remaining_important.length) {
-    remaining_important = rolled_over["Other"]
-  } else {
-    new_other = rolled_over["Other"]
+    remaining_important = JSON.parse(JSON.stringify(remaining_other));
+    remaining_other = []
   }
 
   new_tasks_list["Top Priority"] = top_three;
   new_tasks_list["Important"] = remaining_important;
-  new_tasks_list["Other"] = new_other;
+  new_tasks_list["Other"] = remaining_other;
 
   await db.task.update({
     where: {id: most_recent_tasks.id},
